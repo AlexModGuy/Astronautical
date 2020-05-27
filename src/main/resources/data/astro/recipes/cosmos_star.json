@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "astro:starfish"
+    },
+    {
+      "item": "astro:falling_star"
+    }
+  ],
+  "result": {
+    "item": "astro:cosmos_star",
+    "count": 1
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "GGG",
+    "G G"
+  ],
+  "key": {
+    "G": {
+      "tag": "forge:glass/colorless",
+      "data": 0
+    }
+  },
+  "result": {
+    "item": "astro:glass_helmet"
+  }
+}

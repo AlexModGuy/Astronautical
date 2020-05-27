@@ -1,0 +1,17 @@
+{
+    "ambientocclusion": false,
+    "textures": {
+        "particle": "astro:block/squid_mucus_2",
+        "mucus": "astro:block/squid_mucus_2"
+    },
+    "elements": [
+        {   "from": [ 0, 0, 15.2 ],
+            "to": [ 16, 16, 15.2 ],
+            "shade": false,
+            "faces": {
+                "north": { "uv": [ 0, 0, 16, 16 ], "texture": "#mucus", "tintindex": 0 },
+                "south": { "uv": [ 0, 0, 16, 16 ], "texture": "#mucus", "tintindex": 0 }
+            }
+        }
+    ]
+}

@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:smelting",
+  "ingredient": [
+    {
+      "item": "astro:space_squid_tentacle"
+    }
+  ],
+  "result": "astro:space_calamari",
+  "experience": 0.2,
+  "cookingtime": 200
+}

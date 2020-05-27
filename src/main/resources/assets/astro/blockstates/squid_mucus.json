@@ -1,0 +1,11 @@
+{
+    "variants": {
+        "facing=up": [{ "model": "astro:block/squid_mucus_ground_0" }, {"model": "astro:block/squid_mucus_ground_1" }, {"model": "astro:block/squid_mucus_ground_2" } ],
+        "facing=down": [{ "model": "astro:block/squid_mucus_ground_0", "x": 180 }, {"model": "astro:block/squid_mucus_ground_1", "x": 180 }, {"model": "astro:block/squid_mucus_ground_2", "x": 180 } ],
+
+        "facing=east": [{ "model": "astro:block/squid_mucus_0", "y": 90}, {"model": "astro:block/squid_mucus_1", "y": 90 }, {"model": "astro:block/squid_mucus_2", "y": 90} ],
+        "facing=south": [{ "model": "astro:block/squid_mucus_0", "y": 180}, {"model": "astro:block/squid_mucus_1", "y": 180 }, {"model": "astro:block/squid_mucus_2", "y": 180 } ],
+        "facing=west": [{ "model": "astro:block/squid_mucus_0", "y": 270}, {"model": "astro:block/squid_mucus_1", "y": 270 }, {"model": "astro:block/squid_mucus_2", "y": 270} ],
+	    "facing=north": [{ "model": "astro:block/squid_mucus_0", "y": 0}, {"model": "astro:block/squid_mucus_1", "y": 0 }, {"model": "astro:block/squid_mucus_2", "y": 0 } ]
+    }
+}

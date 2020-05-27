@@ -1,0 +1,36 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "astro:squid_mucus"
+    },
+    {
+      "item": "astro:squid_mucus"
+    },
+    {
+      "item": "astro:squid_mucus"
+    },
+    {
+      "item": "astro:squid_mucus"
+    },
+    {
+      "item": "astro:squid_mucus"
+    },
+    {
+      "item": "astro:squid_mucus"
+    },
+    {
+      "item": "astro:squid_mucus"
+    },
+    {
+      "item": "astro:squid_mucus"
+    },
+    {
+      "item": "astro:squid_mucus"
+    }
+  ],
+  "result": {
+    "item": "astro:squid_goop_block",
+    "count": 1
+  }
+}

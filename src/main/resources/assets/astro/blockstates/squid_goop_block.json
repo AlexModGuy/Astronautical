@@ -1,0 +1,5 @@
+{
+    "variants": {
+        "": { "model": "astro:block/squid_goop_block" }
+    }
+}
