@@ -11,6 +11,7 @@ import net.minecraft.world.gen.DebugChunkGenerator;
 import net.minecraft.world.gen.DebugGenerationSettings;
 import net.minecraft.world.gen.GenerationSettings;
 import net.minecraft.world.gen.surfacebuilders.SurfaceBuilderConfig;
+import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.ModDimension;
 import net.minecraftforge.event.RegistryEvent;
@@ -23,7 +24,7 @@ public class AstroWorldRegistry {
 
     public static final ModDimension COSMIC_SEA_MOD_DIMENSION = new CosmicSeaModDimension(CosmicSeaDimension::new).setRegistryName("astro:cosmic_sea");
     public static DimensionType COSMIC_SEA_TYPE = DimensionManager.registerOrGetDimension(new ResourceLocation("astro:cosmic_sea"), COSMIC_SEA_MOD_DIMENSION, null, true);
-    public static Biome COSMIC_SEA ;
+    public static Biome COSMIC_SEA;
     public static final CosmicSurfaceBuilder COSMIC_SURFACE = new CosmicSurfaceBuilder(SurfaceBuilderConfig::deserialize);
     public static final ChunkGeneratorType<CosmicChunkSettings, CosmicChunkGenerator> COSMIC_CHUNK_GENERATOR = new ChunkGeneratorType<>(CosmicChunkGenerator::new,false, CosmicChunkSettings::new);
 
@@ -35,7 +36,7 @@ public class AstroWorldRegistry {
     @SubscribeEvent
     public static void registerBiomes(final RegistryEvent.Register<Biome> event) {
         event.getRegistry().register(COSMIC_SEA = new BiomeCosmicSea());
-
+        BiomeDictionary.addTypes(COSMIC_SEA, BiomeDictionary.Type.VOID);
     }
 
     @SubscribeEvent

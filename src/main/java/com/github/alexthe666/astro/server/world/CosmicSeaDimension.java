@@ -37,17 +37,16 @@ public class CosmicSeaDimension extends Dimension {
         return new ChunkProviderCosmicSea(this.world, new SingleBiomeProvider(providerSettings), settings);
     }
 
+
     @Override
     public float calculateCelestialAngle(long worldTime, float partialTicks) {
-        double d0 = MathHelper.frac((double)worldTime / 24000.0D - 0.25D);
-        double d1 = 0.5D - Math.cos(d0 * Math.PI) / 2.0D;
-        return (float)(d0 * 2.0D + d1) / 3.0F;
+        return 0.0F;
     }
 
-    @Override @Nullable
+    @Nullable
     @OnlyIn(Dist.CLIENT)
     public float[] calcSunriseSunsetColors(float celestialAngle, float partialTicks) {
-        return super.calcSunriseSunsetColors(celestialAngle, partialTicks);
+        return null;
     }
 
     @Override @OnlyIn(Dist.CLIENT)
@@ -63,7 +62,7 @@ public class CosmicSeaDimension extends Dimension {
 
     @Override @OnlyIn(Dist.CLIENT)
     public boolean isSkyColored() {
-        return true;
+        return false;
     }
 
     @Override
