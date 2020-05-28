@@ -24,7 +24,7 @@ import java.util.List;
 public class BlockOfSquidGoop extends BreakableBlock {
 
     public BlockOfSquidGoop() {
-        super(Block.Properties.create(Material.GLASS, MaterialColor.BLUE).variableOpacity().notSolid().slipperiness(0.6F).sound(SoundType.SLIME));
+        super(Block.Properties.create(Material.GLASS, MaterialColor.BLUE).hardnessAndResistance(5.0F, 10F).variableOpacity().notSolid().slipperiness(0.6F).sound(SoundType.SLIME));
         this.setRegistryName("astro:squid_goop_block");
     }
 

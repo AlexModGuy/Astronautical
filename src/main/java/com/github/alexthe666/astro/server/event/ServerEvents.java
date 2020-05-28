@@ -7,14 +7,18 @@ import com.github.alexthe666.astro.server.entity.SquidfallSpawner;
 import com.github.alexthe666.astro.server.item.AstroItemRegistry;
 import com.github.alexthe666.astro.server.world.AstroWorldRegistry;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.Pose;
 import net.minecraft.entity.monster.DrownedEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.server.ServerWorld;
@@ -32,6 +36,9 @@ import net.minecraftforge.fml.common.Mod;
 import java.util.HashMap;
 import java.util.Map;
 
+import static net.minecraft.entity.LivingEntity.ENTITY_GRAVITY;
+import static net.minecraft.entity.LivingEntity.SWIM_SPEED;
+
 @Mod.EventBusSubscriber(modid = Astronautical.MODID)
 public class ServerEvents {
 
@@ -42,6 +49,48 @@ public class ServerEvents {
 
     @SubscribeEvent
     public static void onLivingUpdate(LivingEvent.LivingUpdateEvent event) {
+        if(event.getEntityLiving().dimension == AstroWorldRegistry.COSMIC_SEA_TYPE){
+            LivingEntity entity = event.getEntityLiving();
+            entity.setSwimming(true);
+            if(entity.isSprinting() && !entity.onGround){
+                entity.setPose(Pose.SWIMMING);
+                //entity.setFlag(7, true);
+            }
+            if(entity instanceof PlayerEntity){
+                PlayerEntity player = (PlayerEntity)entity;
+                //player.abilities.isFlying = true;
+
+            }
+            boolean swimming = entity.getPose() == Pose.SWIMMING;
+            Vec3d vec3d = entity.getMotion();
+            entity.fallDistance = 1;
+            if (!entity.onGround && vec3d.y < 0.0D) {
+                entity.setMotion(vec3d.mul(1.0D, 0.6D, 1.0D));
+            }
+            boolean flag = false;
+            if(!entity.onGround && swimming){
+                double d3 = entity.getLookVec().y;
+                double d4 = d3 < -0.2D ? 0.1D : 0.09D;
+                Vec3d vec3d1 = entity.getMotion();
+                flag = d4 > 0.05D;
+                entity.setMotion(vec3d1.add(0.0D, (d3 - vec3d1.y) * d4, 0.0D));
+            }
+            if(entity.isJumping && !flag){
+                entity.setMotion(entity.getMotion().add(0.0D, 0.05D, 0.0D));
+            }
+            if(entity.getItemStackFromSlot(EquipmentSlotType.HEAD).getItem() != AstroItemRegistry.GLASS_HELMET){
+                int airLeft = entity.getAir();
+                entity.setAir(airLeft - 5);
+                if(airLeft <= 0){
+                    if(entity.ticksExisted % 10 == 0){
+                        entity.attackEntityFrom(DamageSource.DROWN, 2);
+                    }
+                }
+            }else{
+                entity.setAir(Math.min(entity.getMaxAir(), entity.getAir() + 2));
+            }
+
+        }
         if(!event.getEntityLiving().world.isRemote && event.getEntityLiving() instanceof ServerPlayerEntity && event.getEntityLiving().getPosY() > 300){
             MinecraftServer server = event.getEntityLiving().world.getServer();
             ServerPlayerEntity thePlayer = (ServerPlayerEntity) event.getEntityLiving();

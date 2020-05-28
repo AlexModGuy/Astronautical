@@ -22,27 +22,21 @@ import java.util.Random;
 public class CosmicSkyRenderer implements IRenderHandler {
 
     private static final ResourceLocation END_SKY_TEXTURES = new ResourceLocation("astro:textures/environment/cosmic_sky.png");
-    private final VertexFormat skyVertexFormat = DefaultVertexFormats.POSITION_COLOR_TEX;
-    @Nullable
-    private VertexBuffer starVBO;
     private static final ResourceLocation MOON_PHASES_TEXTURES = new ResourceLocation("textures/environment/moon_phases.png");
     private static final ResourceLocation SUN_TEXTURES = new ResourceLocation("textures/environment/sun.png");
     private static final ResourceLocation EARTH_TEXTURES = new ResourceLocation("astro:textures/environment/earth.png");
     private static final ResourceLocation EARTH_CLOUD_TEXTURES = new ResourceLocation("astro:textures/environment/earth_clouds.png");
+    private static final ResourceLocation STAR_TEXTURES = new ResourceLocation("astro:textures/environment/various_stars.png");
+    private static final int[] POSSIBLE_STAR_COLORS = new int[]{
+            0XFFFFFF, 0XFFCECE, 0XC9FFFF, 0XFFF6CC
+    };
     private static int STAR_TYPE_COUNT = 8;
     private static int STAR_TEXTURE_SIZE_PX = 256;
-    private static final ResourceLocation STAR_TEXTURES = new ResourceLocation("astro:textures/environment/various_stars.png");
+    private final VertexFormat skyVertexFormat = DefaultVertexFormats.POSITION_COLOR_TEX;
+    @Nullable
+    private VertexBuffer starVBO;
 
-     private static final int[][] POSSIBLE_STAR_COLORS = new int[][]{
-             {255, 255, 255},
-             {255, 255, 255},
-             {255, 255, 255},
-             {255, 255, 255},
-             {0, 255, 255},
-             {255, 0, 0},
-             {255, 0, 0},
-    };
-    public CosmicSkyRenderer(){
+    public CosmicSkyRenderer() {
         generateStars();
     }
 
@@ -65,15 +59,18 @@ public class CosmicSkyRenderer implements IRenderHandler {
         int starColorsCount = POSSIBLE_STAR_COLORS.length;
         int starCount = 3000;
 
-        for(int i = 0; i < starCount; ++i) {
-              double d0 = (double)(random.nextFloat() * 2.0F - 1.0F);
-            double d1 = MathHelper.clamp((double)(random.nextFloat() * 2.0F - 1.0F), -0.5F, 0.9F);
-            double d2 = (double)(random.nextFloat() * 2.0F - 1.0F);
-            double d3 = (double)(0.15F + random.nextFloat() * 0.1F);
+        for (int i = 0; i < starCount; ++i) {
+            double d0 = random.nextFloat() * 2.0F - 1.0F;
+            double d1 = random.nextFloat() * 2.0F - 1.0F;
+            double d2 = random.nextFloat() * 2.0F - 1.0F;
+            double d3 = 0.15F + random.nextFloat() * 0.1F;
+            int color = POSSIBLE_STAR_COLORS[random.nextInt(starColorsCount)];
+            int r = color >> 16 & 255;
+            int g = color >> 8 & 255;
+            int b = color & 255;
             double d4 = d0 * d0 + d1 * d1 + d2 * d2;
             if (d4 < 1.0D && d4 > 0.1D) {
                 int texture = random.nextInt(STAR_TYPE_COUNT);
-                int colorIndex = 0;
                 float randomScale = random.nextFloat() * 10 + 10;
                 d4 = 1.0D / Math.sqrt(d4);
                 d0 = d0 * d4;
@@ -91,7 +88,7 @@ public class CosmicSkyRenderer implements IRenderHandler {
                 double d14 = random.nextDouble() * Math.PI * 0D;
                 double d15 = Math.sin(d14);
                 double d16 = Math.cos(d14);
-                if(Math.abs(d6) < 99) {
+                if (Math.abs(d6) < 99) {
                     for (int j = 0; j < 4; ++j) {
                         double d17 = 0.0D;
                         double d18 = (double) ((j & 2) - 1) * d3;
@@ -123,7 +120,7 @@ public class CosmicSkyRenderer implements IRenderHandler {
                             u = textureOffset + 32F / STAR_TEXTURE_SIZE_PX;
                             v = 0;
                         }
-                        bufferBuilderIn.pos(d5 + d25 * randomScale, d6 + d23 * randomScale, d7 + d26 * randomScale).color(POSSIBLE_STAR_COLORS[colorIndex][0], POSSIBLE_STAR_COLORS[colorIndex][1], POSSIBLE_STAR_COLORS[colorIndex][2], 255).tex(u, v).endVertex();
+                        bufferBuilderIn.pos(d5 + d25 * randomScale, d6 + d23 * randomScale, d7 + d26 * randomScale).color(r, g, b, 255).tex(u, v).endVertex();
                     }
                 }
             }
@@ -132,6 +129,7 @@ public class CosmicSkyRenderer implements IRenderHandler {
     }
 
     public void renderSky(MatrixStack matrixStackIn, float partialTicks) {
+        generateStars();
         ActiveRenderInfo info = Minecraft.getInstance().gameRenderer.getActiveRenderInfo();
         matrixStackIn.rotate(Vector3f.XP.rotationDegrees(info.getPitch()));
         matrixStackIn.rotate(Vector3f.YP.rotationDegrees(info.getYaw() + 180.0F));
@@ -145,7 +143,7 @@ public class CosmicSkyRenderer implements IRenderHandler {
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder bufferbuilder = tessellator.getBuffer();
 
-        for(int i = 0; i < 6; ++i) {
+        for (int i = 0; i < 6; ++i) {
             ResourceLocation texture = END_SKY_TEXTURES;
 
             matrixStackIn.push();
@@ -198,9 +196,9 @@ public class CosmicSkyRenderer implements IRenderHandler {
         ClientWorld world = Minecraft.getInstance().world;
         RenderSystem.disableTexture();
         Vec3d vec3d = world.getSkyColor(Minecraft.getInstance().gameRenderer.getActiveRenderInfo().getBlockPos(), partialTicks);
-        float f = (float)vec3d.x;
-        float f1 = (float)vec3d.y;
-        float f2 = (float)vec3d.z;
+        float f = (float) vec3d.x;
+        float f1 = (float) vec3d.y;
+        float f2 = (float) vec3d.z;
         FogRenderer.applyFog();
         RenderSystem.depthMask(false);
 
@@ -225,8 +223,8 @@ public class CosmicSkyRenderer implements IRenderHandler {
             bufferbuilder.pos(matrix4f, 0.0F, 100.0F, 0.0F).color(f4, f5, f6, afloat[3]).endVertex();
             int i = 16;
 
-            for(int j = 0; j <= 16; ++j) {
-                float f7 = (float)j * ((float)Math.PI * 2F) / 16.0F;
+            for (int j = 0; j <= 16; ++j) {
+                float f7 = (float) j * ((float) Math.PI * 2F) / 16.0F;
                 float f8 = MathHelper.sin(f7);
                 float f9 = MathHelper.cos(f7);
                 bufferbuilder.pos(matrix4f, f8 * 120.0F, f9 * 120.0F, -f9 * 40.0F * afloat[3]).color(afloat[0], afloat[1], afloat[2], 0.0F).endVertex();
@@ -264,8 +262,6 @@ public class CosmicSkyRenderer implements IRenderHandler {
         this.starVBO.draw(matrixStackIn.getLast().getMatrix(), 7);
         VertexBuffer.unbindBuffer();
         this.skyVertexFormat.clearBufferState();
-
-
 
 
         f12 = 10.0F;
@@ -311,6 +307,6 @@ public class CosmicSkyRenderer implements IRenderHandler {
 
     @Override
     public void render(int ticks, float partialTicks, ClientWorld world, Minecraft mc) {
-        renderSky(new MatrixStack(), (float)Minecraft.getInstance().getRenderPartialTicks());
+        renderSky(new MatrixStack(), Minecraft.getInstance().getRenderPartialTicks());
     }
 }

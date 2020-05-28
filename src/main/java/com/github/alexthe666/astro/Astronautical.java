@@ -87,6 +87,7 @@ public class Astronautical {
 
     private void setup(final FMLCommonSetupEvent event) {
         MinecraftForge.EVENT_BUS.register(new ServerEvents());
+        MinecraftForge.EVENT_BUS.register(PROXY);
         PROXY.setup();
     }
 

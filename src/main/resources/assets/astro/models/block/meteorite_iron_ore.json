@@ -1,0 +1,6 @@
+{
+    "parent": "block/cube_all",
+    "textures": {
+        "all": "astro:block/meteorite_iron_ore"
+    }
+}
