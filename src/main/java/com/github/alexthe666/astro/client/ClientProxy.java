@@ -52,8 +52,9 @@ public class ClientProxy extends CommonProxy {
     }
 
 
+    private  CosmicSkyRenderer skyRenderer;
     @OnlyIn(Dist.CLIENT)
     public Object getSkyRendererForDim(){
-        return new CosmicSkyRenderer();
+        return skyRenderer == null ? skyRenderer = new CosmicSkyRenderer() : skyRenderer;
     }
 }
