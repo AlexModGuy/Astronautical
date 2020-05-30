@@ -1,0 +1,6 @@
+{
+    "parent": "astro:block/shaded_torch_wall",
+    "textures": {
+        "torch": "astro:block/burnt_torch"
+    }
+}

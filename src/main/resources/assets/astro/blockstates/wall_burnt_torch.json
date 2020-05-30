@@ -1,0 +1,8 @@
+{
+    "variants": {
+        "facing=east": { "model": "astro:block/wall_burnt_torch" },
+        "facing=south": { "model": "astro:block/wall_burnt_torch", "y": 90 },
+        "facing=west": { "model": "astro:block/wall_burnt_torch", "y": 180 },
+        "facing=north": { "model": "astro:block/wall_burnt_torch", "y": 270 }
+    }
+}

@@ -58,8 +58,8 @@ public class ClientProxy extends CommonProxy {
             if (block instanceof BlockPlanetoidGas) {
                 color = ((BlockPlanetoidGas) block).colorBase;
             }
-            double y = Math.sin(pos.getY() * 0.5F) + 1.0F;
-            int yMod = (int)Math.round((10D * y));
+            double y = Math.sin(Math.PI * ((pos.getY() % 4) / 4F)) + 1.0F;
+            int yMod = (int)Math.round((20D * y));
             int r = color >> 16 & 255;
             int g = color >> 8 & 255;
             int b = color & 255 ;
@@ -124,6 +124,8 @@ public class ClientProxy extends CommonProxy {
         RenderTypeLookup.setRenderLayer(AstroBlockRegistry.PLANETOID_RING_PURPLE, RenderType.getTranslucent());
         RenderTypeLookup.setRenderLayer(AstroBlockRegistry.PLANETOID_RING_TEAL, RenderType.getTranslucent());
         RenderTypeLookup.setRenderLayer(AstroBlockRegistry.PLANETOID_RING_YELLOW, RenderType.getTranslucent());
+        RenderTypeLookup.setRenderLayer(AstroBlockRegistry.BURNT_TORCH, RenderType.getCutout());
+        RenderTypeLookup.setRenderLayer(AstroBlockRegistry.WALL_BURNT_TORCH, RenderType.getCutout());
         MinecraftForge.EVENT_BUS.register(new ClientEvents());
         RenderingRegistry.registerEntityRenderingHandler(AstroEntityRegistry.SPACE_SQUID, manager -> new RenderSpaceSquid(manager, TabulaModels.SPACE_SQUID, 1));
         RenderingRegistry.registerEntityRenderingHandler(AstroEntityRegistry.FALLING_STAR, manager -> new RenderFallingStar(manager));

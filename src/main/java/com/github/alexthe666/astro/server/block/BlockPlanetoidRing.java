@@ -54,7 +54,7 @@ public class BlockPlanetoidRing extends BreakableBlock {
 
     @OnlyIn(Dist.CLIENT)
     public boolean isSideInvisible(BlockState p_200122_1_, BlockState p_200122_2_, Direction p_200122_3_) {
-        return p_200122_2_.getBlock() == this  && p_200122_3_.getAxis() != Direction.Axis.Y ? true : super.isSideInvisible(p_200122_1_, p_200122_2_, p_200122_3_);
+        return p_200122_2_.getBlock() == this  && p_200122_3_.getAxis() != Direction.Axis.Y ? true : false;
     }
 
     public void onLanded(IBlockReader worldIn, Entity entityIn) {

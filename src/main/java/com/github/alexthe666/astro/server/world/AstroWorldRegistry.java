@@ -1,6 +1,7 @@
 package com.github.alexthe666.astro.server.world;
 
 import com.github.alexthe666.astro.Astronautical;
+import com.github.alexthe666.astro.server.world.feature.AstroFeatureRegistry;
 import com.github.alexthe666.astro.server.world.gen.CosmicChunkGenerator;
 import com.github.alexthe666.astro.server.world.gen.CosmicChunkSettings;
 import net.minecraft.util.ResourceLocation;
@@ -49,6 +50,7 @@ public class AstroWorldRegistry {
     @SubscribeEvent
     public static void registerModDimensions(final RegistryEvent.Register<ModDimension> event) {
         event.getRegistry().register(COSMIC_SEA_MOD_DIMENSION);
+        AstroFeatureRegistry.register();
     }
 
     @SubscribeEvent

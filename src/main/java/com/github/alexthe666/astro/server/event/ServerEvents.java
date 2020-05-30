@@ -2,10 +2,14 @@ package com.github.alexthe666.astro.server.event;
 
 import com.github.alexthe666.astro.Astronautical;
 import com.github.alexthe666.astro.AstronauticalConfig;
+import com.github.alexthe666.astro.server.block.AstroBlockRegistry;
+import com.github.alexthe666.astro.server.block.ModWallTorchBlock;
 import com.github.alexthe666.astro.server.entity.FallingStarSpawner;
 import com.github.alexthe666.astro.server.entity.SquidfallSpawner;
 import com.github.alexthe666.astro.server.item.AstroItemRegistry;
 import com.github.alexthe666.astro.server.world.AstroWorldRegistry;
+import net.minecraft.advancements.criterion.PlacedBlockTrigger;
+import net.minecraft.block.*;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.Pose;
@@ -13,9 +17,12 @@ import net.minecraft.entity.monster.DrownedEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
@@ -29,7 +36,9 @@ import net.minecraftforge.event.LootTableLoadEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.RegisterDimensionsEvent;
+import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
@@ -48,35 +57,71 @@ public class ServerEvents {
     }
 
     @SubscribeEvent
+    public static void onRightClickWithBlock(PlayerInteractEvent.RightClickBlock event) {
+        if (event.getPlayer().dimension == AstroWorldRegistry.COSMIC_SEA_TYPE){
+            if(event.getUseItem() == Event.Result.DEFAULT){
+                if(event.getItemStack().getItem() instanceof BlockItem){
+                    Block block = ((BlockItem)event.getItemStack().getItem()).getBlock();
+                    boolean flag = false;
+                    if(block == Blocks.CAMPFIRE){
+                        BlockState state = Blocks.CAMPFIRE.getDefaultState().with(CampfireBlock.LIT, false);
+                        event.getWorld().setBlockState(event.getPos().offset(event.getFace()), state);
+                        event.setUseItem(Event.Result.ALLOW);
+                        flag = true;
+                    }
+                    if(event.getItemStack().getItem() == Items.TORCH){
+                        BlockState groundState = AstroBlockRegistry.BURNT_TORCH.getDefaultState();
+                        BlockState wallState = AstroBlockRegistry.WALL_BURNT_TORCH.getDefaultState().with(ModWallTorchBlock.HORIZONTAL_FACING, event.getFace().getOpposite());
+                        if(event.getFace().getAxis() == Direction.Axis.Y){
+                            event.getWorld().setBlockState(event.getPos().offset(event.getFace()), groundState);
+                        }else{
+                            event.getWorld().setBlockState(event.getPos().offset(event.getFace()), wallState);
+
+                        }
+                        event.setUseItem(Event.Result.ALLOW);
+                        flag = true;
+                    }
+                    if(flag){
+                        event.getPlayer().swingArm(event.getHand());
+                        if(!event.getPlayer().isCreative()){
+                            event.getItemStack().shrink(1);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    @SubscribeEvent
     public static void onLivingUpdate(LivingEvent.LivingUpdateEvent event) {
         if(event.getEntityLiving().dimension == AstroWorldRegistry.COSMIC_SEA_TYPE){
             LivingEntity entity = event.getEntityLiving();
             entity.setSwimming(true);
-            if(entity.isSprinting() && !entity.onGround){
-                entity.setPose(Pose.SWIMMING);
-                //entity.setFlag(7, true);
-            }
+            boolean flying = false;
             if(entity instanceof PlayerEntity){
                 PlayerEntity player = (PlayerEntity)entity;
-                //player.abilities.isFlying = true;
-
+                flying = player.abilities.isFlying;
             }
+            if(entity.isSprinting() && !entity.onGround && !flying){
+                entity.setPose(Pose.SWIMMING);
+            }
+
             boolean swimming = entity.getPose() == Pose.SWIMMING;
             Vec3d vec3d = entity.getMotion();
             entity.fallDistance = 1;
             if (!entity.onGround && vec3d.y < 0.0D) {
                 entity.setMotion(vec3d.mul(1.0D, 0.6D, 1.0D));
             }
-            boolean flag = false;
+            double upAlready = 0;
             if(!entity.onGround && swimming){
                 double d3 = entity.getLookVec().y;
                 double d4 = d3 < -0.2D ? 0.1D : 0.09D;
                 Vec3d vec3d1 = entity.getMotion();
-                flag = d4 > 0.05D;
+                upAlready = (d3 - vec3d1.y) * d4;
                 entity.setMotion(vec3d1.add(0.0D, (d3 - vec3d1.y) * d4, 0.0D));
             }
-            if(entity.isJumping && !flag){
-                entity.setMotion(entity.getMotion().add(0.0D, 0.05D, 0.0D));
+            if(entity.isJumping){
+                entity.setMotion(entity.getMotion().add(0.0D, Math.max(upAlready, 0.08D), 0.0D));
             }
             if(entity.getItemStackFromSlot(EquipmentSlotType.HEAD).getItem() != AstroItemRegistry.GLASS_HELMET){
                 int airLeft = entity.getAir();
@@ -91,7 +136,7 @@ public class ServerEvents {
             }
 
         }
-        if(!event.getEntityLiving().world.isRemote && event.getEntityLiving() instanceof ServerPlayerEntity && event.getEntityLiving().getPosY() > 300){
+        if(!event.getEntityLiving().world.isRemote && event.getEntityLiving() instanceof ServerPlayerEntity && event.getEntityLiving().getPosY() > 300 && event.getEntityLiving().dimension == DimensionType.OVERWORLD){
             MinecraftServer server = event.getEntityLiving().world.getServer();
             ServerPlayerEntity thePlayer = (ServerPlayerEntity) event.getEntityLiving();
             if (thePlayer.timeUntilPortal > 0) {
@@ -104,11 +149,19 @@ public class ServerEvents {
 
                     teleportEntity(thePlayer, dimWorld, new BlockPos(event.getEntityLiving().getPosX(), 5, event.getEntityLiving().getPosZ()));
                 }
-            } else {
+            }
+        }
+        if(!event.getEntityLiving().world.isRemote && event.getEntityLiving() instanceof ServerPlayerEntity && event.getEntityLiving().dimension == AstroWorldRegistry.COSMIC_SEA_TYPE && event.getEntityLiving().getPosY() < -50){
+            MinecraftServer server = event.getEntityLiving().world.getServer();
+            ServerPlayerEntity thePlayer = (ServerPlayerEntity) event.getEntityLiving();
+            if (thePlayer.timeUntilPortal > 0) {
+                thePlayer.timeUntilPortal = 10;
+            }
+            else {
                 thePlayer.timeUntilPortal = 10;
                 ServerWorld dimWorld = server.getWorld(DimensionType.getById(AstronauticalConfig.exitDimensionID));
-                if(dimWorld != null){
-                    teleportEntity(thePlayer, dimWorld,  new BlockPos(event.getEntityLiving().getPosX(), 5, event.getEntityLiving().getPosZ()));
+                if (dimWorld != null) {
+                    teleportEntity(thePlayer, dimWorld, new BlockPos(event.getEntityLiving().getPosX(), 295, event.getEntityLiving().getPosZ()));
                 }
             }
         }
