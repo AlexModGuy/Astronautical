@@ -16,12 +16,13 @@ import java.lang.reflect.Field;
 @Mod.EventBusSubscriber(modid = Astronautical.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class AstroItemRegistry {
 
-    public static CustomArmorMaterial GLASS_HELMET_MATERIAL = new CustomArmorMaterial("GlassHelmet", 15, new int[]{2, 0, 0, 0}, 10, SoundEvents.ITEM_ARMOR_EQUIP_TURTLE, 0);
+    public static CustomArmorMaterial GLASS_HELMET_MATERIAL = new CustomArmorMaterial("GlassHelmet", 15, new int[]{2, 0, 0, 1}, 10, SoundEvents.ITEM_ARMOR_EQUIP_TURTLE, 0);
     public static final Item STARFISH = new Item(new Item.Properties().group(Astronautical.TAB)).setRegistryName("astro:starfish");
     public static final Item FALLING_STAR_RENDER = new Item(new Item.Properties()).setRegistryName("astro:falling_star_render");
     public static final Item FALLING_STAR = new ItemSpecialRender(new Item.Properties().group(Astronautical.TAB)).setRegistryName("astro:falling_star");
     public static final Item COSMOS_STAR_RENDER = new Item(new Item.Properties()).setRegistryName("astro:cosmos_star_render");
     public static final Item COSMOS_STAR = new ItemSpecialRender(new Item.Properties().group(Astronautical.TAB)).setRegistryName("astro:cosmos_star");
+    public static final Item STARDUST = new Item(new Item.Properties().group(Astronautical.TAB)).setRegistryName("astro:stardust");
     public static final Item GLASS_HELMET = new ItemGlassHelmet();
     public static final Item SQUID_SPAWNER = new ItemSquidSpawner();
     public static final Item SPACE_SQUID_TENTACLE = new Item(new Item.Properties().group(Astronautical.TAB)).setRegistryName("astro:space_squid_tentacle");

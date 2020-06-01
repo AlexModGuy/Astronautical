@@ -32,5 +32,6 @@ public class ItemGlassHelmet extends ArmorItem {
     @OnlyIn(Dist.CLIENT)
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         tooltip.add(new TranslationTextComponent(this.getTranslationKey() + ".desc").applyTextStyle(TextFormatting.GRAY));
+        super.addInformation(stack, worldIn, tooltip, flagIn);
     }
 }

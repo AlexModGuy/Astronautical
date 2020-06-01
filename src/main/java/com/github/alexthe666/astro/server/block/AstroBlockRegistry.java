@@ -2,9 +2,8 @@ package com.github.alexthe666.astro.server.block;
 
 import com.github.alexthe666.astro.Astronautical;
 import net.minecraft.block.Block;
+import net.minecraft.block.RotatedPillarBlock;
 import net.minecraft.block.SoundType;
-import net.minecraft.block.TorchBlock;
-import net.minecraft.block.WallTorchBlock;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
@@ -24,9 +23,11 @@ public class AstroBlockRegistry {
     public static final Block METEORITE = new Block(Block.Properties.create(Material.ROCK).hardnessAndResistance(7, 100).harvestTool(ToolType.PICKAXE).harvestLevel(1)).setRegistryName("astro:meteorite");
     public static final Block METEORITE_IRON_ORE = new Block(Block.Properties.create(Material.ROCK).hardnessAndResistance(8, 100).harvestTool(ToolType.PICKAXE).harvestLevel(1)).setRegistryName("astro:meteorite_iron_ore");
     public static final Block POLISHED_METEORITE = new Block(Block.Properties.create(Material.ROCK).hardnessAndResistance(6, 100).harvestTool(ToolType.PICKAXE).harvestLevel(1)).setRegistryName("astro:polished_meteorite");
-    public static final Block BURNT_TORCH = new ModTorchBlock(Block.Properties.create(Material.MISCELLANEOUS).doesNotBlockMovement().hardnessAndResistance(0).sound(SoundType.WOOD)).setRegistryName("astro:burnt_torch");
+    public static final Block METEORITE_PILLAR = new RotatedPillarBlock(Block.Properties.create(Material.ROCK).hardnessAndResistance(6, 100).harvestTool(ToolType.PICKAXE).harvestLevel(1)).setRegistryName("astro:meteorite_pillar");
+    public static final Block BURNT_TORCH = new BlockBurntTorch(Block.Properties.create(Material.MISCELLANEOUS).doesNotBlockMovement().hardnessAndResistance(0).sound(SoundType.WOOD)).setRegistryName("astro:burnt_torch");
     public static final Block WALL_BURNT_TORCH = new ModWallTorchBlock(Block.Properties.create(Material.MISCELLANEOUS).doesNotBlockMovement().hardnessAndResistance(0).sound(SoundType.WOOD).lootFrom(BURNT_TORCH), "astro.wall_burnt_torch").setRegistryName("astro:wall_burnt_torch");
-
+    public static final Block STARDUST_TORCH = new BlockStardustTorch(Block.Properties.create(Material.MISCELLANEOUS).lightValue(12).doesNotBlockMovement().hardnessAndResistance(0).sound(SoundType.WOOD)).setRegistryName("astro:stardust_torch");
+    public static final Block WALL_STARDUST_TORCH = new ModWallTorchBlock(Block.Properties.create(Material.MISCELLANEOUS).lightValue(12).doesNotBlockMovement().hardnessAndResistance(0).sound(SoundType.WOOD).lootFrom(STARDUST_TORCH), "astro.wall_stardust_torch").setRegistryName("astro:wall_stardust_torch");
     public static final Block PLANETOID_GAS_BLUE = new BlockPlanetoidGas("blue", 0X2F43F4);
     public static final Block PLANETOID_RING_BLUE = new BlockPlanetoidRing("blue", 0X0094FF);
     public static final Block PLANETOID_GAS_YELLOW = new BlockPlanetoidGas("yellow", 0XFFE566);

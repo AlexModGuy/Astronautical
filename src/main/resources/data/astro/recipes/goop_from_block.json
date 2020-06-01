@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "astro:squid_goop_block"
+    }
+  ],
+  "result": {
+    "item": "astro:squid_mucus",
+    "count": 9
+  }
+}

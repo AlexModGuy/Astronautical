@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "M",
+    "M"
+  ],
+  "key": {
+    "M": {
+      "item": "astro:polished_meteorite"
+    }
+  },
+  "result": {
+    "item": "astro:meteorite_pillar",
+    "count": 2
+  }
+}

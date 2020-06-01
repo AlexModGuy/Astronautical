@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "D",
+    "S"
+  ],
+  "key": {
+    "S": {
+      "tag": "forge:rods/wooden",
+      "data": 0
+    },
+    "D": {
+      "item": "astro:stardust",
+      "data": 0
+    }
+  },
+  "result": {
+    "item": "astro:stardust_torch",
+    "count": 4
+  }
+}

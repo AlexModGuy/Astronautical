@@ -126,6 +126,8 @@ public class ClientProxy extends CommonProxy {
         RenderTypeLookup.setRenderLayer(AstroBlockRegistry.PLANETOID_RING_YELLOW, RenderType.getTranslucent());
         RenderTypeLookup.setRenderLayer(AstroBlockRegistry.BURNT_TORCH, RenderType.getCutout());
         RenderTypeLookup.setRenderLayer(AstroBlockRegistry.WALL_BURNT_TORCH, RenderType.getCutout());
+        RenderTypeLookup.setRenderLayer(AstroBlockRegistry.STARDUST_TORCH, RenderType.getCutout());
+        RenderTypeLookup.setRenderLayer(AstroBlockRegistry.WALL_STARDUST_TORCH, RenderType.getCutout());
         MinecraftForge.EVENT_BUS.register(new ClientEvents());
         RenderingRegistry.registerEntityRenderingHandler(AstroEntityRegistry.SPACE_SQUID, manager -> new RenderSpaceSquid(manager, TabulaModels.SPACE_SQUID, 1));
         RenderingRegistry.registerEntityRenderingHandler(AstroEntityRegistry.FALLING_STAR, manager -> new RenderFallingStar(manager));

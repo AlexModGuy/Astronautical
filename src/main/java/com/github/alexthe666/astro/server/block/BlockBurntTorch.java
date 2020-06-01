@@ -11,9 +11,9 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.util.Random;
 
-public class ModTorchBlock extends TorchBlock implements IWallAndFloor{
+public class BlockBurntTorch extends TorchBlock implements IWallAndFloor{
 
-    public ModTorchBlock(Properties p_i48308_1_) {
+    public BlockBurntTorch(Properties p_i48308_1_) {
         super(p_i48308_1_);
     }
 

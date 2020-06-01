@@ -60,8 +60,13 @@ public class ServerEvents {
     public static void onRightClickWithBlock(PlayerInteractEvent.RightClickBlock event) {
         if (event.getPlayer().dimension == AstroWorldRegistry.COSMIC_SEA_TYPE){
             if(event.getUseItem() == Event.Result.DEFAULT){
+                if(event.getItemStack().getItem() == Items.FIRE_CHARGE || event.getItemStack().getItem() == Items.FLINT_AND_STEEL){
+                    event.getPlayer().swingArm(event.getHand());
+                    event.setCanceled(true);
+                }
                 if(event.getItemStack().getItem() instanceof BlockItem){
                     Block block = ((BlockItem)event.getItemStack().getItem()).getBlock();
+                    BlockState prevState = event.getWorld().getBlockState(event.getPos().offset(event.getFace()));
                     boolean flag = false;
                     if(block == Blocks.CAMPFIRE){
                         BlockState state = Blocks.CAMPFIRE.getDefaultState().with(CampfireBlock.LIT, false);
@@ -70,17 +75,22 @@ public class ServerEvents {
                         flag = true;
                     }
                     if(event.getItemStack().getItem() == Items.TORCH){
-                        BlockState groundState = AstroBlockRegistry.BURNT_TORCH.getDefaultState();
-                        BlockState wallState = AstroBlockRegistry.WALL_BURNT_TORCH.getDefaultState().with(ModWallTorchBlock.HORIZONTAL_FACING, event.getFace().getOpposite());
-                        if(event.getFace().getAxis() == Direction.Axis.Y){
-                            event.getWorld().setBlockState(event.getPos().offset(event.getFace()), groundState);
-                        }else{
-                            event.getWorld().setBlockState(event.getPos().offset(event.getFace()), wallState);
+                        if(Block.hasEnoughSolidSide(event.getWorld(), event.getPos(), event.getFace()) && event.getFace() != Direction.DOWN && prevState.isAir()){
+                            BlockState groundState = AstroBlockRegistry.BURNT_TORCH.getDefaultState();
+                            if(event.getFace().getAxis() == Direction.Axis.Y){
+                                event.getWorld().setBlockState(event.getPos().offset(event.getFace()), groundState);
+                            }else{
+                                BlockState wallState = AstroBlockRegistry.WALL_BURNT_TORCH.getDefaultState().with(ModWallTorchBlock.HORIZONTAL_FACING, event.getFace());
+                                event.getWorld().setBlockState(event.getPos().offset(event.getFace()), wallState);
 
+                            }
+                            event.setUseItem(Event.Result.ALLOW);
+                            flag = true;
+                        }else {
+                            event.setCanceled(true);
                         }
-                        event.setUseItem(Event.Result.ALLOW);
-                        flag = true;
                     }
+
                     if(flag){
                         event.getPlayer().swingArm(event.getHand());
                         if(!event.getPlayer().isCreative()){

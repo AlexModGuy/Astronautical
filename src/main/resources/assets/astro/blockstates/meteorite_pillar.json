@@ -1,0 +1,7 @@
+{
+    "variants": {
+        "axis=y": { "model": "astro:block/meteorite_pillar" },
+        "axis=z": { "model": "astro:block/meteorite_pillar", "x": 90 },
+        "axis=x": { "model": "astro:block/meteorite_pillar", "x": 90, "y": 90 }
+    }
+}

@@ -1,0 +1,6 @@
+{
+    "parent": "block/torch_wall",
+    "textures": {
+        "torch": "astro:block/stardust_torch"
+    }
+}

@@ -3,6 +3,7 @@ package com.github.alexthe666.astro.server.world.feature;
 import com.github.alexthe666.astro.server.block.AstroBlockRegistry;
 import com.mojang.datafixers.Dynamic;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorld;
@@ -30,9 +31,9 @@ public class FeatureAsteroid extends Feature<NoFeatureConfig> {
         int lvt_6_2_ = getAsteroidSize(rand);
 
         for (int k = 0; k < 1 + rand.nextInt(3); k++){
-            int lvt_8_1_ = (int) (lvt_6_2_ * rand.nextFloat());
-            int lvt_9_1_ =  (int) (lvt_6_2_ * rand.nextFloat());
-            int lvt_10_1_ =  (int) (lvt_6_2_ * rand.nextFloat());
+            int lvt_8_1_ = (int) (lvt_6_2_ * rand.nextFloat()) + 1;
+            int lvt_9_1_ =  (int) (lvt_6_2_ * rand.nextFloat()) + 1;
+            int lvt_10_1_ =  (int) (lvt_6_2_ * rand.nextFloat()) + 1;
             float lvt_11_1_ = (float)(lvt_8_1_ + lvt_9_1_ + lvt_10_1_) * 0.333F + 0.5F;
             Iterator var12 = BlockPos.getAllInBoxMutable(core.add(-lvt_8_1_, -lvt_9_1_, -lvt_10_1_), core.add(lvt_8_1_, lvt_9_1_, lvt_10_1_)).iterator();
 
@@ -41,7 +42,11 @@ public class FeatureAsteroid extends Feature<NoFeatureConfig> {
                 if (lvt_13_1_.distanceSq(core) <= (double)(lvt_11_1_ * lvt_11_1_)) {
                     double distanceTotal = lvt_13_1_.distanceSq(core) / (double)(lvt_11_1_ * lvt_11_1_);
                     if(rand.nextFloat() > 0.3F){
-                        worldIn.setBlockState(lvt_13_1_, AstroBlockRegistry.METEORITE.getDefaultState(), 4);
+                        BlockState block = AstroBlockRegistry.METEORITE.getDefaultState();
+                        if(rand.nextFloat() < 0.03F){
+                            block = AstroBlockRegistry.METEORITE_IRON_ORE.getDefaultState();
+                        }
+                        worldIn.setBlockState(lvt_13_1_, block, 4);
                     }
                 }
             }
