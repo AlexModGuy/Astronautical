@@ -40,7 +40,7 @@ public class CosmicSeaDimension extends Dimension {
 
     @Override
     public float calculateCelestialAngle(long worldTime, float partialTicks) {
-        return 0.0F;
+        return 0.45F;
     }
 
     @Nullable

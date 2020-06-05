@@ -42,7 +42,6 @@ public class AstroBlockRegistry {
     public static final Block PLANETOID_RING_PURPLE = new BlockPlanetoidRing("purple", 0XE5C1FF);
     public static final Block PLANETOID_CORE = new Block(Block.Properties.create(Material.ROCK).hardnessAndResistance(25, 100).harvestTool(ToolType.PICKAXE).harvestLevel(2)).setRegistryName("astro:planetoid_core");
 
-
     @SubscribeEvent
     public static void registerBlocks(RegistryEvent.Register<Block> event) {
         try {

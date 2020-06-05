@@ -43,7 +43,7 @@ public class FeatureAsteroid extends Feature<NoFeatureConfig> {
                     double distanceTotal = lvt_13_1_.distanceSq(core) / (double)(lvt_11_1_ * lvt_11_1_);
                     if(rand.nextFloat() > 0.3F){
                         BlockState block = AstroBlockRegistry.METEORITE.getDefaultState();
-                        if(rand.nextFloat() < 0.03F){
+                        if(rand.nextFloat() < 0.01F){
                             block = AstroBlockRegistry.METEORITE_IRON_ORE.getDefaultState();
                         }
                         worldIn.setBlockState(lvt_13_1_, block, 4);

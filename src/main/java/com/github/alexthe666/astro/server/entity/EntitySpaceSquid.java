@@ -223,9 +223,6 @@ public class EntitySpaceSquid extends TameableEntity implements IAnimatedEntity 
         }
     }
 
-
-
-
     private Vec3d getBlockInViewCircling() {
         float radius = 12;
         float neg = this.getRNG().nextBoolean() ? 1 : -1;

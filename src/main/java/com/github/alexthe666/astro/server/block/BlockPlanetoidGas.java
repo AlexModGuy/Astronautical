@@ -27,7 +27,7 @@ public class BlockPlanetoidGas extends BreakableBlock {
 
     public int colorBase = 0X000000;
     public BlockPlanetoidGas(String color, int colorBase) {
-        super(Block.Properties.create(Material.GLASS, MaterialColor.BLUE).hardnessAndResistance(1.0F, 100F).variableOpacity().notSolid().doesNotBlockMovement().sound(SoundType.CLOTH));
+        super(Block.Properties.create(Material.GLASS, MaterialColor.BLUE).lightValue(10).hardnessAndResistance(1.0F, 100F).variableOpacity().notSolid().doesNotBlockMovement().sound(SoundType.CLOTH));
         this.setRegistryName("astro:planetoid_gas_" + color);
         this.colorBase = colorBase;
     }

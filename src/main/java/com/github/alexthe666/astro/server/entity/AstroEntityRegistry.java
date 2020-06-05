@@ -15,8 +15,9 @@ import java.lang.reflect.Field;
 @Mod.EventBusSubscriber(modid = Astronautical.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class AstroEntityRegistry {
 
-    public static final EntityType<EntitySpaceSquid> SPACE_SQUID = registerEntity(EntityType.Builder.create(EntitySpaceSquid::new, EntityClassification.CREATURE).size(2.4F, 1.5F), "space_squid");
+    public static final EntityType<EntitySpaceSquid> SPACE_SQUID = registerEntity(EntityType.Builder.create(EntitySpaceSquid::new, EntityClassification.CREATURE).size(2.4F, 1.5F).setTrackingRange(256), "space_squid");
     public static final EntityType<EntityFallingStar> FALLING_STAR = registerEntity(EntityType.Builder.create(EntityFallingStar::new, EntityClassification.MISC).size(0.9F, 0.9F).setTrackingRange(256).setCustomClientFactory(EntityFallingStar::new), "falling_star");
+    public static final EntityType<EntityStarchovy> STARCHOVY = registerEntity(EntityType.Builder.create(EntityStarchovy::new, EntityClassification.CREATURE).size(0.65F, 0.65F).setTrackingRange(256), "starchovy");
 
     private static final EntityType registerEntity(EntityType.Builder builder, String entityName){
         ResourceLocation nameLoc = new ResourceLocation(Astronautical.MODID, entityName);
@@ -44,7 +45,8 @@ public class AstroEntityRegistry {
 
     @SubscribeEvent
     public static void registerSpawnEggs(RegistryEvent.Register<Item> event) {
-        event.getRegistry().register(new SpawnEggItem(SPACE_SQUID, 0X224D30, 0XFF9000, new Item.Properties().group(Astronautical.TAB)).setRegistryName("astro:spawn_egg_space_squid"));
+        event.getRegistry().register(new SpawnEggItem(SPACE_SQUID, 0X88E1BB, 0X376951, new Item.Properties().group(Astronautical.TAB)).setRegistryName("astro:spawn_egg_space_squid"));
+        event.getRegistry().register(new SpawnEggItem(STARCHOVY, 0X43BAB4, 0XB7FFFF, new Item.Properties().group(Astronautical.TAB)).setRegistryName("astro:spawn_egg_starchovy"));
 
     }
 

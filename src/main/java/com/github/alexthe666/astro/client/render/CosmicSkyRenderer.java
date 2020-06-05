@@ -129,6 +129,7 @@ public class CosmicSkyRenderer implements IRenderHandler {
     }
 
     public void renderSky(MatrixStack matrixStackIn, float partialTicks) {
+        float celestialAngle = 0.0F;
         generateStars();
         ActiveRenderInfo info = Minecraft.getInstance().gameRenderer.getActiveRenderInfo();
         matrixStackIn.rotate(Vector3f.XP.rotationDegrees(info.getPitch()));
@@ -206,7 +207,8 @@ public class CosmicSkyRenderer implements IRenderHandler {
         RenderSystem.disableAlphaTest();
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
-        float[] afloat = world.dimension.calcSunriseSunsetColors(world.getCelestialAngle(partialTicks), partialTicks);
+
+        float[] afloat = world.dimension.calcSunriseSunsetColors(celestialAngle, partialTicks);
         if (afloat != null) {
             RenderSystem.disableTexture();
             RenderSystem.shadeModel(7425);
@@ -242,7 +244,7 @@ public class CosmicSkyRenderer implements IRenderHandler {
         float f11 = 1.0F - world.getRainStrength(partialTicks);
         RenderSystem.color4f(1.0F, 1.0F, 1.0F, f11);
         matrixStackIn.rotate(Vector3f.YP.rotationDegrees(-90.0F));
-        matrixStackIn.rotate(Vector3f.XP.rotationDegrees(world.getCelestialAngle(partialTicks) * 360.0F));
+        matrixStackIn.rotate(Vector3f.XP.rotationDegrees(celestialAngle * 360.0F));
         Matrix4f matrix4f1 = matrixStackIn.getLast().getMatrix();
 
         float f12 = 20.0F;
