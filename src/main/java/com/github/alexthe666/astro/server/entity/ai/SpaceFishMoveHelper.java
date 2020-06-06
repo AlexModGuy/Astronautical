@@ -69,7 +69,8 @@ public class SpaceFishMoveHelper extends MovementController {
                 double cappedX = MathHelper.clamp(lvt_16_1_, -moveSpeedCap, moveSpeedCap);
                 double cappedY = MathHelper.clamp(Math.min(0.1D, yMotion) * 0.2D, -moveSpeedCap, moveSpeedCap);
                 double cappedZ = MathHelper.clamp(lvt_18_1_, -moveSpeedCap, moveSpeedCap);
-                fish.setMotion(fish.getMotion().add(cappedX * 0.4D, Math.min(0.1D, yMotion) * 0.2D, cappedZ * 0.4D));
+                double speedMulti = fish.getSwimSpeedModifier();
+                fish.setMotion(fish.getMotion().add(cappedX * speedMulti, cappedY * speedMulti, cappedZ * speedMulti));
             }
         }
     }

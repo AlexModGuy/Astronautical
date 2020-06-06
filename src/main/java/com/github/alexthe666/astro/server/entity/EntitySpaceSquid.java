@@ -152,9 +152,15 @@ public class EntitySpaceSquid extends TameableEntity implements IAnimatedEntity 
             this.setMotion(this.getMotion().x, this.getMotion().y + 0.08D, this.getMotion().z);
             if(this.getAttackTarget() == null || this.flightTarget == null  || this.getDistanceSq(flightTarget.x, flightTarget.y, flightTarget.z) < 9 || !this.world.isAirBlock(new BlockPos(flightTarget))){
                 if(circlingPosition == null){
-                    circlingPosition = world.getHeight(Heightmap.Type.WORLD_SURFACE, this.getPosition()).up(20 + rand.nextInt(10));
-                    if(isSpaceBound() && world.getDimension().getType() == DimensionType.OVERWORLD){
-                        circlingPosition = new BlockPos(circlingPosition.getX(), 350, circlingPosition.getZ());
+                    if(world.getDimension().getType() == AstroWorldRegistry.COSMIC_SEA_TYPE){
+                        BlockPos height = world.getHeight(Heightmap.Type.WORLD_SURFACE, this.getPosition());
+                        int upDistance = world.getMaxHeight() - height.getY();
+                        circlingPosition = height.up(rand.nextInt(Math.max(1, upDistance))).add(rand.nextInt(16) - 8, 0, rand.nextInt(16) - 8);
+                    }else{
+                        circlingPosition = world.getHeight(Heightmap.Type.WORLD_SURFACE, this.getPosition()).up(20 + rand.nextInt(10));
+                        if(isSpaceBound() && world.getDimension().getType() == DimensionType.OVERWORLD){
+                            circlingPosition = new BlockPos(circlingPosition.getX(), 350, circlingPosition.getZ());
+                        }
                     }
                 }
                 flightTarget = getBlockInViewCircling();

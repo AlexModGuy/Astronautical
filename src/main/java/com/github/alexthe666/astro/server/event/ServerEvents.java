@@ -34,6 +34,7 @@ import net.minecraft.world.storage.loot.conditions.RandomChance;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.event.LootTableLoadEvent;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
@@ -103,14 +104,24 @@ public class ServerEvents {
     }
 
     @SubscribeEvent
+    public static void onEntityJoinWorld(EntityJoinWorldEvent event){
+        if(!(event.getEntity() instanceof LivingEntity)){
+            if(event.getWorld().dimension.getType() == AstroWorldRegistry.COSMIC_SEA_TYPE){
+                event.getEntity().setNoGravity(true);
+            }
+        }
+    }
+    @SubscribeEvent
     public static void onLivingUpdate(LivingEvent.LivingUpdateEvent event) {
         if(event.getEntityLiving().dimension == AstroWorldRegistry.COSMIC_SEA_TYPE){
             LivingEntity entity = event.getEntityLiving();
             entity.setSwimming(true);
             boolean flying = false;
+            boolean creative = false;
             if(entity instanceof PlayerEntity){
                 PlayerEntity player = (PlayerEntity)entity;
                 flying = player.abilities.isFlying;
+                creative = player.isCreative();
             }
             if(entity.isSprinting() && !entity.onGround && !flying){
                 entity.setPose(Pose.SWIMMING);
@@ -123,12 +134,17 @@ public class ServerEvents {
                 entity.setMotion(vec3d.mul(1.0D, 0.6D, 1.0D));
             }
             double upAlready = 0;
+            Vec3d vec3d1 = entity.getMotion();
             if(!entity.onGround && swimming){
                 double d3 = entity.getLookVec().y;
                 double d4 = d3 < -0.2D ? 0.1D : 0.09D;
-                Vec3d vec3d1 = entity.getMotion();
                 upAlready = (d3 - vec3d1.y) * d4;
                 entity.setMotion(vec3d1.add(0.0D, (d3 - vec3d1.y) * d4, 0.0D));
+            }
+            if(entity.isShiftKeyDown()){
+
+                entity.setMotion(vec3d1.add(0.0D, creative ? -0.18D : -0.08D, 0.0D));
+
             }
             if(entity.isJumping){
                 entity.setMotion(entity.getMotion().add(0.0D, Math.max(upAlready, 0.08D), 0.0D));

@@ -6,6 +6,7 @@ import com.github.alexthe666.astro.client.render.entity.layer.LayerSpaceSquidRid
 import com.github.alexthe666.astro.client.render.entity.layer.LayerStarchovyGlow;
 import com.github.alexthe666.astro.server.entity.EntityStarchovy;
 import com.github.alexthe666.astro.server.entity.EntityStarchovy;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.MobRenderer;
@@ -19,6 +20,11 @@ public class RenderStarchovy extends MobRenderer<EntityStarchovy, SegmentedModel
     public RenderStarchovy(EntityRendererManager renderManagerIn, SegmentedModel<EntityStarchovy> entityModelIn, float shadowSizeIn) {
         super(renderManagerIn, entityModelIn, shadowSizeIn);
         this.addLayer(new LayerStarchovyGlow(this));
+    }
+
+    @Override
+    protected void preRenderCallback(EntityStarchovy chovy, MatrixStack matrixStackIn, float partialTickTime) {
+        matrixStackIn.scale(0.65F, 0.65F, 0.65F);
     }
 
     @Override

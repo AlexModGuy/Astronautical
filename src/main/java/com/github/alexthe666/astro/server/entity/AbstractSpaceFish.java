@@ -1,37 +1,33 @@
 package com.github.alexthe666.astro.server.entity;
 
-import com.github.alexthe666.astro.server.entity.ai.FishSchool;
 import com.github.alexthe666.astro.server.entity.ai.SpaceFishMoveHelper;
-import com.sun.jna.platform.unix.X11;
 import net.minecraft.entity.AgeableEntity;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.ai.controller.MovementController;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.*;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
 import java.util.List;
 
-public class AbstractSpaceFish extends AnimalEntity {
+public abstract class AbstractSpaceFish extends AnimalEntity {
     @Nullable
     public Vec3d flightTarget = Vec3d.ZERO;
     public float prevFishPitch;
     private static final DataParameter<Float> FISH_PITCH = EntityDataManager.createKey(AbstractSpaceFish.class, DataSerializers.FLOAT);
-    public boolean included;
-    public Vec3d velocity = Vec3d.ZERO;
-    public FishSchool school;
 
     protected AbstractSpaceFish(EntityType type, World world) {
         super(type, world);
-        this.school = new FishSchool(this);
         initPathFinding();
+    }
+
+    public boolean canBlockPosBeSeen(BlockPos pos) {
+        Vec3d vec3d = new Vec3d(this.getPosX(), this.getPosYEye(), this.getPosZ());
+        Vec3d vec3d1 = new Vec3d(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D);
+        return this.world.rayTraceBlocks(new RayTraceContext(vec3d, vec3d1, RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.NONE, this)).getType() == RayTraceResult.Type.MISS;
     }
 
     @Override
@@ -61,6 +57,7 @@ public class AbstractSpaceFish extends AnimalEntity {
         if (!this.onGround && this.getMotion().y < 0.0D) {
             this.setMotion(this.getMotion().mul(1.0D, 0.6D, 1.0D));
         }
+        this.setMotion(this.getMotion().x, this.getMotion().y + 0.08D, this.getMotion().z);
         if(!onGround){
             double ydist = (this.prevPosY - this.getPosY());//down 0.4 up -0.38
             float fishDist = (float) ((Math.abs(this.getMotion().getX()) + Math.abs(this.getMotion().getZ())) * 6F);
@@ -84,14 +81,6 @@ public class AbstractSpaceFish extends AnimalEntity {
             }
         } else {
             this.setFishPitch(0);
-        }
-        if(school != null){
-            double i = this.getPosX();
-            double j = this.getPosY();
-            double k = this.getPosZ();
-            float d0 = 30F;
-            List<AbstractSpaceFish> entireSchool = world.getEntitiesWithinAABB(AbstractSpaceFish.class, new AxisAlignedBB((double) i - d0, (double) j - d0, (double) k - d0, (double) i + d0, (double) j + d0, (double) k + d0));
-            school.run(entireSchool);
         }
     }
 
@@ -119,4 +108,7 @@ public class AbstractSpaceFish extends AnimalEntity {
         dataManager.set(FISH_PITCH, getFishPitch() - pitch);
     }
 
+    public float getSwimSpeedModifier(){
+        return 0.4F;
+    }
 }

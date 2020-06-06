@@ -1,18 +1,45 @@
 package com.github.alexthe666.astro.client.render;
 
+import com.mojang.blaze3d.platform.GLX;
+import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.client.renderer.RenderState;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.renderer.vertex.VertexFormat;
 import net.minecraft.util.ResourceLocation;
+import org.lwjgl.opengl.GL11;
+
+import static org.lwjgl.opengl.GL11.glDisable;
+import static org.lwjgl.opengl.GL13.GL_TEXTURE1;
 
 public class AstroRenderTypes extends RenderType {
+
+    protected static final RenderState.TransparencyState GLOWY_TRANSPARENCY = new RenderState.TransparencyState("translucent_transparency", () -> {
+        RenderSystem.pushMatrix();
+        GlStateManager.enableBlend();
+        RenderSystem.blendFunc(GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ONE);
+        RenderSystem.disableLighting();
+        GL11.glDisable(GL11.GL_NORMALIZE);
+        RenderSystem.glMultiTexCoord2f(GL_TEXTURE1, 61680, 0.0F);
+    }, () -> {
+        GL11.glEnable(GL11.GL_NORMALIZE);
+        RenderSystem.enableLighting();
+        GlStateManager.disableBlend();
+        RenderSystem.popMatrix();
+    });
 
     public static final RenderType STAR_ITEM = makeType("lightning", DefaultVertexFormats.POSITION_COLOR, 7, 256, false, true, RenderType.State.getBuilder().writeMask(COLOR_WRITE).transparency(TRANSLUCENT_TRANSPARENCY).shadeModel(SHADE_ENABLED).build(false));
 
 
     public static RenderType getTransparentGlowy(ResourceLocation p_228652_0_) {
         TextureState lvt_1_1_ = new TextureState(p_228652_0_, false, false);
-        return makeType("transparent_glowy", DefaultVertexFormats.ENTITY, 7, 256, false, true, RenderType.State.getBuilder().texture(lvt_1_1_).transparency(ADDITIVE_TRANSPARENCY).alpha(HALF_ALPHA).writeMask(COLOR_WRITE).fog(BLACK_FOG).build(false));
+        return makeType("transparent_glowy", DefaultVertexFormats.ENTITY, 7, 256, false, false, RenderType.State.getBuilder().texture(lvt_1_1_).transparency(TRANSLUCENT_TRANSPARENCY).overlay(OVERLAY_ENABLED).writeMask(COLOR_WRITE).fog(BLACK_FOG).cull(CULL_DISABLED).build(false));
+    }
+
+    public static RenderType getTransparentGlowy2(ResourceLocation p_228652_0_) {
+        TextureState lvt_1_1_ = new TextureState(p_228652_0_, false, false);
+        return makeType("transparent_glowy", DefaultVertexFormats.ENTITY, 7, 256, false, false, RenderType.State.getBuilder().texture(lvt_1_1_).transparency(TRANSLUCENT_TRANSPARENCY).overlay(OVERLAY_DISABLED).fog(BLACK_FOG).cull(CULL_DISABLED).build(false));
     }
 
     public AstroRenderTypes(String p_i225992_1_, VertexFormat p_i225992_2_, int p_i225992_3_, int p_i225992_4_, boolean p_i225992_5_, boolean p_i225992_6_, Runnable p_i225992_7_, Runnable p_i225992_8_) {
