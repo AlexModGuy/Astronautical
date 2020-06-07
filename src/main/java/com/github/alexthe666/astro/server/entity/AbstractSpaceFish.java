@@ -3,15 +3,19 @@ package com.github.alexthe666.astro.server.entity;
 import com.github.alexthe666.astro.server.entity.ai.SpaceFishMoveHelper;
 import net.minecraft.entity.AgeableEntity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.passive.AnimalEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.math.*;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Random;
 
 public abstract class AbstractSpaceFish extends AnimalEntity {
     @Nullable
@@ -60,8 +64,8 @@ public abstract class AbstractSpaceFish extends AnimalEntity {
         this.setMotion(this.getMotion().x, this.getMotion().y + 0.08D, this.getMotion().z);
         if(!onGround){
             double ydist = (this.prevPosY - this.getPosY());//down 0.4 up -0.38
-            float fishDist = (float) ((Math.abs(this.getMotion().getX()) + Math.abs(this.getMotion().getZ())) * 6F);
-            this.incrementFishPitch((float) (ydist) * 10);
+            float fishDist = (float) ((Math.abs(this.getMotion().getX()) + Math.abs(this.getMotion().getZ())) * 6F) / getPitchSensitivity();
+            this.incrementFishPitch((float) (ydist) * 10 * getPitchSensitivity());
 
             this.setFishPitch(MathHelper.clamp(this.getFishPitch(), -60, 40));
             float plateau = 2;
@@ -111,4 +115,11 @@ public abstract class AbstractSpaceFish extends AnimalEntity {
     public float getSwimSpeedModifier(){
         return 0.4F;
     }
+
+    public float getPitchSensitivity(){ return 1F; }
+
+    public static boolean canSpaceFishSpawn(EntityType<? extends AnimalEntity> p_223316_0_, IWorld p_223316_1_, SpawnReason p_223316_2_, BlockPos p_223316_3_, Random p_223316_4_) {
+        return true;
+    }
+
 }

@@ -1,0 +1,7 @@
+{
+  "replace": false,
+  "values": [
+    "#astro:staron_aggro",
+    "astro:meteorite"
+  ]
+}

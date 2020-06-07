@@ -16,6 +16,7 @@ public class TabulaModels {
     public static TabulaModel SPACE_SQUID_FALLING;
     public static TabulaModel STARCHOVY;
     public static TabulaModel GLOPEPOD;
+    public static TabulaModel STARON;
 
     public static void loadAll(){
         SPACE_SQUID = loadModel("space_squid", new SpaceSquidAnimator());
@@ -23,6 +24,7 @@ public class TabulaModels {
         SPACE_SQUID_FALLING = loadModel("space_squid_falling", null);
         STARCHOVY = loadModel("starchovy", new StarchovyAnimator());
         GLOPEPOD = loadModel("glopepod", new GlopepodAnimator());
+        STARON = loadModel("staron", new StaronAnimator());
     }
 
     private static TabulaModel loadModel(String name, @Nullable ITabulaModelAnimator animator){

@@ -1,0 +1,153 @@
+{
+    "variants": {
+        "count=1,facing=up": [
+            { "model": "astro:block/one_starnacle" },
+            { "model": "astro:block/one_starnacle", "y": 90 },
+            { "model": "astro:block/one_starnacle", "y": 180 },
+            { "model": "astro:block/one_starnacle", "y": 270 }
+        ],
+        "count=2,facing=up": [
+            { "model": "astro:block/two_starnacle" },
+            { "model": "astro:block/two_starnacle", "y": 90 },
+            { "model": "astro:block/two_starnacle", "y": 180 },
+            { "model": "astro:block/two_starnacle", "y": 270 }
+        ],
+        "count=3,facing=up": [
+            { "model": "astro:block/three_starnacle" },
+            { "model": "astro:block/three_starnacle", "y": 90 },
+            { "model": "astro:block/three_starnacle", "y": 180 },
+            { "model": "astro:block/three_starnacle", "y": 270 }
+        ],
+        "count=4,facing=up": [
+            { "model": "astro:block/four_starnacle" },
+            { "model": "astro:block/four_starnacle", "y": 90 },
+            { "model": "astro:block/four_starnacle", "y": 180 },
+            { "model": "astro:block/four_starnacle", "y": 270 }
+        ],
+
+        "count=1,facing=down": [
+            { "model": "astro:block/one_starnacle", "x": 180 },
+            { "model": "astro:block/one_starnacle", "x": 180, "y": 90 },
+            { "model": "astro:block/one_starnacle", "x": 180, "y": 180 },
+            { "model": "astro:block/one_starnacle", "x": 180, "y": 270 }
+        ],
+        "count=2,facing=down": [
+            { "model": "astro:block/two_starnacle", "x": 180 },
+            { "model": "astro:block/two_starnacle", "x": 180, "y": 90 },
+            { "model": "astro:block/two_starnacle", "x": 180, "y": 180 },
+            { "model": "astro:block/two_starnacle", "x": 180, "y": 270 }
+        ],
+        "count=3,facing=down": [
+            { "model": "astro:block/three_starnacle", "x": 180 },
+            { "model": "astro:block/three_starnacle", "x": 180, "y": 90 },
+            { "model": "astro:block/three_starnacle", "x": 180, "y": 180 },
+            { "model": "astro:block/three_starnacle", "x": 180, "y": 270 }
+        ],
+        "count=4,facing=down": [
+            { "model": "astro:block/four_starnacle", "x": 180 },
+            { "model": "astro:block/four_starnacle", "x": 180, "y": 90 },
+            { "model": "astro:block/four_starnacle", "x": 180, "y": 180 },
+            { "model": "astro:block/four_starnacle", "x": 180, "y": 270 }
+        ],
+
+
+        "count=1,facing=north": [
+            { "model": "astro:block/one_starnacle_wall"},
+            { "model": "astro:block/one_starnacle_wall_90", "z": 90 },
+            { "model": "astro:block/one_starnacle_wall_180", "z": 180 },
+            { "model": "astro:block/one_starnacle_wall_270" }
+        ],
+        "count=2,facing=north": [
+            { "model": "astro:block/two_starnacle_wall" },
+            { "model": "astro:block/two_starnacle_wall_90", "z": 90 },
+            { "model": "astro:block/two_starnacle_wall_180", "z": 180 },
+            { "model": "astro:block/two_starnacle_wall_270", "z": 270 }
+        ],
+        "count=3,facing=north": [
+            { "model": "astro:block/three_starnacle_wall", "z": 90 },
+            { "model": "astro:block/three_starnacle_wall_90", "z": 90 },
+            { "model": "astro:block/three_starnacle_wall_180", "z": 180 },
+            { "model": "astro:block/three_starnacle_wall_270", "z": 270 }
+        ],
+        "count=4,facing=north": [
+            { "model": "astro:block/four_starnacle_wall" },
+            { "model": "astro:block/four_starnacle_wall_90", "z": 90 },
+            { "model": "astro:block/four_starnacle_wall_180", "z": 180 },
+            { "model": "astro:block/four_starnacle_wall_270", "z": 270 }
+        ],
+        
+        "count=1,facing=west": [
+            { "model": "astro:block/one_starnacle_wall", "y": 270 },
+            { "model": "astro:block/one_starnacle_wall_90", "y": 270, "z": 90 },
+            { "model": "astro:block/one_starnacle_wall_180", "y": 270, "z": 180 },
+            { "model": "astro:block/one_starnacle_wall_270", "y": 270, "z": 270 }
+        ],
+        "count=2,facing=west": [
+            { "model": "astro:block/two_starnacle_wall", "y": 270 },
+            { "model": "astro:block/two_starnacle_wall_90", "y": 270, "z": 90 },
+            { "model": "astro:block/two_starnacle_wall_180", "y": 270, "z": 180 },
+            { "model": "astro:block/two_starnacle_wall_270", "y": 270, "z": 270 }
+        ],
+        "count=3,facing=west": [
+            { "model": "astro:block/three_starnacle_wall", "y": 270 },
+            { "model": "astro:block/three_starnacle_wall_90", "y": 270, "z": 90 },
+            { "model": "astro:block/three_starnacle_wall_180", "y": 270, "z": 180 },
+            { "model": "astro:block/three_starnacle_wall_270", "y": 270, "z": 270 }
+        ],
+        "count=4,facing=west": [
+            { "model": "astro:block/four_starnacle_wall", "y": 270 },
+            { "model": "astro:block/four_starnacle_wall_90", "y": 270, "z": 90 },
+            { "model": "astro:block/four_starnacle_wall_180", "y": 270, "z": 180 },
+            { "model": "astro:block/four_starnacle_wall_270", "y": 270, "z": 270 }
+        ],
+        "count=1,facing=south": [
+            { "model": "astro:block/one_starnacle_wall", "y": 180 },
+            { "model": "astro:block/one_starnacle_wall_90", "y": 180, "z": 90 },
+            { "model": "astro:block/one_starnacle_wall_180", "y": 180, "z": 180 },
+            { "model": "astro:block/one_starnacle_wall_270", "y": 180, "z": 270 }
+        ],
+        "count=2,facing=south": [
+            { "model": "astro:block/two_starnacle_wall", "y": 180 },
+            { "model": "astro:block/two_starnacle_wall_90", "y": 180, "z": 90 },
+            { "model": "astro:block/two_starnacle_wall_180", "y": 180, "z": 180 },
+            { "model": "astro:block/two_starnacle_wall_270", "y": 180, "z": 270 }
+        ],
+        "count=3,facing=south": [
+            { "model": "astro:block/three_starnacle_wall", "y": 180 },
+            { "model": "astro:block/three_starnacle_wall_90", "y": 180, "z": 90 },
+            { "model": "astro:block/three_starnacle_wall_180", "y": 180, "z": 180 },
+            { "model": "astro:block/three_starnacle_wall_270", "y": 180, "z": 270 }
+        ],
+        "count=4,facing=south": [
+            { "model": "astro:block/four_starnacle_wall", "y": 180 },
+            { "model": "astro:block/four_starnacle_wall_90", "y": 180, "z": 90 },
+            { "model": "astro:block/four_starnacle_wall_180", "y": 180, "z": 180 },
+            { "model": "astro:block/four_starnacle_wall_270", "y": 180, "z": 270 }
+        ],
+
+        "count=1,facing=east": [
+            { "model": "astro:block/one_starnacle_wall","y": 90 },
+            { "model": "astro:block/one_starnacle_wall_90","y": 90, "z": 90 },
+            { "model": "astro:block/one_starnacle_wall_180","y": 90, "z": 180 },
+            { "model": "astro:block/one_starnacle_wall_270","y": 90 }
+        ],
+        "count=2,facing=east": [
+            { "model": "astro:block/two_starnacle_wall","y": 90 },
+            { "model": "astro:block/two_starnacle_wall_90","y": 90, "z": 90 },
+            { "model": "astro:block/two_starnacle_wall_180","y": 90, "z": 180 },
+            { "model": "astro:block/two_starnacle_wall_270","y": 90, "z": 270 }
+        ],
+        "count=3,facing=east": [
+            { "model": "astro:block/three_starnacle_wall","y": 90 },
+            { "model": "astro:block/three_starnacle_wall_90","y": 90, "z": 90 },
+            { "model": "astro:block/three_starnacle_wall_180","y": 90, "z": 180 },
+            { "model": "astro:block/three_starnacle_wall_270","y": 90, "z": 270 }
+        ],
+        "count=4,facing=east": [
+            { "model": "astro:block/four_starnacle_wall","y": 90},
+            { "model": "astro:block/four_starnacle_wall_90","y": 90, "z": 90 },
+            { "model": "astro:block/four_starnacle_wall_180","y": 90, "z": 180 },
+            { "model": "astro:block/four_starnacle_wall_270","y": 90, "z": 270  }
+        ]
+    }
+}

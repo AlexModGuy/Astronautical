@@ -8,8 +8,10 @@ import com.github.alexthe666.astro.server.world.AstroWorldRegistry;
 import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.controller.MovementController;
+import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -41,6 +43,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 public class EntitySpaceSquid extends TameableEntity implements IAnimatedEntity {
@@ -73,6 +76,14 @@ public class EntitySpaceSquid extends TameableEntity implements IAnimatedEntity 
         this.moveController = new FlightMoveHelper(this);
         this.experienceValue = 10;
         this.rotationVelocity = 1.0F / (this.rand.nextFloat() + 1.0F) * 0.2F;
+    }
+
+    protected void registerAttributes() {
+        super.registerAttributes();
+        this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(300.0D);
+        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25D);
+        this.getAttributes().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE);
+        this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(2.0D);
     }
 
     @Override
@@ -534,5 +545,10 @@ public class EntitySpaceSquid extends TameableEntity implements IAnimatedEntity 
                 }
             }
         }
+    }
+
+
+    public static boolean canSpaceFishSpawn(EntityType<? extends AnimalEntity> p_223316_0_, IWorld p_223316_1_, SpawnReason p_223316_2_, BlockPos p_223316_3_, Random p_223316_4_) {
+        return true;
     }
 }

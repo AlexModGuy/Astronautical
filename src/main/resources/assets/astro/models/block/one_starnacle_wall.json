@@ -1,0 +1,23 @@
+{
+	"credit": "Made with Blockbench",
+	"parent": "block/block",
+	"textures": {
+		"0": "astro:block/starnacle",
+		"particle": "astro:block/starnacle"
+	},
+	"elements": [
+		{
+			"name": "starnacle",
+			"from": [3, 5, 13],
+			"to": [7, 9, 16],
+			"faces": {
+				"north": {"uv": [0, 8, 4, 12], "rotation": 180, "texture": "#0"},
+				"east": {"uv": [12, 13, 16, 16], "rotation": 90, "texture": "#0"},
+				"south": {"uv": [4, 8, 8, 12], "texture": "#0"},
+				"west": {"uv": [8, 13, 12, 16], "rotation": 270, "texture": "#0"},
+				"up": {"uv": [4, 13, 8, 16], "texture": "#0"},
+				"down": {"uv": [0, 13, 4, 16], "rotation": 180, "texture": "#0"}
+			}
+		}
+	]
+}

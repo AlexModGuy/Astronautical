@@ -1,0 +1,59 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "name": "starnacle",
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "conditions": [
+                {
+                  "condition": "minecraft:block_state_property",
+                  "block": "astro:starnacle",
+                  "properties": {
+                    "count": "2"
+                  }
+                }
+              ],
+              "count": 2
+            },
+            {
+              "function": "minecraft:set_count",
+              "conditions": [
+                {
+                  "condition": "minecraft:block_state_property",
+                  "block": "astro:starnacle",
+                  "properties": {
+                    "count": "3"
+                  }
+                }
+              ],
+              "count": 3
+            },
+            {
+              "function": "minecraft:set_count",
+              "conditions": [
+                {
+                  "condition": "minecraft:block_state_property",
+                  "block": "astro:starnacle",
+                  "properties": {
+                    "count": "4"
+                  }
+                }
+              ],
+              "count": 4
+            },
+            {
+              "function": "minecraft:explosion_decay"
+            }
+          ],
+          "name": "astro:starnacle"
+        }
+      ]
+    }
+  ]
+}
