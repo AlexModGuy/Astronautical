@@ -6,11 +6,13 @@ import com.github.alexthe666.astro.client.model.TabulaModels;
 import com.github.alexthe666.astro.client.render.AstroISTER;
 import com.github.alexthe666.astro.client.render.CosmicSkyRenderer;
 import com.github.alexthe666.astro.client.render.entity.*;
+import com.github.alexthe666.astro.client.render.tile.RenderBlockitHole;
 import com.github.alexthe666.astro.server.CommonProxy;
 import com.github.alexthe666.astro.server.block.AstroBlockRegistry;
 import com.github.alexthe666.astro.server.block.BlockPlanetoidGas;
 import com.github.alexthe666.astro.server.block.BlockPlanetoidRing;
 import com.github.alexthe666.astro.server.entity.AstroEntityRegistry;
+import com.github.alexthe666.astro.server.entity.tileentity.AstroTileEntityRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
@@ -25,6 +27,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -128,12 +131,16 @@ public class ClientProxy extends CommonProxy {
         RenderTypeLookup.setRenderLayer(AstroBlockRegistry.STARDUST_TORCH, RenderType.getCutout());
         RenderTypeLookup.setRenderLayer(AstroBlockRegistry.WALL_STARDUST_TORCH, RenderType.getCutout());
         RenderTypeLookup.setRenderLayer(AstroBlockRegistry.STARNACLE, RenderType.getCutout());
+        RenderTypeLookup.setRenderLayer(AstroBlockRegistry.BLOCKIT_WORM_HOLE, RenderType.getCutout());
+        ClientRegistry.bindTileEntityRenderer(AstroTileEntityRegistry.BLOCKIT_HOLE, manager -> new RenderBlockitHole(manager));
+
         MinecraftForge.EVENT_BUS.register(new ClientEvents());
         RenderingRegistry.registerEntityRenderingHandler(AstroEntityRegistry.SPACE_SQUID, manager -> new RenderSpaceSquid(manager, TabulaModels.SPACE_SQUID, 1));
         RenderingRegistry.registerEntityRenderingHandler(AstroEntityRegistry.FALLING_STAR, manager -> new RenderFallingStar(manager));
         RenderingRegistry.registerEntityRenderingHandler(AstroEntityRegistry.STARCHOVY, manager -> new RenderStarchovy(manager, TabulaModels.STARCHOVY, 0.25F));
         RenderingRegistry.registerEntityRenderingHandler(AstroEntityRegistry.GLOPEPOD, manager -> new RenderGlopepod(manager, TabulaModels.GLOPEPOD, 0.15F));
         RenderingRegistry.registerEntityRenderingHandler(AstroEntityRegistry.STARON, manager -> new RenderStaron(manager, TabulaModels.STARON, 0.35F));
+        RenderingRegistry.registerEntityRenderingHandler(AstroEntityRegistry.BLOCKIT_WORM, manager -> new RenderBlockitWorm(manager));
     }
 
     public Item.Properties setupISTER(Item.Properties group) {

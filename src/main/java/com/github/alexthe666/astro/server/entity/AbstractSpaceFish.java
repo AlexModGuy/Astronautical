@@ -1,6 +1,7 @@
 package com.github.alexthe666.astro.server.entity;
 
 import com.github.alexthe666.astro.server.entity.ai.SpaceFishMoveHelper;
+import com.github.alexthe666.astro.server.world.AstroWorldRegistry;
 import net.minecraft.entity.AgeableEntity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
@@ -61,7 +62,9 @@ public abstract class AbstractSpaceFish extends AnimalEntity {
         if (!this.onGround && this.getMotion().y < 0.0D) {
             this.setMotion(this.getMotion().mul(1.0D, 0.6D, 1.0D));
         }
-        this.setMotion(this.getMotion().x, this.getMotion().y + 0.08D, this.getMotion().z);
+        if(this.dimension != AstroWorldRegistry.COSMIC_SEA_TYPE){
+            this.setMotion(this.getMotion().x, this.getMotion().y + 0.08D, this.getMotion().z);
+        }
         if(!onGround){
             double ydist = (this.prevPosY - this.getPosY());//down 0.4 up -0.38
             float fishDist = (float) ((Math.abs(this.getMotion().getX()) + Math.abs(this.getMotion().getZ())) * 6F) / getPitchSensitivity();

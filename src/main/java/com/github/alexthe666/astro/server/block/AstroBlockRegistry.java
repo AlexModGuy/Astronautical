@@ -29,6 +29,7 @@ public class AstroBlockRegistry {
     public static final Block STARDUST_TORCH = new BlockStardustTorch(Block.Properties.create(Material.MISCELLANEOUS).lightValue(12).doesNotBlockMovement().hardnessAndResistance(0).sound(SoundType.WOOD)).setRegistryName("astro:stardust_torch");
     public static final Block WALL_STARDUST_TORCH = new ModWallTorchBlock(Block.Properties.create(Material.MISCELLANEOUS).lightValue(12).doesNotBlockMovement().hardnessAndResistance(0).sound(SoundType.WOOD).lootFrom(STARDUST_TORCH), "astro.wall_stardust_torch").setRegistryName("astro:wall_stardust_torch");
     public static final Block STARNACLE = new BlockStarnacle();
+    public static final Block BLOCKIT_WORM_HOLE = new BlockBlockitWormHole();
     public static final Block PLANETOID_GAS_BLUE = new BlockPlanetoidGas("blue", 0X2F43F4);
     public static final Block PLANETOID_RING_BLUE = new BlockPlanetoidRing("blue", 0X0094FF);
     public static final Block PLANETOID_GAS_YELLOW = new BlockPlanetoidGas("yellow", 0XFFE566);

@@ -1,0 +1,10 @@
+{
+    "variants": {
+        "facing=down":  { "model": "astro:block/blockit_worm_hole", "x": 90 },
+        "facing=up":    { "model": "astro:block/blockit_worm_hole", "x": 270 },
+        "facing=north": { "model": "astro:block/blockit_worm_hole" },
+        "facing=south": { "model": "astro:block/blockit_worm_hole", "y": 180 },
+        "facing=west":  { "model": "astro:block/blockit_worm_hole", "y": 270 },
+        "facing=east":  { "model": "astro:block/blockit_worm_hole", "y": 90 }
+    }
+}

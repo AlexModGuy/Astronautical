@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "RMR",
+    "MEM",
+    "RMR"
+  ],
+  "key": {
+    "M": {
+      "item": "astro:meteorite"
+    },
+    "E": {
+      "item": "astro:blockit_worm_egg"
+    },
+    "R": {
+      "tag": "forge:dusts/redstone"
+    }
+  },
+  "result": {
+    "item": "astro:blockit_worm_hole",
+    "count": 1
+  }
+}

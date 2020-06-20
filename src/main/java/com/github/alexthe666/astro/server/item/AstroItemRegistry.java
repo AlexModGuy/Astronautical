@@ -27,7 +27,10 @@ public class AstroItemRegistry {
     public static final Item SQUID_SPAWNER = new ItemSquidSpawner();
     public static final Item SPACE_SQUID_TENTACLE = new Item(new Item.Properties().group(Astronautical.TAB)).setRegistryName("astro:space_squid_tentacle");
     public static final Item SPACE_CALAMARI = new Item(new Item.Properties().group(Astronautical.TAB).food((new Food.Builder()).hunger(5).saturation(0.6F).meat().build())).setRegistryName("astro:space_calamari");
-
+    public static final Item STARNACLE_POWDER = new Item(new Item.Properties().group(Astronautical.TAB)).setRegistryName("astro:starnacle_powder");
+    public static final Item METEORITE_CHUNK = new Item(new Item.Properties().group(Astronautical.TAB)).setRegistryName("astro:meteorite_chunk");
+    public static final Item STARON_COPROLITE = new Item(new Item.Properties().group(Astronautical.TAB)).setRegistryName("astro:staron_coprolite");
+    public static final Item BLOCKIT_WORM_EGG = new ItemBlockitWormEgg();
     @SubscribeEvent
     public static void registerItem(RegistryEvent.Register<Item> event) {
         try {

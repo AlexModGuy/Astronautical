@@ -2,6 +2,9 @@
   "replace": false,
   "values": [
     "#astro:staron_aggro",
-    "astro:meteorite"
+    "astro:meteorite",
+    "astro:polished_meteorite",
+    "astro:meteorite_pillar",
+    "astro:meteorite_chunk"
   ]
 }

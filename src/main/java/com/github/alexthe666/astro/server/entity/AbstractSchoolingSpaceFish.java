@@ -1,6 +1,7 @@
 package com.github.alexthe666.astro.server.entity;
 
 import com.github.alexthe666.astro.server.entity.ai.FollowSpaceFishSchoolLeader;
+import net.minecraft.entity.AgeableEntity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ILivingEntityData;
 import net.minecraft.entity.SpawnReason;
@@ -151,7 +152,7 @@ public abstract class AbstractSchoolingSpaceFish extends AbstractSpaceFish {
         return (ILivingEntityData)p_213386_4_;
     }
 
-    public static class GroupData implements ILivingEntityData {
+    public static class GroupData extends AgeableEntity.AgeableData {
         public final AbstractSchoolingSpaceFish groupLeader;
 
         public GroupData(AbstractSchoolingSpaceFish p_i49858_1_) {

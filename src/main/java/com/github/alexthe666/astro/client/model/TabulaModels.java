@@ -3,6 +3,7 @@ package com.github.alexthe666.astro.client.model;
 import com.github.alexthe666.astro.client.model.animation.GlopepodAnimator;
 import com.github.alexthe666.astro.client.model.animation.SpaceSquidAnimator;
 import com.github.alexthe666.astro.client.model.animation.StarchovyAnimator;
+import com.github.alexthe666.astro.client.model.animation.StaronAnimator;
 import com.github.alexthe666.citadel.client.model.ITabulaModelAnimator;
 import com.github.alexthe666.citadel.client.model.TabulaModel;
 import com.github.alexthe666.citadel.client.model.TabulaModelHandler;

@@ -1,0 +1,36 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "astro:starnacle"
+    },
+    {
+      "item": "astro:starnacle"
+    },
+    {
+      "item": "astro:starnacle"
+    },
+    {
+      "item": "astro:starnacle"
+    },
+    {
+      "item": "astro:starnacle"
+    },
+    {
+      "item": "astro:starnacle"
+    },
+    {
+      "item": "astro:starnacle"
+    },
+    {
+      "item": "astro:starnacle"
+    },
+    {
+      "item": "astro:starnacle"
+    }
+  ],
+  "result": {
+    "item": "astro:starnacle_powder",
+    "count": 1
+  }
+}

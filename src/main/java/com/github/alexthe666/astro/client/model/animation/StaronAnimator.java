@@ -1,5 +1,6 @@
-package com.github.alexthe666.astro.client.model;
+package com.github.alexthe666.astro.client.model.animation;
 
+import com.github.alexthe666.astro.client.model.TabulaModels;
 import com.github.alexthe666.astro.client.model.animation.AstroTabulaAnimator;
 import com.github.alexthe666.astro.server.entity.EntityGlopepod;
 import com.github.alexthe666.astro.server.entity.EntityStaron;

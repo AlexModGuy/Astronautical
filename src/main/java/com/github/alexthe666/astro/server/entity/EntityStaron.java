@@ -188,7 +188,7 @@ public class EntityStaron extends AbstractSpaceFish {
         }
 
         protected double getTargetDistance() {
-            return 16D;
+            return 32D;
         }
 
 
