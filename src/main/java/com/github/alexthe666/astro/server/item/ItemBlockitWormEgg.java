@@ -24,7 +24,7 @@ public class ItemBlockitWormEgg extends Item {
             }
             context.getWorld().destroyBlock(context.getPos(), false);
             EntityBlockitWorm blockitWorm = new EntityBlockitWorm(AstroEntityRegistry.BLOCKIT_WORM, context.getWorld());
-            blockitWorm.setPosition(context.getPos().getX() + 0.5D, context.getPos().getY() + 0.5D, context.getPos().getZ() + 0.5D);
+            blockitWorm.setPosition(context.getPos().getX() + 0.5D, context.getPos().getY(), context.getPos().getZ() + 0.5D);
             blockitWorm.setAttachmentFacing(context.getFace().getOpposite());
             context.getWorld().addEntity(blockitWorm);
         }

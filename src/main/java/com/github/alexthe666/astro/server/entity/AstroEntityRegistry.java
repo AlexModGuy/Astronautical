@@ -23,6 +23,7 @@ public class AstroEntityRegistry {
     public static final EntityType<EntityGlopepod> GLOPEPOD = registerEntity(EntityType.Builder.create(EntityGlopepod::new, EntityClassification.CREATURE).size(0.35F, 0.35F).setTrackingRange(128), "glopepod");
     public static final EntityType<EntityStaron> STARON = registerEntity(EntityType.Builder.create(EntityStaron::new, EntityClassification.CREATURE).size(0.75F, 1.35F).setTrackingRange(256), "staron");
     public static final EntityType<EntityBlockitWorm> BLOCKIT_WORM = registerEntity(EntityType.Builder.create(EntityBlockitWorm::new, EntityClassification.CREATURE).size(1.0F, 1.0F), "blockit_worm");
+    public static final EntityType<EntityScuttlefish> SCUTTLEFISH = registerEntity(EntityType.Builder.create(EntityScuttlefish::new, EntityClassification.CREATURE).size(0.8F, 0.5F), "scuttlefish");
 
     private static final EntityType registerEntity(EntityType.Builder builder, String entityName){
         ResourceLocation nameLoc = new ResourceLocation(Astronautical.MODID, entityName);
@@ -55,6 +56,7 @@ public class AstroEntityRegistry {
         event.getRegistry().register(new SpawnEggItem(GLOPEPOD, 0X99ECEF, 0XC1FCFF, new Item.Properties().group(Astronautical.TAB)).setRegistryName("astro:spawn_egg_glopepod"));
         event.getRegistry().register(new SpawnEggItem(STARON, 0X4C2941, 0X8D566C, new Item.Properties().group(Astronautical.TAB)).setRegistryName("astro:spawn_egg_staron"));
         event.getRegistry().register(new SpawnEggItem(BLOCKIT_WORM, 0X4C4227, 0X5F6837, new Item.Properties().group(Astronautical.TAB)).setRegistryName("astro:spawn_egg_blockit_worm"));
+        event.getRegistry().register(new SpawnEggItem(SCUTTLEFISH, 0XA1BA9C, 0XFF6A00, new Item.Properties().group(Astronautical.TAB)).setRegistryName("astro:spawn_egg_scuttlefish"));
 
     }
 

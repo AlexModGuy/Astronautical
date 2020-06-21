@@ -7,6 +7,7 @@ import net.minecraft.entity.ILivingEntityData;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IWorld;
@@ -77,7 +78,10 @@ public abstract class AbstractSchoolingSpaceFish extends AbstractSpaceFish {
                 if(circlingPosition == null || rand.nextFloat() < 0.25F){
                     BlockPos height = world.getHeight(Heightmap.Type.WORLD_SURFACE, this.getPosition());
                     int upDistance = world.getMaxHeight() - height.getY();
-                    circlingPosition = height.up(rand.nextInt(Math.max(1, upDistance))).add(rand.nextInt(16) - 8, 0, rand.nextInt(16) - 8);
+                    BlockPos targetPos = this.getPosition().add(rand.nextInt(16) - 8, MathHelper.clamp(rand.nextInt(15) - 8, 0,world.getMaxHeight()), rand.nextInt(16) - 8);
+                    if (this.canBlockPosBeSeen(targetPos)) {
+                        circlingPosition = targetPos;
+                    }
                 }
                 flightTarget = new Vec3d(circlingPosition);
             }

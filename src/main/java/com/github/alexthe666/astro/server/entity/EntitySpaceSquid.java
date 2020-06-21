@@ -166,7 +166,10 @@ public class EntitySpaceSquid extends TameableEntity implements IAnimatedEntity 
                     if(world.getDimension().getType() == AstroWorldRegistry.COSMIC_SEA_TYPE){
                         BlockPos height = world.getHeight(Heightmap.Type.WORLD_SURFACE, this.getPosition());
                         int upDistance = world.getMaxHeight() - height.getY();
-                        circlingPosition = height.up(rand.nextInt(Math.max(1, upDistance))).add(rand.nextInt(16) - 8, 0, rand.nextInt(16) - 8);
+                        BlockPos targetPos = this.getPosition().add(rand.nextInt(16) - 8, MathHelper.clamp(rand.nextInt(15) - 8, 0,world.getMaxHeight()), rand.nextInt(16) - 8);
+                        if (this.canBlockPosBeSeen(targetPos)) {
+                            circlingPosition = targetPos;
+                        }
                     }else{
                         circlingPosition = world.getHeight(Heightmap.Type.WORLD_SURFACE, this.getPosition()).up(20 + rand.nextInt(10));
                         if(isSpaceBound() && world.getDimension().getType() == DimensionType.OVERWORLD){

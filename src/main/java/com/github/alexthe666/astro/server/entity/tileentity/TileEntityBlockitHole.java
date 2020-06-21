@@ -74,7 +74,7 @@ public class TileEntityBlockitHole extends TileEntity implements ITickableTileEn
     private void breakBlockInFront(int reach) {
         BlockPos breakPos = this.getPos().offset(direction, reach);
         BlockState state = world.getBlockState(breakPos);
-        if (state.getPushReaction() != PushReaction.IGNORE) {
+        if (state.getPushReaction() != PushReaction.IGNORE && !state.isAir() && !state.getShape(world, breakPos).isEmpty()) {
             if (WitherEntity.canDestroyBlock(state)) {
                 world.destroyBlock(breakPos, true);
             }
@@ -83,7 +83,7 @@ public class TileEntityBlockitHole extends TileEntity implements ITickableTileEn
         for (LivingEntity kill : world.getEntitiesWithinAABB(LivingEntity.class, killBox)) {
             kill.attackEntityFrom(DamageSource.DROWN, 2);
             if(!(kill instanceof PlayerEntity) || ((PlayerEntity) kill).isCreative()){
-                kill.knockBack(kill, 0.5F, kill.getPosX() - this.getPos().getX() + 0.5F, kill.getPosZ() - this.getPos().getZ() + 0.5F);
+                kill.knockBack(kill, 0.5F, kill.getPosX() - (this.getPos().getX() + 0.5F), kill.getPosZ() - (this.getPos().getZ() + 0.5F));
             }
         }
     }

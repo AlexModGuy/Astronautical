@@ -141,6 +141,7 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerEntityRenderingHandler(AstroEntityRegistry.GLOPEPOD, manager -> new RenderGlopepod(manager, TabulaModels.GLOPEPOD, 0.15F));
         RenderingRegistry.registerEntityRenderingHandler(AstroEntityRegistry.STARON, manager -> new RenderStaron(manager, TabulaModels.STARON, 0.35F));
         RenderingRegistry.registerEntityRenderingHandler(AstroEntityRegistry.BLOCKIT_WORM, manager -> new RenderBlockitWorm(manager));
+        RenderingRegistry.registerEntityRenderingHandler(AstroEntityRegistry.SCUTTLEFISH, manager -> new RenderScuttlefish(manager, TabulaModels.SCUTTLEFISH, 0.25F));
     }
 
     public Item.Properties setupISTER(Item.Properties group) {

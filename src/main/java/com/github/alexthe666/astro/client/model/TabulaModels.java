@@ -1,9 +1,6 @@
 package com.github.alexthe666.astro.client.model;
 
-import com.github.alexthe666.astro.client.model.animation.GlopepodAnimator;
-import com.github.alexthe666.astro.client.model.animation.SpaceSquidAnimator;
-import com.github.alexthe666.astro.client.model.animation.StarchovyAnimator;
-import com.github.alexthe666.astro.client.model.animation.StaronAnimator;
+import com.github.alexthe666.astro.client.model.animation.*;
 import com.github.alexthe666.citadel.client.model.ITabulaModelAnimator;
 import com.github.alexthe666.citadel.client.model.TabulaModel;
 import com.github.alexthe666.citadel.client.model.TabulaModelHandler;
@@ -18,6 +15,7 @@ public class TabulaModels {
     public static TabulaModel STARCHOVY;
     public static TabulaModel GLOPEPOD;
     public static TabulaModel STARON;
+    public static TabulaModel SCUTTLEFISH;
 
     public static void loadAll(){
         SPACE_SQUID = loadModel("space_squid", new SpaceSquidAnimator());
@@ -26,6 +24,7 @@ public class TabulaModels {
         STARCHOVY = loadModel("starchovy", new StarchovyAnimator());
         GLOPEPOD = loadModel("glopepod", new GlopepodAnimator());
         STARON = loadModel("staron", new StaronAnimator());
+        SCUTTLEFISH = loadModel("scuttlefish", new ScuttlefishAnimator());
     }
 
     private static TabulaModel loadModel(String name, @Nullable ITabulaModelAnimator animator){

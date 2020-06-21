@@ -51,7 +51,7 @@ public class SpaceFishMoveHelper extends MovementController {
                 fish.rotationYaw = approachDegrees(yawTurn, yawTurnAtan, 4.0F) - 90.0F;
                 fish.renderYawOffset = fish.rotationYaw;
                 if (degreesDifferenceAbs(yawCopy, fish.rotationYaw) < 3.0F) {
-                    speed = approach((float) speed, 1.2F, 0.005F * (1.2F / (float) speed));
+                    speed = approach((float) speed, 0.5F, 0.005F * (1.2F / (float) speed));
                 } else {
                     speed = approach((float) speed, 0.2F, 0.025F);
                     if (dist < 100D && fish.getAttackTarget() != null) {
@@ -67,7 +67,7 @@ public class SpaceFishMoveHelper extends MovementController {
                 double yMotion = (double) distY / dist;
                 float moveSpeedCap = 0.05F;
                 double cappedX = MathHelper.clamp(lvt_16_1_, -moveSpeedCap, moveSpeedCap);
-                double cappedY = MathHelper.clamp(Math.min(0.1D, yMotion) * 0.2D, -moveSpeedCap, moveSpeedCap);
+                double cappedY = MathHelper.clamp(lvt_20_1_, -moveSpeedCap, moveSpeedCap);
                 double cappedZ = MathHelper.clamp(lvt_18_1_, -moveSpeedCap, moveSpeedCap);
                 double speedMulti = fish.getSwimSpeedModifier();
                 fish.setMotion(fish.getMotion().add(cappedX * speedMulti, cappedY * speedMulti, cappedZ * speedMulti));

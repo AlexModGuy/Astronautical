@@ -26,6 +26,7 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IWorld;
@@ -109,8 +110,10 @@ public class EntityStaron extends AbstractSpaceFish {
         if (flightTarget == null || rand.nextFloat() < 0.05F) {
             BlockPos height = world.getHeight(Heightmap.Type.WORLD_SURFACE, this.getPosition());
             int upDistance = world.getMaxHeight() - height.getY();
-            BlockPos targetPos = height.up(rand.nextInt(Math.max(1, upDistance))).add(rand.nextInt(16) - 8, 0, rand.nextInt(16) - 8);
-            flightTarget = new Vec3d(targetPos);
+            BlockPos targetPos = this.getPosition().add(rand.nextInt(16) - 8, MathHelper.clamp(rand.nextInt(15) - 8, 0,world.getMaxHeight()), rand.nextInt(16) - 8);
+            if (this.canBlockPosBeSeen(targetPos)) {
+                flightTarget = new Vec3d(targetPos);
+            }
         }
         if (this.getAttackTarget() != null && this.getAttackTarget().isAlive()) {
             this.flightTarget = this.getAttackTarget().getPositionVec();
