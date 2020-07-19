@@ -1,7 +1,9 @@
 package com.github.alexthe666.astro.server.entity;
 
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.MobEntity;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.world.World;
 
 public class EntityGlopepod extends AbstractSchoolingSpaceFish {
@@ -10,12 +12,12 @@ public class EntityGlopepod extends AbstractSchoolingSpaceFish {
         super(type, world);
     }
 
-    protected void registerAttributes() {
-        super.registerAttributes();
-        this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(1.0D);
-        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.15D);
+    public static AttributeModifierMap.MutableAttribute buildAttributes() {
+        return MobEntity.func_233666_p_()
+                .func_233815_a_(Attributes.field_233818_a_, 1.0D)            //HEALTH
+                .func_233815_a_(Attributes.field_233821_d_, 0.15D)           //SPEED
+                .func_233815_a_(Attributes.field_233823_f_, 1.0D);            //ATTACK
     }
-
 
     public int getMaxGroupSize() {
         return 8;

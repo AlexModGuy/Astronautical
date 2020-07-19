@@ -3,6 +3,7 @@ package com.github.alexthe666.astro.server.block;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.TorchBlock;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
@@ -13,7 +14,7 @@ import java.util.Random;
 public class BlockStardustTorch extends TorchBlock implements IWallAndFloor{
 
     public BlockStardustTorch(Properties p_i48308_1_) {
-        super(p_i48308_1_);
+        super(p_i48308_1_, ParticleTypes.FLAME);
     }
 
     @Override

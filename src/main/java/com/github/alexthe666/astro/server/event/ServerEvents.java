@@ -20,46 +20,37 @@ import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.loot.*;
+import net.minecraft.loot.conditions.RandomChance;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Direction;
+import net.minecraft.util.RegistryKey;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.dimension.DimensionType;
+import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.util.registry.Registry;
+import net.minecraft.world.World;
 import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.server.ServerWorld;
-import net.minecraft.world.storage.loot.*;
-import net.minecraft.world.storage.loot.conditions.RandomChance;
-import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.event.LootTableLoadEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.event.world.RegisterDimensionsEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-
 import java.util.HashMap;
 import java.util.Map;
-
-import static net.minecraft.entity.LivingEntity.ENTITY_GRAVITY;
-import static net.minecraft.entity.LivingEntity.SWIM_SPEED;
 
 @Mod.EventBusSubscriber(modid = Astronautical.MODID)
 public class ServerEvents {
 
     @SubscribeEvent
-    public static void registerDimensionTypes(RegisterDimensionsEvent event) {
-        AstroWorldRegistry.COSMIC_SEA_TYPE = DimensionManager.registerOrGetDimension(new ResourceLocation("astro:cosmic_sea"), AstroWorldRegistry.COSMIC_SEA_MOD_DIMENSION, null, true);
-    }
-
-    @SubscribeEvent
     public static void onRightClickWithBlock(PlayerInteractEvent.RightClickBlock event) {
-        if (event.getPlayer().dimension == AstroWorldRegistry.COSMIC_SEA_TYPE){
+        if (event.getWorld().func_234923_W_().func_240901_a_().getPath().equals("cosmic_sea")) {
             if(event.getUseItem() == Event.Result.DEFAULT){
                 if(event.getItemStack().getItem() == Items.FIRE_CHARGE || event.getItemStack().getItem() == Items.FLINT_AND_STEEL){
                     event.getPlayer().swingArm(event.getHand());
@@ -106,14 +97,16 @@ public class ServerEvents {
     @SubscribeEvent
     public static void onEntityJoinWorld(EntityJoinWorldEvent event){
         if(!(event.getEntity() instanceof LivingEntity)){
-            if(event.getWorld().dimension.getType() == AstroWorldRegistry.COSMIC_SEA_TYPE){
+            if(event.getEntity().getEntityWorld().func_234923_W_().func_240901_a_().getPath().equals("cosmic_sea")){
                 event.getEntity().setNoGravity(true);
             }
         }
     }
     @SubscribeEvent
     public static void onLivingUpdate(LivingEvent.LivingUpdateEvent event) {
-        if(event.getEntityLiving().dimension == AstroWorldRegistry.COSMIC_SEA_TYPE){
+        boolean cosmicDimension = event.getEntity().getEntityWorld().func_234923_W_().func_240901_a_().getPath().equals("cosmic_sea");
+        boolean overworld = event.getEntity().getEntityWorld().func_234923_W_().func_240901_a_().getPath().equals("overworld");
+        if (cosmicDimension) {
             LivingEntity entity = event.getEntityLiving();
             entity.setSwimming(true);
             boolean flying = false;
@@ -123,27 +116,27 @@ public class ServerEvents {
                 flying = player.abilities.isFlying;
                 creative = player.isCreative();
             }
-            if(entity.isSprinting() && !entity.onGround && !flying){
+            if(entity.isSprinting() && !entity.func_233570_aj_() && !flying){
                 entity.setPose(Pose.SWIMMING);
             }
 
             boolean swimming = entity.getPose() == Pose.SWIMMING;
-            Vec3d vec3d = entity.getMotion();
+            Vector3d Vector3d = entity.getMotion();
             entity.fallDistance = 1;
-            if (!entity.onGround && vec3d.y < 0.0D) {
-                entity.setMotion(vec3d.mul(1.0D, 0.6D, 1.0D));
+            if (!entity.func_233570_aj_() && Vector3d.y < 0.0D) {
+                entity.setMotion(Vector3d.mul(1.0D, 0.6D, 1.0D));
             }
             double upAlready = 0;
-            Vec3d vec3d1 = entity.getMotion();
-            if(!entity.onGround && swimming){
+            Vector3d Vector3d1 = entity.getMotion();
+            if(!entity.func_233570_aj_() && swimming){
                 double d3 = entity.getLookVec().y;
                 double d4 = d3 < -0.2D ? 0.1D : 0.09D;
-                upAlready = (d3 - vec3d1.y) * d4;
-                entity.setMotion(vec3d1.add(0.0D, (d3 - vec3d1.y) * d4, 0.0D));
+                upAlready = (d3 - Vector3d1.y) * d4;
+                entity.setMotion(Vector3d1.add(0.0D, (d3 - Vector3d1.y) * d4, 0.0D));
             }
-            if(entity.isShiftKeyDown()){
+            if(entity.isSneaking()){
 
-                entity.setMotion(vec3d1.add(0.0D, creative ? -0.18D : -0.08D, 0.0D));
+                entity.setMotion(Vector3d1.add(0.0D, creative ? -0.18D : -0.08D, 0.0D));
 
             }
             if(entity.isJumping){
@@ -162,22 +155,22 @@ public class ServerEvents {
             }
 
         }
-        if(!event.getEntityLiving().world.isRemote && event.getEntityLiving() instanceof ServerPlayerEntity && event.getEntityLiving().getPosY() > 300 && event.getEntityLiving().dimension == DimensionType.OVERWORLD){
+        if(!event.getEntityLiving().world.isRemote && event.getEntityLiving() instanceof ServerPlayerEntity && event.getEntityLiving().getPosY() > 300 && overworld){
             MinecraftServer server = event.getEntityLiving().world.getServer();
             ServerPlayerEntity thePlayer = (ServerPlayerEntity) event.getEntityLiving();
             if (thePlayer.timeUntilPortal > 0) {
                 thePlayer.timeUntilPortal = 10;
             }
-            else if (thePlayer.dimension != AstroWorldRegistry.COSMIC_SEA_TYPE) {
+            if (!cosmicDimension) {
                 thePlayer.timeUntilPortal = 10;
-                ServerWorld dimWorld = server.getWorld(AstroWorldRegistry.COSMIC_SEA_TYPE);
+                ServerWorld dimWorld = server.getWorld(getCosmicDimension());
                 if(dimWorld != null){
 
                     teleportEntity(thePlayer, dimWorld, new BlockPos(event.getEntityLiving().getPosX(), 5, event.getEntityLiving().getPosZ()));
                 }
             }
         }
-        if(!event.getEntityLiving().world.isRemote && event.getEntityLiving() instanceof ServerPlayerEntity && event.getEntityLiving().dimension == AstroWorldRegistry.COSMIC_SEA_TYPE && event.getEntityLiving().getPosY() < -50){
+        if(!event.getEntityLiving().world.isRemote && event.getEntityLiving() instanceof ServerPlayerEntity && cosmicDimension && event.getEntityLiving().getPosY() < -50){
             MinecraftServer server = event.getEntityLiving().world.getServer();
             ServerPlayerEntity thePlayer = (ServerPlayerEntity) event.getEntityLiving();
             if (thePlayer.timeUntilPortal > 0) {
@@ -185,7 +178,7 @@ public class ServerEvents {
             }
             else {
                 thePlayer.timeUntilPortal = 10;
-                ServerWorld dimWorld = server.getWorld(DimensionType.getById(AstronauticalConfig.exitDimensionID));
+                ServerWorld dimWorld = server.getWorld(World.field_234918_g_);
                 if (dimWorld != null) {
                     teleportEntity(thePlayer, dimWorld, new BlockPos(event.getEntityLiving().getPosX(), 295, event.getEntityLiving().getPosZ()));
                 }
@@ -193,15 +186,22 @@ public class ServerEvents {
         }
     }
 
+    public static RegistryKey<World> getCosmicDimension(){
+        ResourceLocation resourcelocation = new ResourceLocation("astro:cosmic_sea");
+        RegistryKey<World> registrykey = RegistryKey.func_240903_a_(Registry.field_239699_ae_, resourcelocation);
+        return registrykey;
+    }
+
+
     private static Entity teleportEntity(Entity entity, ServerWorld endpointWorld, BlockPos endpoint) {
-        if(entity.dimension == AstroWorldRegistry.COSMIC_SEA_TYPE){
+        if(entity.getEntityWorld().func_234923_W_().func_240901_a_().getPath().equals("cosmic_sea")){
         }else{
-            if (entity instanceof PlayerEntity && ((PlayerEntity) entity).getBedLocation() != null) {
-                BlockPos bedPos = ((PlayerEntity) entity).getBedLocation();
+            if (entity instanceof PlayerEntity && ((PlayerEntity) entity).getBedPosition().isPresent()) {
+                BlockPos bedPos = ((PlayerEntity) entity).getBedPosition().get();
                 endpoint = bedPos;
                 entity.setLocationAndAngles(bedPos.getX() + 0.5D, bedPos.getY() + 1.5D, bedPos.getZ() + 0.5D, 0.0F, 0.0F);
             } else {
-                BlockPos height = entity.world.getHeight(Heightmap.Type.WORLD_SURFACE, entity.getPosition());
+                BlockPos height = entity.world.getHeight(Heightmap.Type.WORLD_SURFACE, new BlockPos(entity.getPositionVec()));
                 endpoint = height;
                 entity.setLocationAndAngles(height.getX() + 0.5D, height.getY() + 0.5D, height.getZ() + 0.5D, entity.rotationYaw, 0.0F);
             }
@@ -212,9 +212,9 @@ public class ServerEvents {
             return player;
         }
 
-        entity.detach();
-        entity.dimension = endpointWorld.dimension.getType();
 
+        entity.detach();
+        entity.func_241206_a_(endpointWorld);
         Entity teleportedEntity = entity.getType().create(endpointWorld);
         if (teleportedEntity == null) {
             return entity;
@@ -222,7 +222,7 @@ public class ServerEvents {
         teleportedEntity.copyDataFromOld(entity);
         teleportedEntity.setLocationAndAngles(endpoint.getX() + 0.5D, endpoint.getY() + 0.5D, endpoint.getZ() + 0.5D, entity.rotationYaw, entity.rotationPitch);
         teleportedEntity.setRotationYawHead(entity.rotationYaw);
-        endpointWorld.func_217460_e(teleportedEntity);
+        endpointWorld.addFromAnotherDimension(teleportedEntity);
         return teleportedEntity;
     }
 

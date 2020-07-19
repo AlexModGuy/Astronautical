@@ -1,20 +1,20 @@
 package com.github.alexthe666.astro.server.world.feature;
 
 import com.github.alexthe666.astro.server.block.AstroBlockRegistry;
-import com.mojang.datafixers.Dynamic;
+import com.mojang.serialization.Codec;
 import net.minecraft.block.*;
 import net.minecraft.fluid.Fluids;
-import net.minecraft.fluid.IFluidState;
 import net.minecraft.state.properties.Half;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.ISeedReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.GenerationSettings;
 import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
+import net.minecraft.world.gen.feature.structure.StructureManager;
 
 import java.util.Random;
 import java.util.function.Function;
@@ -22,12 +22,13 @@ import java.util.stream.Collectors;
 
 public class FeaturePlanetoid extends Feature<NoFeatureConfig> {
 
-    public FeaturePlanetoid(Function<Dynamic<?>, ? extends NoFeatureConfig> p_i49873_1_) {
-        super(p_i49873_1_);
+    public FeaturePlanetoid(Codec<NoFeatureConfig> p_i231953_1_) {
+        super(p_i231953_1_);
     }
 
+
     @Override
-    public boolean place(IWorld worldIn, ChunkGenerator<? extends GenerationSettings> generator, Random rand, BlockPos pos, NoFeatureConfig config) {
+    public boolean func_230362_a_(ISeedReader worldIn, StructureManager p_230362_2_, ChunkGenerator p_230362_3_, Random rand, BlockPos pos, NoFeatureConfig p_230362_6_) {
         if(rand.nextFloat() > 0.005D){
             return false;
         }

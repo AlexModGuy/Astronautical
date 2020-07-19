@@ -73,9 +73,9 @@ public class SquidfallSpawner {
         } else if (this.random.nextInt(AstronauticalConfig.squidfallRandomRoll) != 0) {
             return false;
         } else {
-            BlockPos blockpos = playerentity.getPosition();
+            BlockPos blockpos = new BlockPos(playerentity.getPositionVec());
             PointOfInterestManager pointofinterestmanager = this.world.getPointOfInterestManager();
-            Optional<BlockPos> optional = pointofinterestmanager.func_219127_a(PointOfInterestType.MEETING.func_221045_c(), (p_221241_0_) -> {
+            Optional<BlockPos> optional = pointofinterestmanager.find(PointOfInterestType.HOME.getPredicate(), (p_221241_0_) -> {
                 return true;
             }, blockpos, 48, Status.ANY);
             BlockPos blockpos1 = (BlockPos)optional.orElse(blockpos);

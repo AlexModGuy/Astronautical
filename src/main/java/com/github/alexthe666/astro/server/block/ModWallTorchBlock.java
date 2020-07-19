@@ -4,7 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.TorchBlock;
 import net.minecraft.block.WallTorchBlock;
-import net.minecraft.state.IProperty;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.state.StateContainer;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
@@ -18,7 +18,7 @@ public class ModWallTorchBlock extends WallTorchBlock implements INoTab{
 
     private String translationName;
     public ModWallTorchBlock(Properties p_i48308_1_, String translationName) {
-        super(p_i48308_1_);
+        super(p_i48308_1_, ParticleTypes.FLAME);
         this.translationName = translationName;
         this.setDefaultState((BlockState)((BlockState)this.stateContainer.getBaseState()).with(HORIZONTAL_FACING, Direction.NORTH));
     }

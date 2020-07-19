@@ -9,7 +9,7 @@ public class AstroBannerRegistry {
     public static BannerPattern SPACE_SQUID_BANNER = addBanner("space_squid", new ItemStack(AstroItemRegistry.SPACE_SQUID_TENTACLE));
 
     public static BannerPattern addBanner(String name, ItemStack craftingStack) {
-        return BannerPattern.create(name.toUpperCase(), name, "astro." + name, craftingStack);
+        return BannerPattern.create(name.toUpperCase(), name, "astro." + name, true);
     }
 
 

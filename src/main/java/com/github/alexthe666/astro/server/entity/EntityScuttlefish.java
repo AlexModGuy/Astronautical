@@ -3,6 +3,9 @@ package com.github.alexthe666.astro.server.entity;
 import com.google.common.base.Predicate;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.MobEntity;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.entity.ai.goal.TargetGoal;
@@ -21,7 +24,7 @@ import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.Heightmap;
 
@@ -38,6 +41,12 @@ public class EntityScuttlefish extends AbstractSpaceFish {
 
     protected EntityScuttlefish(EntityType type, World world) {
         super(type, world);
+    }
+
+
+    public static AttributeModifierMap.MutableAttribute buildAttributes() {
+        return MobEntity.func_233666_p_()
+                .func_233815_a_(Attributes.field_233818_a_, 10.0D);
     }
 
     private static final List<IRecipe> findMatchingRecipesFor(ItemStack stack, World world) {
@@ -74,11 +83,11 @@ public class EntityScuttlefish extends AbstractSpaceFish {
     public void tick() {
         super.tick();
         if (flightTarget == null || rand.nextFloat() < 0.05F) {
-            BlockPos height = world.getHeight(Heightmap.Type.WORLD_SURFACE, this.getPosition());
-            int upDistance = world.getMaxHeight() - height.getY();
-            BlockPos targetPos = this.getPosition().add(rand.nextInt(16) - 8, MathHelper.clamp(rand.nextInt(15) - 8, 0,world.getMaxHeight()), rand.nextInt(16) - 8);
+            BlockPos height = world.getHeight(Heightmap.Type.WORLD_SURFACE, new BlockPos(this.getPositionVec()));
+            int upDistance = 256 - height.getY();
+            BlockPos targetPos = new BlockPos(this.getPositionVec()).add(rand.nextInt(16) - 8, MathHelper.clamp(rand.nextInt(15) - 8, 0, 256), rand.nextInt(16) - 8);
             if (this.canBlockPosBeSeen(targetPos)) {
-                flightTarget = new Vec3d(targetPos);
+                flightTarget = new Vector3d(targetPos.getX() + 0.5D, targetPos.getY() + 0.5D, targetPos.getZ() + 0.5D);
             }
         }
         if (this.getAttackTarget() != null && this.getAttackTarget().isAlive()) {
@@ -223,7 +232,7 @@ public class EntityScuttlefish extends AbstractSpaceFish {
         @Override
         public void startExecuting() {
             this.goalOwner.getNavigator().tryMoveToXYZ(this.targetEntity.getPosX(), this.targetEntity.getPosY(), this.targetEntity.getPosZ(), 1);
-            this.scuttler.flightTarget = new Vec3d(this.targetEntity.getPosX(), this.targetEntity.getPosY(), this.targetEntity.getPosZ());
+            this.scuttler.flightTarget = new Vector3d(this.targetEntity.getPosX(), this.targetEntity.getPosY(), this.targetEntity.getPosZ());
             super.startExecuting();
         }
 
@@ -234,6 +243,7 @@ public class EntityScuttlefish extends AbstractSpaceFish {
                 this.resetTask();
                 this.goalOwner.getNavigator().clearPath();
             }
+            this.scuttler.flightTarget = new Vector3d(this.targetEntity.getPosX(), this.targetEntity.getPosY(), this.targetEntity.getPosZ());
             if (this.targetEntity != null && this.targetEntity.isAlive() && this.goalOwner.getDistanceSq(this.targetEntity) < 1.5F && (scuttler.getHeldItem(Hand.MAIN_HAND).isEmpty() || !scuttler.hasEnoughItemForRecipe())) {
                 EntityScuttlefish staron = (EntityScuttlefish) this.goalOwner;
                 ItemStack duplicate = this.targetEntity.getItem().copy();

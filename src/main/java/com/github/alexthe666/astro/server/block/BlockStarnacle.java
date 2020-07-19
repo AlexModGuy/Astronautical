@@ -6,8 +6,8 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.DirectionalBlock;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
-import net.minecraft.fluid.IFluidState;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.DirectionProperty;
@@ -117,7 +117,7 @@ public class BlockStarnacle extends DirectionalBlock {
         if (blockstate.getBlock() == this) {
             return blockstate.with(COUNT, Integer.valueOf(Math.min(4, blockstate.get(COUNT) + 1)));
         } else {
-            IFluidState ifluidstate = context.getWorld().getFluidState(context.getPos());
+            FluidState ifluidstate = context.getWorld().getFluidState(context.getPos());
             boolean flag = ifluidstate.isTagged(FluidTags.WATER) && ifluidstate.getLevel() == 8;
             Direction direction = context.getFace();
             return super.getStateForPlacement(context).with(WATERLOGGED, Boolean.valueOf(flag)).with(FACING, direction).with(WATERLOGGED, Boolean.valueOf(ifluidstate.isTagged(FluidTags.WATER) && ifluidstate.getLevel() == 8));
@@ -132,7 +132,7 @@ public class BlockStarnacle extends DirectionalBlock {
         builder.add(COUNT, FACING, WATERLOGGED);
     }
 
-    public IFluidState getFluidState(BlockState state) {
+    public FluidState getFluidState(BlockState state) {
         return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
     }
 

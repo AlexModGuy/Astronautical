@@ -68,7 +68,7 @@ public class FallingStarSpawner {
         } else if (this.random.nextInt(AstronauticalConfig.fallingStarRandomRoll) != 0) {
             return false;
         } else {
-            BlockPos blockpos2 = playerentity.getPosition();
+            BlockPos blockpos2 = new BlockPos(playerentity.getPositionVec());
             if (blockpos2 != null) {
                 BlockPos upPos = new BlockPos(blockpos2.getX(), 300, blockpos2.getZ());
                 EntityFallingStar spaceStar = new EntityFallingStar(AstroEntityRegistry.FALLING_STAR, world);

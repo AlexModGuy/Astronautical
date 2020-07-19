@@ -2,7 +2,6 @@ package com.github.alexthe666.astro.server.world;
 
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.world.World;
-import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraft.world.storage.DimensionSavedDataManager;
 import net.minecraft.world.storage.WorldSavedData;
@@ -26,7 +25,7 @@ public class AstroWorldData extends WorldSavedData {
 
     public static AstroWorldData get(World world) {
         if (world instanceof ServerWorld) {
-            ServerWorld overworld = world.getServer().getWorld(DimensionType.OVERWORLD);
+            ServerWorld overworld = world.getServer().getWorld(World.field_234918_g_);
 
             DimensionSavedDataManager storage = overworld.getSavedData();
             AstroWorldData data = storage.getOrCreate(AstroWorldData::new, IDENTIFIER);

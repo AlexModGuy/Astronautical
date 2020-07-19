@@ -25,6 +25,7 @@ public class RenderScuttlefish extends MobRenderer<EntityScuttlefish, SegmentedM
 
     @Override
     protected void preRenderCallback(EntityScuttlefish chovy, MatrixStack matrixStackIn, float partialTickTime) {
+        matrixStackIn.translate(0, 0, -0.4F);
     }
 
     @Override

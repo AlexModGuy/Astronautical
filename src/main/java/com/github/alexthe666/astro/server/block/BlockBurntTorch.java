@@ -14,7 +14,7 @@ import java.util.Random;
 public class BlockBurntTorch extends TorchBlock implements IWallAndFloor{
 
     public BlockBurntTorch(Properties p_i48308_1_) {
-        super(p_i48308_1_);
+        super(p_i48308_1_, ParticleTypes.FLAME);
     }
 
     @Override

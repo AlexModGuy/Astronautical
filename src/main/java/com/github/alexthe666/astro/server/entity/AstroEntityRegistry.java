@@ -4,6 +4,7 @@ import com.github.alexthe666.astro.Astronautical;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntitySpawnPlacementRegistry;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.ai.attributes.GlobalEntityTypeAttributes;
 import net.minecraft.item.Item;
 import net.minecraft.item.SpawnEggItem;
 import net.minecraft.util.ResourceLocation;
@@ -25,9 +26,25 @@ public class AstroEntityRegistry {
     public static final EntityType<EntityBlockitWorm> BLOCKIT_WORM = registerEntity(EntityType.Builder.create(EntityBlockitWorm::new, EntityClassification.CREATURE).size(1.0F, 1.0F), "blockit_worm");
     public static final EntityType<EntityScuttlefish> SCUTTLEFISH = registerEntity(EntityType.Builder.create(EntityScuttlefish::new, EntityClassification.CREATURE).size(0.8F, 0.5F), "scuttlefish");
 
-    private static final EntityType registerEntity(EntityType.Builder builder, String entityName){
+    static {
+        EntitySpawnPlacementRegistry.register(SPACE_SQUID, EntitySpawnPlacementRegistry.PlacementType.NO_RESTRICTIONS, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, EntitySpaceSquid::canSpaceFishSpawn);
+        EntitySpawnPlacementRegistry.register(STARCHOVY, EntitySpawnPlacementRegistry.PlacementType.NO_RESTRICTIONS, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, AbstractSpaceFish::canSpaceFishSpawn);
+        EntitySpawnPlacementRegistry.register(GLOPEPOD, EntitySpawnPlacementRegistry.PlacementType.NO_RESTRICTIONS, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, AbstractSpaceFish::canSpaceFishSpawn);
+        EntitySpawnPlacementRegistry.register(STARON, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, EntityStaron::canStaronSpawn);
+    }
+
+    private static final EntityType registerEntity(EntityType.Builder builder, String entityName) {
         ResourceLocation nameLoc = new ResourceLocation(Astronautical.MODID, entityName);
         return (EntityType) builder.build(entityName).setRegistryName(nameLoc);
+    }
+
+    public static void initializeAttributes() {
+        GlobalEntityTypeAttributes.put(SPACE_SQUID, EntitySpaceSquid.buildAttributes().func_233813_a_());
+        GlobalEntityTypeAttributes.put(STARCHOVY, EntityStarchovy.buildAttributes().func_233813_a_());
+        GlobalEntityTypeAttributes.put(GLOPEPOD, EntityGlopepod.buildAttributes().func_233813_a_());
+        GlobalEntityTypeAttributes.put(STARON, EntityStaron.buildAttributes().func_233813_a_());
+        GlobalEntityTypeAttributes.put(BLOCKIT_WORM, EntityBlockitWorm.buildAttributes().func_233813_a_());
+        GlobalEntityTypeAttributes.put(SCUTTLEFISH, EntityScuttlefish.buildAttributes().func_233813_a_());
     }
 
     @SubscribeEvent
@@ -47,6 +64,7 @@ public class AstroEntityRegistry {
         } catch (IllegalAccessException e) {
             throw new RuntimeException(e);
         }
+        initializeAttributes();
     }
 
     @SubscribeEvent
@@ -58,12 +76,5 @@ public class AstroEntityRegistry {
         event.getRegistry().register(new SpawnEggItem(BLOCKIT_WORM, 0X4C4227, 0X5F6837, new Item.Properties().group(Astronautical.TAB)).setRegistryName("astro:spawn_egg_blockit_worm"));
         event.getRegistry().register(new SpawnEggItem(SCUTTLEFISH, 0XA1BA9C, 0XFF6A00, new Item.Properties().group(Astronautical.TAB)).setRegistryName("astro:spawn_egg_scuttlefish"));
 
-    }
-
-    static {
-        EntitySpawnPlacementRegistry.register(SPACE_SQUID, EntitySpawnPlacementRegistry.PlacementType.NO_RESTRICTIONS, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, EntitySpaceSquid::canSpaceFishSpawn);
-        EntitySpawnPlacementRegistry.register(STARCHOVY, EntitySpawnPlacementRegistry.PlacementType.NO_RESTRICTIONS, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, AbstractSpaceFish::canSpaceFishSpawn);
-        EntitySpawnPlacementRegistry.register(GLOPEPOD, EntitySpawnPlacementRegistry.PlacementType.NO_RESTRICTIONS, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, AbstractSpaceFish::canSpaceFishSpawn);
-        EntitySpawnPlacementRegistry.register(STARON, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, EntityStaron::canStaronSpawn);
     }
 }

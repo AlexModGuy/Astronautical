@@ -6,8 +6,8 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.DirectionalBlock;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
-import net.minecraft.fluid.IFluidState;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.network.DebugPacketSender;
 import net.minecraft.state.BooleanProperty;
@@ -112,7 +112,7 @@ public class BlockSquidMucus extends DirectionalBlock {
 
     public BlockState getStateForPlacement(BlockItemUseContext context) {
         Direction direction = context.getFace();
-        IFluidState ifluidstate = context.getWorld().getFluidState(context.getPos());
+        FluidState ifluidstate = context.getWorld().getFluidState(context.getPos());
         BlockState blockstate = context.getWorld().getBlockState(context.getPos().offset(direction.getOpposite()));
         return this.getDefaultState().with(FACING, direction).with(WATERLOGGED, Boolean.valueOf(ifluidstate.isTagged(FluidTags.WATER) && ifluidstate.getLevel() == 8));
     }
@@ -121,7 +121,7 @@ public class BlockSquidMucus extends DirectionalBlock {
         builder.add(FACING, WATERLOGGED);
     }
 
-    public IFluidState getFluidState(BlockState state) {
+    public FluidState getFluidState(BlockState state) {
         return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
     }
 

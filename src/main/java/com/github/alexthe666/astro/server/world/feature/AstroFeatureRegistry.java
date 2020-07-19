@@ -10,8 +10,8 @@ public class AstroFeatureRegistry {
     public static Feature<NoFeatureConfig> ASTEROID;
 
     public static void register() {
-        PLANETOID = Registry.register(Registry.FEATURE, "planetoid", new FeaturePlanetoid(NoFeatureConfig::deserialize));
-        ASTEROID = Registry.register(Registry.FEATURE, "asteroid", new FeatureAsteroid(NoFeatureConfig::deserialize));
+        PLANETOID = Registry.register(Registry.FEATURE, "astro:planetoid", new FeaturePlanetoid(NoFeatureConfig.field_236558_a_));
+        ASTEROID = Registry.register(Registry.FEATURE, "astro:asteroid", new FeatureAsteroid(NoFeatureConfig.field_236558_a_));
 
     }
 }

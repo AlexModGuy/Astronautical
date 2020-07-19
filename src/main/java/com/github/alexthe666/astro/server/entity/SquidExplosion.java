@@ -19,9 +19,11 @@ import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.item.TNTEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.DamagingProjectileEntity;
+import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
-import net.minecraft.fluid.IFluidState;
 import net.minecraft.item.ItemStack;
+import net.minecraft.loot.LootContext;
+import net.minecraft.loot.LootParameters;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.FluidTags;
@@ -31,11 +33,10 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.*;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
-import net.minecraft.world.storage.loot.LootContext;
-import net.minecraft.world.storage.loot.LootParameters;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.Tags;
@@ -55,8 +56,8 @@ public class SquidExplosion extends Explosion {
     private final Entity exploder;
     private final float size;
     private final List<BlockPos> affectedBlockPositions = Lists.newArrayList();
-    private final Map<PlayerEntity, Vec3d> playerKnockbackMap = Maps.newHashMap();
-    private final Vec3d position;
+    private final Map<PlayerEntity, Vector3d> playerKnockbackMap = Maps.newHashMap();
+    private final Vector3d position;
     private DamageSource damageSource;
 
     @OnlyIn(Dist.CLIENT)
@@ -81,10 +82,10 @@ public class SquidExplosion extends Explosion {
         this.causesFire = causesFireIn;
         this.mode = modeIn;
         this.damageSource = DamageSourceSquid.causeSquidDamage(this);
-        this.position = new Vec3d(this.x, this.y, this.z);
+        this.position = new Vector3d(this.x, this.y, this.z);
     }
 
-    public static float getBlockDensity(Vec3d p_222259_0_, Entity p_222259_1_) {
+    public static float getBlockDensity(Vector3d p_222259_0_, Entity p_222259_1_) {
         AxisAlignedBB axisalignedbb = p_222259_1_.getBoundingBox();
         double d0 = 1.0D / ((axisalignedbb.maxX - axisalignedbb.minX) * 2.0D + 1.0D);
         double d1 = 1.0D / ((axisalignedbb.maxY - axisalignedbb.minY) * 2.0D + 1.0D);
@@ -101,8 +102,8 @@ public class SquidExplosion extends Explosion {
                         double d5 = MathHelper.lerp(f, axisalignedbb.minX, axisalignedbb.maxX);
                         double d6 = MathHelper.lerp(f1, axisalignedbb.minY, axisalignedbb.maxY);
                         double d7 = MathHelper.lerp(f2, axisalignedbb.minZ, axisalignedbb.maxZ);
-                        Vec3d vec3d = new Vec3d(d5 + d3, d6, d7 + d4);
-                        if (p_222259_1_.world.rayTraceBlocks(new RayTraceContext(vec3d, p_222259_0_, RayTraceContext.BlockMode.OUTLINE, RayTraceContext.FluidMode.NONE, p_222259_1_)).getType() == RayTraceResult.Type.MISS) {
+                        Vector3d Vector3d = new Vector3d(d5 + d3, d6, d7 + d4);
+                        if (p_222259_1_.world.rayTraceBlocks(new RayTraceContext(Vector3d, p_222259_0_, RayTraceContext.BlockMode.OUTLINE, RayTraceContext.FluidMode.NONE, p_222259_1_)).getType() == RayTraceResult.Type.MISS) {
                             ++i;
                         }
 
@@ -161,12 +162,12 @@ public class SquidExplosion extends Explosion {
                         for (float f1 = 0.3F; f > 0.0F; f -= 0.22500001F) {
                             BlockPos blockpos = new BlockPos(d4, d6, d8);
                             BlockState blockstate = this.world.getBlockState(blockpos);
-                            IFluidState ifluidstate = this.world.getFluidState(blockpos);
-                            if(blockstate.getBlock().isAir(blockstate) || ifluidstate.isTagged(FluidTags.WATER)){
+                            FluidState ifluidstate = this.world.getFluidState(blockpos);
+                            if(blockstate.isAir() || ifluidstate.isTagged(FluidTags.WATER)){
                                 set.add(blockpos);
                             }else{
                                 if ((!blockstate.isAir(this.world, blockpos) || !ifluidstate.isEmpty())) {
-                                    float f2 = Math.max(blockstate.getExplosionResistance(this.world, blockpos, exploder, this), 0);
+                                    float f2 = Math.max(blockstate.getExplosionResistance(this.world, blockpos, this), 0);
                                     if (this.exploder != null) {
                                         f2 = this.exploder.getExplosionResistance(this, this.world, blockpos, blockstate, ifluidstate, f2);
                                     }
@@ -197,11 +198,11 @@ public class SquidExplosion extends Explosion {
         int j1 = MathHelper.floor(this.z + (double) f3 + 1.0D);
         List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(this.exploder, new AxisAlignedBB(k1, i2, j2, l1, i1, j1));
         net.minecraftforge.event.ForgeEventFactory.onExplosionDetonate(this.world, this, list, f3);
-        Vec3d vec3d = new Vec3d(this.x, this.y, this.z);
+        Vector3d Vector3d = new Vector3d(this.x, this.y, this.z);
 
         for (int k2 = 0; k2 < list.size(); ++k2) {
             Entity entity = list.get(k2);
-            double d12 = MathHelper.sqrt(entity.getDistanceSq(vec3d)) / f3;
+            double d12 = MathHelper.sqrt(entity.getDistanceSq(Vector3d)) / f3;
             if (d12 <= 1.0D) {
                 double d5 = entity.getPosX() - this.x;
                 double d7 = entity.getPosYEye() - this.y;
@@ -211,7 +212,7 @@ public class SquidExplosion extends Explosion {
                     d5 = d5 / d13;
                     d7 = d7 / d13;
                     d9 = d9 / d13;
-                    double d14 = getBlockDensity(vec3d, entity);
+                    double d14 = getBlockDensity(Vector3d, entity);
                     double d10 = (1.0D - d12) * d14;
                     entity.attackEntityFrom(this.getDamageSource(), (float) ((int) ((d10 * d10 + d10) / 2.0D * 14.0D * (double) f3 + 1.0D)));
                     double d11 = d10;
@@ -223,7 +224,7 @@ public class SquidExplosion extends Explosion {
                     if (entity instanceof PlayerEntity) {
                         PlayerEntity playerentity = (PlayerEntity) entity;
                         if (!playerentity.isSpectator() && (!playerentity.isCreative() || !playerentity.abilities.isFlying)) {
-                            this.playerKnockbackMap.put(playerentity, new Vec3d(d5 * d10, d7 * d10, d9 * d10));
+                            this.playerKnockbackMap.put(playerentity, new Vector3d(d5 * d10, d7 * d10, d9 * d10));
                         }
                     }
                 }
@@ -233,8 +234,8 @@ public class SquidExplosion extends Explosion {
     }
 
     private boolean canBeDestroyedBySquid(BlockState state) {
-        return (BlockTags.LEAVES.contains(state.getBlock()) || BlockTags.LOGS.contains(state.getBlock()) || state.getBlock() == Blocks.GRASS_BLOCK) && AstronauticalConfig.squidfallGriefing
-                || state.getBlock().isAir(state) || state.getFluidState().isTagged(FluidTags.WATER);
+        return (BlockTags.LEAVES.func_230235_a_(state.getBlock()) || BlockTags.LOGS.func_230235_a_(state.getBlock()) || state.getBlock() == Blocks.GRASS_BLOCK) && AstronauticalConfig.squidfallGriefing
+                || state.isAir() || state.getFluidState().isTagged(FluidTags.WATER);
     }
 
     /**
@@ -288,7 +289,7 @@ public class SquidExplosion extends Explosion {
         }
 
         for (BlockPos blockpos2 : this.affectedBlockPositions) {
-            IFluidState ifluidstate = this.world.getFluidState(blockpos2);
+            FluidState ifluidstate = this.world.getFluidState(blockpos2);
             boolean water  = ifluidstate.isTagged(FluidTags.WATER);
             if(water && random.nextInt(8) != 0){
                 continue;
@@ -331,7 +332,7 @@ public class SquidExplosion extends Explosion {
         this.damageSource = damageSourceIn;
     }
 
-    public Map<PlayerEntity, Vec3d> getPlayerKnockbackMap() {
+    public Map<PlayerEntity, Vector3d> getPlayerKnockbackMap() {
         return this.playerKnockbackMap;
     }
 
@@ -347,7 +348,7 @@ public class SquidExplosion extends Explosion {
         } else if (this.exploder instanceof LivingEntity) {
             return (LivingEntity) this.exploder;
         } else {
-            return this.exploder instanceof DamagingProjectileEntity ? ((DamagingProjectileEntity) this.exploder).shootingEntity : null;
+            return this.exploder instanceof DamagingProjectileEntity ? (LivingEntity) ((DamagingProjectileEntity) this.exploder).func_234616_v_() : null;
         }
     }
 
@@ -359,7 +360,7 @@ public class SquidExplosion extends Explosion {
         return this.affectedBlockPositions;
     }
 
-    public Vec3d getPosition() {
+    public Vector3d getPosition() {
         return this.position;
     }
 }

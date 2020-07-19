@@ -13,7 +13,9 @@ import net.minecraft.client.world.ClientWorld;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Matrix4f;
+import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.util.math.vector.Vector3f;
 import net.minecraftforge.client.IRenderHandler;
 
 import javax.annotation.Nullable;
@@ -196,10 +198,10 @@ public class CosmicSkyRenderer implements IRenderHandler {
 
         ClientWorld world = Minecraft.getInstance().world;
         RenderSystem.disableTexture();
-        Vec3d vec3d = world.getSkyColor(Minecraft.getInstance().gameRenderer.getActiveRenderInfo().getBlockPos(), partialTicks);
-        float f = (float) vec3d.x;
-        float f1 = (float) vec3d.y;
-        float f2 = (float) vec3d.z;
+        Vector3d Vector3d = world.getSkyColor(Minecraft.getInstance().gameRenderer.getActiveRenderInfo().getBlockPos(), partialTicks);
+        float f = (float) Vector3d.x;
+        float f1 = (float) Vector3d.y;
+        float f2 = (float) Vector3d.z;
         FogRenderer.applyFog();
         RenderSystem.depthMask(false);
 
@@ -208,7 +210,7 @@ public class CosmicSkyRenderer implements IRenderHandler {
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
 
-        float[] afloat = world.dimension.calcSunriseSunsetColors(celestialAngle, partialTicks);
+        float[] afloat = world.func_239132_a_().func_230492_a_(world.getCelestialAngle(partialTicks), partialTicks);
         if (afloat != null) {
             RenderSystem.disableTexture();
             RenderSystem.shadeModel(7425);
@@ -293,7 +295,7 @@ public class CosmicSkyRenderer implements IRenderHandler {
         RenderSystem.disableTexture();
         RenderSystem.color3f(0.0F, 0.0F, 0.0F);
 
-        if (world.dimension.isSkyColored()) {
+        if (world.func_239132_a_().func_239216_b_()) {
             RenderSystem.color3f(f * 0.2F + 0.04F, f1 * 0.2F + 0.04F, f2 * 0.6F + 0.1F);
         } else {
             RenderSystem.color3f(f, f1, f2);

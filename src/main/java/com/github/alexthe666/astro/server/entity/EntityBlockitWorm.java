@@ -9,6 +9,8 @@ import net.minecraft.block.PistonBlock;
 import net.minecraft.block.PistonHeadBlock;
 import net.minecraft.block.material.PushReaction;
 import net.minecraft.entity.*;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.controller.BodyController;
 import net.minecraft.entity.boss.WitherEntity;
 import net.minecraft.entity.monster.MonsterEntity;
@@ -23,7 +25,7 @@ import net.minecraft.util.EntityPredicates;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
@@ -50,9 +52,9 @@ public class EntityBlockitWorm extends MonsterEntity {
         super(type, world);
     }
 
-    protected void registerAttributes() {
-        super.registerAttributes();
-        this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(30.0D);
+    public static AttributeModifierMap.MutableAttribute buildAttributes() {
+        return MobEntity.func_233666_p_()
+                .func_233815_a_(Attributes.field_233818_a_, 30.0D);
     }
 
 
@@ -118,7 +120,7 @@ public class EntityBlockitWorm extends MonsterEntity {
 
         BlockPos blockpos = this.dataManager.get(ATTACHED_BLOCK_POS).orElse((BlockPos)null);
         if (blockpos == null && !this.world.isRemote) {
-            blockpos = new BlockPos(this);
+            blockpos = new BlockPos(this.getPositionVec());
             this.dataManager.set(ATTACHED_BLOCK_POS, Optional.of(blockpos));
         }
 
@@ -187,7 +189,7 @@ public class EntityBlockitWorm extends MonsterEntity {
                 if (!list.isEmpty()) {
                     for(Entity entity : list) {
                         if (!(entity instanceof EntityBlockitWorm) && !entity.noClip) {
-                            entity.move(MoverType.SHULKER, new Vec3d(d2 * (double)direction3.getXOffset(), d2 * (double)direction3.getYOffset(), d2 * (double)direction3.getZOffset()));
+                            entity.move(MoverType.SHULKER, new Vector3d(d2 * (double)direction3.getXOffset(), d2 * (double)direction3.getYOffset(), d2 * (double)direction3.getZOffset()));
 
                         }
                     }
@@ -210,6 +212,10 @@ public class EntityBlockitWorm extends MonsterEntity {
             }
         }
 
+    }
+
+    private BlockPos getPosition() {
+        return new BlockPos(this.getPositionVec());
     }
 
     private AxisAlignedBB getMaximumExtendTargets() {
@@ -345,7 +351,7 @@ public class EntityBlockitWorm extends MonsterEntity {
 
     public void livingTick() {
         super.livingTick();
-        this.setMotion(Vec3d.ZERO);
+        this.setMotion(Vector3d.ZERO);
         this.prevRenderYawOffset = 180.0F;
         this.renderYawOffset = 180.0F;
         this.rotationYaw = 180.0F;

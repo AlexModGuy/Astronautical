@@ -11,7 +11,7 @@ import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -27,7 +27,7 @@ public class BlockPlanetoidGas extends BreakableBlock {
 
     public int colorBase = 0X000000;
     public BlockPlanetoidGas(String color, int colorBase) {
-        super(Block.Properties.create(Material.GLASS, MaterialColor.BLUE).lightValue(10).hardnessAndResistance(1.0F, 100F).variableOpacity().notSolid().doesNotBlockMovement().sound(SoundType.CLOTH));
+        super(Block.Properties.create(Material.GLASS, MaterialColor.BLUE).func_235838_a_((p_235470_0_) -> { return 12; }).hardnessAndResistance(1.0F, 100F).variableOpacity().notSolid().doesNotBlockMovement().sound(SoundType.CLOTH));
         this.setRegistryName("astro:planetoid_gas_" + color);
         this.colorBase = colorBase;
     }
@@ -43,6 +43,6 @@ public class BlockPlanetoidGas extends BreakableBlock {
     }
 
     public void onEntityCollision(BlockState state, World worldIn, BlockPos pos, Entity entityIn) {
-        entityIn.setMotionMultiplier(state, new Vec3d(0.75D, 0.75D, 0.75D));
+        entityIn.setMotionMultiplier(state, new Vector3d(0.75D, 0.75D, 0.75D));
     }
 }

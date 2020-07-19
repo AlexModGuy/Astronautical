@@ -83,7 +83,7 @@ public class TileEntityBlockitHole extends TileEntity implements ITickableTileEn
         for (LivingEntity kill : world.getEntitiesWithinAABB(LivingEntity.class, killBox)) {
             kill.attackEntityFrom(DamageSource.DROWN, 2);
             if(!(kill instanceof PlayerEntity) || ((PlayerEntity) kill).isCreative()){
-                kill.knockBack(kill, 0.5F, kill.getPosX() - (this.getPos().getX() + 0.5F), kill.getPosZ() - (this.getPos().getZ() + 0.5F));
+                kill.func_233627_a_(0.5F, kill.getPosX() - (this.getPos().getX() + 0.5F), kill.getPosZ() - (this.getPos().getZ() + 0.5F));
             }
         }
     }

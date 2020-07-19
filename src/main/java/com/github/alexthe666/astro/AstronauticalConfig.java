@@ -10,4 +10,5 @@ public class AstronauticalConfig {
     public static int fallingStarChance = 45;
     public static int fallingStarRandomRoll = 6;
     public static int exitDimensionID = 0;
+    public static boolean skipExperimentalSettingsGUI = true;
 }

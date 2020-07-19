@@ -5,6 +5,8 @@ import com.github.alexthe666.astro.server.misc.AstroTagRegistry;
 import com.google.common.base.Predicate;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.*;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.monster.CreeperEntity;
@@ -19,6 +21,7 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.ITag;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.Tag;
 import net.minecraft.util.Hand;
@@ -27,7 +30,7 @@ import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
@@ -47,13 +50,12 @@ public class EntityStaron extends AbstractSpaceFish {
 
     }
 
-    protected void registerAttributes() {
-        super.registerAttributes();
-        this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(30.0D);
-        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.35D);
-        this.getAttributes().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE);
-        this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(2.0D);
-        this.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(32.0D);
+    public static AttributeModifierMap.MutableAttribute buildAttributes() {
+        return MobEntity.func_233666_p_()
+                .func_233815_a_(Attributes.field_233818_a_, 30.0D)            //HEALTH
+                .func_233815_a_(Attributes.field_233821_d_, 0.35D)           //SPEED
+                .func_233815_a_(Attributes.field_233823_f_, 2.0D)            //ATTACK
+                .func_233815_a_(Attributes.field_233823_f_, 32.0D);            //FOLLOW RANGE
     }
 
     public float getPitchSensitivity() {
@@ -71,9 +73,9 @@ public class EntityStaron extends AbstractSpaceFish {
     }
 
     public static boolean isIronEntity(LivingEntity entity) {
-        Tag<Item> tag = ItemTags.getCollection().getOrCreate(AstroTagRegistry.STARON_AGGRO);
+        ITag<Item> tag = ItemTags.getCollection().getOrCreate(AstroTagRegistry.STARON_AGGRO);
         for (EquipmentSlotType slot : EquipmentSlotType.values()) {
-            if (tag.contains(entity.getItemStackFromSlot(slot).getItem())) {
+            if (tag.func_230235_a_(entity.getItemStackFromSlot(slot).getItem())) {
                 return true;
             }
         }
@@ -108,11 +110,11 @@ public class EntityStaron extends AbstractSpaceFish {
         speedModifier = (float) Math.sin(this.ticksExisted * 0.1F);
         this.setMotion(this.getMotion().mul(speedModifier, speedModifier, speedModifier));
         if (flightTarget == null || rand.nextFloat() < 0.05F) {
-            BlockPos height = world.getHeight(Heightmap.Type.WORLD_SURFACE, this.getPosition());
-            int upDistance = world.getMaxHeight() - height.getY();
-            BlockPos targetPos = this.getPosition().add(rand.nextInt(16) - 8, MathHelper.clamp(rand.nextInt(15) - 8, 0,world.getMaxHeight()), rand.nextInt(16) - 8);
+            BlockPos height = world.getHeight(Heightmap.Type.WORLD_SURFACE, new BlockPos(this.getPositionVec()));
+            int upDistance = 256 - height.getY();
+            BlockPos targetPos =  new BlockPos(this.getPositionVec()).add(rand.nextInt(16) - 8, MathHelper.clamp(rand.nextInt(15) - 8, 0, 256), rand.nextInt(16) - 8);
             if (this.canBlockPosBeSeen(targetPos)) {
-                flightTarget = new Vec3d(targetPos);
+                flightTarget = new Vector3d(targetPos.getX() + 0.5, targetPos.getY() + 0.5, targetPos.getZ() + 0.5);
             }
         }
         if (this.getAttackTarget() != null && this.getAttackTarget().isAlive()) {
@@ -126,8 +128,8 @@ public class EntityStaron extends AbstractSpaceFish {
     }
 
     public boolean shouldEatItem(ItemStack item) {
-        Tag<Item> tag = ItemTags.getCollection().getOrCreate(AstroTagRegistry.STARON_FOOD);
-        return tag.contains(item.getItem());
+        ITag<Item> tag = ItemTags.getCollection().getOrCreate(AstroTagRegistry.STARON_FOOD);
+        return tag.func_230235_a_(item.getItem());
     }
 
     public void onEatItem(ItemStack item){
@@ -202,7 +204,7 @@ public class EntityStaron extends AbstractSpaceFish {
         @Override
         public void startExecuting() {
             this.goalOwner.getNavigator().tryMoveToXYZ(this.targetEntity.getPosX(), this.targetEntity.getPosY(), this.targetEntity.getPosZ(), 1);
-            this.staron.flightTarget = new Vec3d(this.targetEntity.getPosX(), this.targetEntity.getPosY(), this.targetEntity.getPosZ());
+            this.staron.flightTarget = new Vector3d(this.targetEntity.getPosX(), this.targetEntity.getPosY(), this.targetEntity.getPosZ());
             super.startExecuting();
         }
 

@@ -11,6 +11,7 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.math.*;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 
@@ -20,7 +21,7 @@ import java.util.Random;
 
 public abstract class AbstractSpaceFish extends AnimalEntity {
     @Nullable
-    public Vec3d flightTarget = Vec3d.ZERO;
+    public Vector3d flightTarget = Vector3d.ZERO;
     public float prevFishPitch;
     private static final DataParameter<Float> FISH_PITCH = EntityDataManager.createKey(AbstractSpaceFish.class, DataSerializers.FLOAT);
 
@@ -33,7 +34,7 @@ public abstract class AbstractSpaceFish extends AnimalEntity {
         double x = pos.getX() + 0.5F;
         double y = pos.getY() + 0.5F;
         double z = pos.getZ() + 0.5F;
-        RayTraceResult result = this.world.rayTraceBlocks(new RayTraceContext(new Vec3d(this.getPosX(), this.getPosY() + (double) this.getEyeHeight(), this.getPosZ()), new Vec3d(x, y, z), RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.NONE, this));
+        RayTraceResult result = this.world.rayTraceBlocks(new RayTraceContext(new Vector3d(this.getPosX(), this.getPosY() + (double) this.getEyeHeight(), this.getPosZ()), new Vector3d(x, y, z), RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.NONE, this));
         double dist = result.getHitVec().squareDistanceTo(x, y, z);
         return dist <= 1.0D || result.getType() == RayTraceResult.Type.MISS;
     }
@@ -59,13 +60,13 @@ public abstract class AbstractSpaceFish extends AnimalEntity {
         this.fallDistance = 0.0F;
         this.setAir(200);
         prevFishPitch = this.getFishPitch();
-        if(flightTarget == Vec3d.ZERO){
+        if(flightTarget == Vector3d.ZERO){
             flightTarget = this.getPositionVec();
         }
         if (!this.onGround && this.getMotion().y < 0.0D) {
            // this.setMotion(this.getMotion().mul(1.0D, 0.6D, 1.0D));
         }
-        if(this.dimension != AstroWorldRegistry.COSMIC_SEA_TYPE){
+        if (!this.world.func_234923_W_().func_240901_a_().getPath().equals("cosmic_sea")) {
             this.setMotion(this.getMotion().x, this.getMotion().y + 0.08D, this.getMotion().z);
         }
         if(!onGround){

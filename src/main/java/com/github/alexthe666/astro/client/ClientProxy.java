@@ -56,7 +56,7 @@ public class ClientProxy extends CommonProxy {
         Astronautical.LOGGER.info("loaded in block colorizer");
         event.getBlockColors().register((state, worldIn, pos, colorIn) -> {
             int color = 0;
-            Block block = worldIn.getBlockState(pos).getBlock();
+            Block block = state.getBlock();
             if (block instanceof BlockPlanetoidGas) {
                 color = ((BlockPlanetoidGas) block).colorBase;
             }
@@ -73,7 +73,7 @@ public class ClientProxy extends CommonProxy {
         }, AstroBlockRegistry.PLANETOID_GAS_BLUE, AstroBlockRegistry.PLANETOID_GAS_GREEN, AstroBlockRegistry.PLANETOID_GAS_ORANGE, AstroBlockRegistry.PLANETOID_GAS_PURPLE, AstroBlockRegistry.PLANETOID_GAS_TEAL, AstroBlockRegistry.PLANETOID_GAS_YELLOW);
         event.getBlockColors().register((state, worldIn, pos, colorIn) -> {
             int color = 0;
-            Block block = worldIn.getBlockState(pos).getBlock();
+            Block block = state.getBlock();
             if (block instanceof BlockPlanetoidRing) {
                 color = ((BlockPlanetoidRing) block).colorBase;
             }

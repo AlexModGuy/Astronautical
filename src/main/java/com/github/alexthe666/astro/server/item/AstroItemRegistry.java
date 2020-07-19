@@ -16,7 +16,7 @@ import java.lang.reflect.Field;
 @Mod.EventBusSubscriber(modid = Astronautical.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class AstroItemRegistry {
 
-    public static CustomArmorMaterial GLASS_HELMET_MATERIAL = new CustomArmorMaterial("GlassHelmet", 15, new int[]{2, 0, 0, 1}, 10, SoundEvents.ITEM_ARMOR_EQUIP_TURTLE, 0);
+    public static CustomArmorMaterial GLASS_HELMET_MATERIAL = new CustomArmorMaterial("GlassHelmet", 15, new int[]{2, 0, 0, 1}, 10, SoundEvents.ITEM_ARMOR_EQUIP_TURTLE, 0, 0);
     public static final Item STARFISH = new Item(new Item.Properties().group(Astronautical.TAB)).setRegistryName("astro:starfish");
     public static final Item FALLING_STAR_RENDER = new Item(new Item.Properties()).setRegistryName("astro:falling_star_render");
     public static final Item FALLING_STAR = new ItemSpecialRender(new Item.Properties().group(Astronautical.TAB)).setRegistryName("astro:falling_star");

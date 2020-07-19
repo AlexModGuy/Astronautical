@@ -10,6 +10,8 @@ import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.*;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.controller.MovementController;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.passive.TameableEntity;
@@ -25,16 +27,17 @@ import net.minecraft.potion.EffectInstance;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.FluidTags;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.*;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
@@ -42,6 +45,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
@@ -60,7 +64,7 @@ public class EntitySpaceSquid extends TameableEntity implements IAnimatedEntity 
     public float injuredProgress;
     public int suffocateCounter = -1;
     @Nullable
-    private Vec3d flightTarget;
+    private Vector3d flightTarget;
     private BlockPos circlingPosition = null;
     public float prevSquidRotation;
     private float randomMotionSpeed;
@@ -78,12 +82,11 @@ public class EntitySpaceSquid extends TameableEntity implements IAnimatedEntity 
         this.rotationVelocity = 1.0F / (this.rand.nextFloat() + 1.0F) * 0.2F;
     }
 
-    protected void registerAttributes() {
-        super.registerAttributes();
-        this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(300.0D);
-        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25D);
-        this.getAttributes().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE);
-        this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(2.0D);
+    public static AttributeModifierMap.MutableAttribute buildAttributes() {
+        return MobEntity.func_233666_p_()
+                .func_233815_a_(Attributes.field_233818_a_, 300.0D)            //HEALTH
+                .func_233815_a_(Attributes.field_233821_d_, 0.25D)           //SPEED
+                .func_233815_a_(Attributes.field_233823_f_, 2.0D);            //ATTACK
     }
 
     @Override
@@ -140,7 +143,7 @@ public class EntitySpaceSquid extends TameableEntity implements IAnimatedEntity 
             float f2 = MathHelper.cos(this.rotationYaw * ((float)Math.PI / 180F));
             this.setMotion(this.getMotion().add(f * 0.01F, 0, f2 * 0.01F));
             for (BlockPos pos : BlockPos.getAllInBox(this.getPosition().add(-3, -3, -3), this.getPosition().add(3, 3, 3)).map(BlockPos::toImmutable).collect(Collectors.toList())) {
-                if(BlockTags.LEAVES.contains(world.getBlockState(pos).getBlock())){
+                if(BlockTags.LEAVES.func_230235_a_(world.getBlockState(pos).getBlock())){
                     world.destroyBlock(pos, true);
                 }
             }
@@ -163,16 +166,16 @@ public class EntitySpaceSquid extends TameableEntity implements IAnimatedEntity 
             this.setMotion(this.getMotion().x, this.getMotion().y + 0.08D, this.getMotion().z);
             if(this.getAttackTarget() == null || this.flightTarget == null  || this.getDistanceSq(flightTarget.x, flightTarget.y, flightTarget.z) < 9 || !this.world.isAirBlock(new BlockPos(flightTarget))){
                 if(circlingPosition == null){
-                    if(world.getDimension().getType() == AstroWorldRegistry.COSMIC_SEA_TYPE){
+                    if (this.world.func_234923_W_().func_240901_a_().getPath().equals("cosmic_sea")) {
                         BlockPos height = world.getHeight(Heightmap.Type.WORLD_SURFACE, this.getPosition());
-                        int upDistance = world.getMaxHeight() - height.getY();
-                        BlockPos targetPos = this.getPosition().add(rand.nextInt(16) - 8, MathHelper.clamp(rand.nextInt(15) - 8, 0,world.getMaxHeight()), rand.nextInt(16) - 8);
+                        int upDistance = 256 - height.getY();
+                        BlockPos targetPos = this.getPosition().add(rand.nextInt(16) - 8, MathHelper.clamp(rand.nextInt(15) - 8, 0, 256), rand.nextInt(16) - 8);
                         if (this.canBlockPosBeSeen(targetPos)) {
                             circlingPosition = targetPos;
                         }
                     }else{
                         circlingPosition = world.getHeight(Heightmap.Type.WORLD_SURFACE, this.getPosition()).up(20 + rand.nextInt(10));
-                        if(isSpaceBound() && world.getDimension().getType() == DimensionType.OVERWORLD){
+                            if(isSpaceBound() && this.world.func_234923_W_().func_240901_a_().getPath().equals("overworld")){
                             circlingPosition = new BlockPos(circlingPosition.getX(), 350, circlingPosition.getZ());
                         }
                     }
@@ -222,7 +225,7 @@ public class EntitySpaceSquid extends TameableEntity implements IAnimatedEntity 
             explosion.doExplosionB(true);
             for (PlayerEntity player : world.getEntitiesWithinAABB(PlayerEntity.class, new AxisAlignedBB((double) i - d0, (double) j - d0, (double) k - d0, (double) i + d0, (double) j + d0, (double) k + d0))) {
                 player.addPotionEffect(new EffectInstance(AstroEffectRegistry.SQUIDFALL_EFFECT, 15, 0, true, false));
-                player.sendStatusMessage(new TranslationTextComponent("message.astro.squidfall").applyTextStyle(TextFormatting.DARK_PURPLE), false);
+                player.sendStatusMessage(new TranslationTextComponent("message.astro.squidfall").func_240699_a_(TextFormatting.DARK_PURPLE), false);
             }
         }
         if(this.isFallen()){
@@ -243,7 +246,11 @@ public class EntitySpaceSquid extends TameableEntity implements IAnimatedEntity 
         }
     }
 
-    private Vec3d getBlockInViewCircling() {
+    private BlockPos getPosition() {
+        return new BlockPos(this.getPositionVec());
+    }
+
+    private Vector3d getBlockInViewCircling() {
         float radius = 12;
         float neg = this.getRNG().nextBoolean() ? 1 : -1;
         float renderYawOffset = this.renderYawOffset;
@@ -256,7 +263,7 @@ public class EntitySpaceSquid extends TameableEntity implements IAnimatedEntity 
                     (distFromGround > 16 ? circlingPos.getY() : circlingPos.getY() + 5 + this.getRNG().nextInt(26)),
                     (circlingPos.getZ() + this.getRNG().nextInt(fromHome) - fromHome / 2));
             if (canBlockPosBeSeen(pos) && this.getDistanceSq(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D) > 6) {
-                return new Vec3d(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D);
+                return new Vector3d(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D);
             }
         }
         return null;
@@ -273,9 +280,9 @@ public class EntitySpaceSquid extends TameableEntity implements IAnimatedEntity 
     }
 
     public boolean canBlockPosBeSeen(BlockPos pos) {
-        Vec3d vec3d = new Vec3d(this.getPosX(), this.getPosYEye(), this.getPosZ());
-        Vec3d vec3d1 = new Vec3d(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D);
-        return this.world.rayTraceBlocks(new RayTraceContext(vec3d, vec3d1, RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.NONE, this)).getType() == RayTraceResult.Type.MISS;
+        Vector3d Vector3d = new Vector3d(this.getPosX(), this.getPosYEye(), this.getPosZ());
+        Vector3d Vector3d1 = new Vector3d(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D);
+        return this.world.rayTraceBlocks(new RayTraceContext(Vector3d, Vector3d1, RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.NONE, this)).getType() == RayTraceResult.Type.MISS;
     }
 
     private BlockPos getCirclingPosition() {
@@ -420,9 +427,9 @@ public class EntitySpaceSquid extends TameableEntity implements IAnimatedEntity 
         return spawnDataIn;
     }
 
-    public boolean processInteract(PlayerEntity player, Hand hand) {
+    public ActionResultType func_230254_b_(PlayerEntity player, Hand hand) {
         ItemStack itemstack = player.getHeldItem(hand);
-        if(!super.processInteract(player, hand)) {
+        if(super.func_230254_b_(player, hand) == ActionResultType.PASS) {
             if (itemstack.getItem() == AstroItemRegistry.COSMOS_STAR && this.isFallen()) {
                 this.setDirty(false);
                 this.setFallen(false);
@@ -434,21 +441,21 @@ public class EntitySpaceSquid extends TameableEntity implements IAnimatedEntity 
                 if (!player.isCreative()) {
                     itemstack.shrink(1);
                 }
-                return true;
+                return ActionResultType.SUCCESS;
             }
             if (itemstack.getItem() == Items.SADDLE && !this.isSaddled()) {
                 if (!player.isCreative()) {
                     itemstack.shrink(1);
                 }
                 this.setSaddled(true);
-                return true;
+                return ActionResultType.SUCCESS;
             }
             if(this.isSaddled() && !this.isBeingRidden()){
                 player.startRiding(this);
-                return true;
+                return ActionResultType.SUCCESS;
             }
         }
-        return false;
+        return ActionResultType.PASS;
     }
 
     @Nullable

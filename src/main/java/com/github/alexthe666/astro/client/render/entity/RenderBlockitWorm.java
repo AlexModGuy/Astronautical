@@ -2,16 +2,16 @@ package com.github.alexthe666.astro.client.render.entity;
 
 import com.github.alexthe666.astro.client.model.ModelBlockitWorm;
 import com.github.alexthe666.astro.server.entity.EntityBlockitWorm;
+import com.github.alexthe666.astro.server.entity.EntitySpaceSquid;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.*;
-import net.minecraft.client.renderer.culling.ClippingHelperImpl;
+import net.minecraft.client.renderer.culling.ClippingHelper;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.LivingRenderer;
-import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.model.ShulkerModel;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.entity.Entity;
@@ -19,13 +19,17 @@ import net.minecraft.entity.monster.ShulkerEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 
-public class RenderBlockitWorm extends MobRenderer<EntityBlockitWorm, ModelBlockitWorm> {
+public class RenderBlockitWorm extends LivingRenderer<EntityBlockitWorm, ModelBlockitWorm> {
     private static final ResourceLocation WORM_TEXTURE = new ResourceLocation("astro:textures/entity/blockit_worm.png");
 
     public RenderBlockitWorm(EntityRendererManager manager) {
         super(manager, new ModelBlockitWorm(), 0);
+    }
+
+    protected float getDeathMaxRotation(EntityBlockitWorm entityLivingBaseIn) {
+        return 0F;
     }
 
     public void render(EntityBlockitWorm entity, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn) {
@@ -45,7 +49,7 @@ public class RenderBlockitWorm extends MobRenderer<EntityBlockitWorm, ModelBlock
         super.render(entity, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
     }
 
-    public Vec3d getRenderOffset(EntityBlockitWorm entityIn, float partialTicks) {
+    public Vector3d getRenderOffset(EntityBlockitWorm entityIn, float partialTicks) {
         int i = entityIn.getClientTeleportInterp();
         if (i > 0 && entityIn.isAttachedToBlock()) {
             BlockPos blockpos = entityIn.getAttachmentPos();
@@ -55,20 +59,20 @@ public class RenderBlockitWorm extends MobRenderer<EntityBlockitWorm, ModelBlock
             double d1 = (double)(blockpos.getX() - blockpos1.getX()) * d0;
             double d2 = (double)(blockpos.getY() - blockpos1.getY()) * d0;
             double d3 = (double)(blockpos.getZ() - blockpos1.getZ()) * d0;
-            return new Vec3d(-d1, -d2, -d3);
+            return new Vector3d(-d1, -d2, -d3);
         } else {
             return super.getRenderOffset(entityIn, partialTicks);
         }
     }
 
-    public boolean shouldRender(EntityBlockitWorm livingEntityIn, ClippingHelperImpl camera, double camX, double camY, double camZ) {
+    public boolean shouldRender(EntityBlockitWorm livingEntityIn, ClippingHelper camera, double camX, double camY, double camZ) {
         if (super.shouldRender(livingEntityIn, camera, camX, camY, camZ)) {
             return true;
         } else {
             if (livingEntityIn.getClientTeleportInterp() > 0 && livingEntityIn.isAttachedToBlock()) {
-                Vec3d vec3d = new Vec3d(livingEntityIn.getAttachmentPos());
-                Vec3d vec3d1 = new Vec3d(livingEntityIn.getOldAttachPos());
-                if (camera.isBoundingBoxInFrustum(new AxisAlignedBB(vec3d1.x, vec3d1.y, vec3d1.z, vec3d.x, vec3d.y, vec3d.z))) {
+                Vector3d Vector3d = new Vector3d(livingEntityIn.getAttachmentPos().getX(), livingEntityIn.getAttachmentPos().getY(), livingEntityIn.getAttachmentPos().getZ());
+                Vector3d Vector3d1 = new Vector3d(livingEntityIn.getOldAttachPos().getX(), livingEntityIn.getOldAttachPos().getY(), livingEntityIn.getOldAttachPos().getZ());
+                if (camera.isBoundingBoxInFrustum(new AxisAlignedBB(Vector3d1.x, Vector3d1.y, Vector3d1.z, Vector3d.x, Vector3d.y, Vector3d.z))) {
                     return true;
                 }
             }

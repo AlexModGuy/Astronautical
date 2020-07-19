@@ -11,7 +11,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.text.ITextComponent;
@@ -30,7 +29,7 @@ public class BlockPlanetoidRing extends BreakableBlock {
     protected static final VoxelShape SHAPE = Block.makeCuboidShape(0.0D, 6.0D, 0.0D, 16.0D, 10.0D, 16.0D);
     public int colorBase = 0X000000;
     public BlockPlanetoidRing(String color, int colorBase) {
-        super(Properties.create(Material.GLASS, MaterialColor.BLUE).lightValue(3).hardnessAndResistance(3.0F, 100F).variableOpacity().notSolid().sound(SoundType.GLASS));
+        super(Properties.create(Material.GLASS, MaterialColor.BLUE).func_235838_a_((p_235470_0_) -> { return 3; }).hardnessAndResistance(3.0F, 100F).variableOpacity().notSolid().sound(SoundType.GLASS));
         this.setRegistryName("astro:planetoid_ring_" + color);
         this.colorBase = colorBase;
     }

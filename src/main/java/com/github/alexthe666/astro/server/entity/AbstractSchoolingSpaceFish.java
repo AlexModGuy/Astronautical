@@ -8,7 +8,7 @@ import net.minecraft.entity.SpawnReason;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
@@ -76,14 +76,14 @@ public abstract class AbstractSchoolingSpaceFish extends AbstractSpaceFish {
         if(this.isGroupLeader() || groupLeader == null){
             if(flightTarget == null || circlingPosition == null || rand.nextFloat() < 0.05F){
                 if(circlingPosition == null || rand.nextFloat() < 0.25F){
-                    BlockPos height = world.getHeight(Heightmap.Type.WORLD_SURFACE, this.getPosition());
-                    int upDistance = world.getMaxHeight() - height.getY();
-                    BlockPos targetPos = this.getPosition().add(rand.nextInt(16) - 8, MathHelper.clamp(rand.nextInt(15) - 8, 0,world.getMaxHeight()), rand.nextInt(16) - 8);
+                    BlockPos height = world.getHeight(Heightmap.Type.WORLD_SURFACE, new BlockPos( this.getPositionVec()));
+                    int upDistance = 256 - height.getY();
+                    BlockPos targetPos =  new BlockPos( this.getPositionVec()).add(rand.nextInt(16) - 8, MathHelper.clamp(rand.nextInt(15) - 8, 0, 256), rand.nextInt(16) - 8);
                     if (this.canBlockPosBeSeen(targetPos)) {
                         circlingPosition = targetPos;
+                        flightTarget = new Vector3d(circlingPosition.getX() + 0.5D, circlingPosition.getY() + 0.5D, circlingPosition.getZ() + 0.5D);
                     }
                 }
-                flightTarget = new Vec3d(circlingPosition);
             }
         }
 
@@ -94,7 +94,7 @@ public abstract class AbstractSchoolingSpaceFish extends AbstractSpaceFish {
         return circlingPosition;
     }
 
-    private Vec3d getBlockInViewCircling() {
+    private Vector3d getBlockInViewCircling() {
         float radius = 12;
         float neg = this.getRNG().nextBoolean() ? 1 : -1;
         float renderYawOffset = this.renderYawOffset;
@@ -107,7 +107,7 @@ public abstract class AbstractSchoolingSpaceFish extends AbstractSpaceFish {
                     (distFromGround > 16 ? circlingPos.getY() : circlingPos.getY() + 5 + this.getRNG().nextInt(26)),
                     (circlingPos.getZ() + this.getRNG().nextInt(fromHome) - fromHome / 2));
             if (canBlockPosBeSeen(pos) && this.getDistanceSq(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D) > 6) {
-                return new Vec3d(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D);
+                return new Vector3d(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D);
             }
         }
         return null;

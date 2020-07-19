@@ -2,17 +2,24 @@ package com.github.alexthe666.astro.server.world.feature;
 
 import com.github.alexthe666.astro.server.block.AstroBlockRegistry;
 import com.github.alexthe666.astro.server.block.BlockStarnacle;
-import com.mojang.datafixers.Dynamic;
+import com.github.alexthe666.astro.server.entity.AstroEntityRegistry;
+import com.github.alexthe666.astro.server.entity.EntityBlockitWorm;
+import com.mojang.serialization.Codec;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.entity.ILivingEntityData;
+import net.minecraft.entity.SpawnReason;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.ISeedReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.GenerationSettings;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
+import net.minecraft.world.gen.feature.structure.StructureManager;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -22,12 +29,12 @@ import java.util.function.Function;
 
 public class FeatureAsteroid extends Feature<NoFeatureConfig> {
 
-    public FeatureAsteroid(Function<Dynamic<?>, ? extends NoFeatureConfig> p_i49873_1_) {
-        super(p_i49873_1_);
+    public FeatureAsteroid(Codec<NoFeatureConfig> p_i231953_1_) {
+        super(p_i231953_1_);
     }
 
     @Override
-    public boolean place(IWorld worldIn, ChunkGenerator<? extends GenerationSettings> generator, Random rand, BlockPos pos, NoFeatureConfig config) {
+    public boolean func_230362_a_(ISeedReader worldIn, StructureManager p_230362_2_, ChunkGenerator p_230362_3_, Random rand, BlockPos pos, NoFeatureConfig p_230362_6_) {
         if(rand.nextFloat() > getAsteroidChance()){
             return false;
         }
@@ -113,6 +120,13 @@ public class FeatureAsteroid extends Feature<NoFeatureConfig> {
     }
 
     public void decorateAsteroid(IWorld worldIn, BlockPos pos, Direction facing){
-
+        if(worldIn.getRandom().nextInt(56) == 0){
+            worldIn.setBlockState(pos, Blocks.AIR.getDefaultState(), 2);
+            EntityBlockitWorm blockitWorm = AstroEntityRegistry.BLOCKIT_WORM.create(worldIn.getWorld());
+            blockitWorm.enablePersistence();
+            blockitWorm.setLocationAndAngles((double)pos.getX() + 0.5D, (double)pos.getY(), (double)pos.getZ() + 0.5D, 0.0F, 0.0F);
+            blockitWorm.onInitialSpawn(worldIn, worldIn.getDifficultyForLocation(pos), SpawnReason.STRUCTURE, (ILivingEntityData)null, (CompoundNBT)null);
+            worldIn.addEntity(blockitWorm);
+        }
     }
 }
