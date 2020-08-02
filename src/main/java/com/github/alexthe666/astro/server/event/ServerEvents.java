@@ -60,13 +60,13 @@ public class ServerEvents {
                     Block block = ((BlockItem)event.getItemStack().getItem()).getBlock();
                     BlockState prevState = event.getWorld().getBlockState(event.getPos().offset(event.getFace()));
                     boolean flag = false;
-                    if(block == Blocks.CAMPFIRE){
-                        BlockState state = Blocks.CAMPFIRE.getDefaultState().with(CampfireBlock.LIT, false);
+                    if(block == Blocks.CAMPFIRE || block == Blocks.field_235367_mf_){
+                        BlockState state = block.getDefaultState().with(CampfireBlock.LIT, false);
                         event.getWorld().setBlockState(event.getPos().offset(event.getFace()), state);
                         event.setUseItem(Event.Result.ALLOW);
                         flag = true;
                     }
-                    if(event.getItemStack().getItem() == Items.TORCH){
+                    if(event.getItemStack().getItem() == Items.TORCH || event.getItemStack().getItem() == Items.field_234737_dp_){
                         if(Block.hasEnoughSolidSide(event.getWorld(), event.getPos(), event.getFace()) && event.getFace() != Direction.DOWN && prevState.isAir()){
                             BlockState groundState = AstroBlockRegistry.BURNT_TORCH.getDefaultState();
                             if(event.getFace().getAxis() == Direction.Axis.Y){

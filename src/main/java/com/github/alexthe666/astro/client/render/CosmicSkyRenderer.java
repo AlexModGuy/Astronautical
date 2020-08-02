@@ -28,40 +28,46 @@ public class CosmicSkyRenderer implements IRenderHandler {
     private static final ResourceLocation SUN_TEXTURES = new ResourceLocation("textures/environment/sun.png");
     private static final ResourceLocation EARTH_TEXTURES = new ResourceLocation("astro:textures/environment/earth.png");
     private static final ResourceLocation EARTH_CLOUD_TEXTURES = new ResourceLocation("astro:textures/environment/earth_clouds.png");
-    private static final ResourceLocation STAR_TEXTURES = new ResourceLocation("astro:textures/environment/various_stars.png");
+    private static final ResourceLocation STAR_TEXTURES = new ResourceLocation("astro:textures/environment/stars_twinkle.png");
     private static final int[] POSSIBLE_STAR_COLORS = new int[]{
             0XFFFFFF, 0XFFCECE, 0XC9FFFF, 0XFFF6CC
     };
+    private static final int STAR_TWINKLE_FRAMES = 8;
     private static int STAR_TYPE_COUNT = 8;
     private static int STAR_TEXTURE_SIZE_PX = 256;
     private final VertexFormat skyVertexFormat = DefaultVertexFormats.POSITION_COLOR_TEX;
+    private boolean hasGeneratedStars = false;
     @Nullable
-    private VertexBuffer starVBO;
+    private VertexBuffer[] starVBO;
 
     public CosmicSkyRenderer() {
-        generateStars();
     }
 
     private void generateStars() {
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder bufferbuilder = tessellator.getBuffer();
-        if (this.starVBO != null) {
-            this.starVBO.close();
+        this.starVBO = new VertexBuffer[STAR_TWINKLE_FRAMES];
+        hasGeneratedStars = true;
+        for (int i = 0; i < STAR_TWINKLE_FRAMES; i++) {
+            if (this.starVBO[i] != null) {
+                this.starVBO[i].close();
+            }
+            this.starVBO[i] = new VertexBuffer(this.skyVertexFormat);
+            this.renderStars(bufferbuilder, i);
+            bufferbuilder.finishDrawing();
+            this.starVBO[i].upload(bufferbuilder);
         }
-
-        this.starVBO = new VertexBuffer(this.skyVertexFormat);
-        this.renderStars(bufferbuilder);
-        bufferbuilder.finishDrawing();
-        this.starVBO.upload(bufferbuilder);
     }
 
-    private void renderStars(BufferBuilder bufferBuilderIn) {
-        Random random = new Random(10842L);
+    private void renderStars(BufferBuilder bufferBuilderIn, int starFrame) {
+        Random random = new Random(2L);
         bufferBuilderIn.begin(1, DefaultVertexFormats.POSITION_COLOR_TEX);
         int starColorsCount = POSSIBLE_STAR_COLORS.length;
         int starCount = 3000;
 
         for (int i = 0; i < starCount; ++i) {
+            int starStartFrame = random.nextInt(STAR_TWINKLE_FRAMES);
+            int actualStarFame = (starStartFrame + starFrame) % STAR_TWINKLE_FRAMES;
             double d0 = random.nextFloat() * 2.0F - 1.0F;
             double d1 = random.nextFloat() * 2.0F - 1.0F;
             double d2 = random.nextFloat() * 2.0F - 1.0F;
@@ -90,6 +96,7 @@ public class CosmicSkyRenderer implements IRenderHandler {
                 double d14 = random.nextDouble() * Math.PI * 0D;
                 double d15 = Math.sin(d14);
                 double d16 = Math.cos(d14);
+                int starBrightness = 100 + random.nextInt(155);
                 if (Math.abs(d6) < 99) {
                     for (int j = 0; j < 4; ++j) {
                         double d17 = 0.0D;
@@ -102,27 +109,27 @@ public class CosmicSkyRenderer implements IRenderHandler {
                         double d24 = 0.0D * d12 - d21 * d13;
                         double d25 = d24 * d9 - d22 * d10;
                         double d26 = d22 * d9 + d24 * d10;
-                        int brightnessSub = random.nextInt(30);
                         float u = 0;
                         float v = 0;
                         float textureOffset = texture * 32F / STAR_TEXTURE_SIZE_PX;
+                        float vStart = actualStarFame * 32F / STAR_TEXTURE_SIZE_PX;
                         if (j == 0) {
                             u = textureOffset;
-                            v = 0;
+                            v = vStart;
                         }
                         if (j == 1) {
                             u = textureOffset;
-                            v = 1;
+                            v = vStart + 32F / STAR_TEXTURE_SIZE_PX;
                         }
                         if (j == 2) {
                             u = textureOffset + 32F / STAR_TEXTURE_SIZE_PX;
-                            v = 1;
+                            v = vStart + 32F / STAR_TEXTURE_SIZE_PX;
                         }
                         if (j == 3) {
                             u = textureOffset + 32F / STAR_TEXTURE_SIZE_PX;
-                            v = 0;
+                            v = vStart;
                         }
-                        bufferBuilderIn.pos(d5 + d25 * randomScale, d6 + d23 * randomScale, d7 + d26 * randomScale).color(r, g, b, 255).tex(u, v).endVertex();
+                        bufferBuilderIn.pos(d5 + d25 * randomScale, d6 + d23 * randomScale, d7 + d26 * randomScale).color(r, g, b, starBrightness).tex(u, v).endVertex();
                     }
                 }
             }
@@ -132,7 +139,9 @@ public class CosmicSkyRenderer implements IRenderHandler {
 
     public void renderSky(MatrixStack matrixStackIn, float partialTicks) {
         float celestialAngle = 0.0F;
-        generateStars();
+        if (!hasGeneratedStars) {
+            generateStars();
+        }
         ActiveRenderInfo info = Minecraft.getInstance().gameRenderer.getActiveRenderInfo();
         matrixStackIn.rotate(Vector3f.XP.rotationDegrees(info.getPitch()));
         matrixStackIn.rotate(Vector3f.YP.rotationDegrees(info.getYaw() + 180.0F));
@@ -258,34 +267,37 @@ public class CosmicSkyRenderer implements IRenderHandler {
         bufferbuilder.pos(matrix4f1, -f12, 100.0F, f12).tex(0.0F, 1.0F).endVertex();
         bufferbuilder.finishDrawing();
         WorldVertexBufferUploader.draw(bufferbuilder);
-
-        Minecraft.getInstance().textureManager.bindTexture(STAR_TEXTURES);
-        float f10 = 1.0F;
-        this.starVBO.bindBuffer();
-        this.skyVertexFormat.setupBufferState(0L);
-        this.starVBO.draw(matrixStackIn.getLast().getMatrix(), 7);
-        VertexBuffer.unbindBuffer();
-        this.skyVertexFormat.clearBufferState();
-
-
         f12 = 10.0F;
+        matrixStackIn.rotate(Vector3f.XP.rotationDegrees(180.0F));
         Minecraft.getInstance().textureManager.bindTexture(EARTH_TEXTURES);
         bufferbuilder.begin(7, DefaultVertexFormats.POSITION_TEX);
-        bufferbuilder.pos(matrix4f1, -f12, -100.0F, -f12).tex(0.0F, 0.0F).endVertex();
-        bufferbuilder.pos(matrix4f1, f12, -100.0F, -f12).tex(1.0F, 0.0F).endVertex();
-        bufferbuilder.pos(matrix4f1, f12, -100.0F, f12).tex(1.0F, 1.0F).endVertex();
-        bufferbuilder.pos(matrix4f1, -f12, -100.0F, f12).tex(0.0F, 1.0F).endVertex();
+        bufferbuilder.pos(matrix4f1, -f12, 100.0F, -f12).tex(0.0F, 0.0F).endVertex();
+        bufferbuilder.pos(matrix4f1, f12, 100.0F, -f12).tex(1.0F, 0.0F).endVertex();
+        bufferbuilder.pos(matrix4f1, f12, 100.0F, f12).tex(1.0F, 1.0F).endVertex();
+        bufferbuilder.pos(matrix4f1, -f12, 100.0F, f12).tex(0.0F, 1.0F).endVertex();
         bufferbuilder.finishDrawing();
         WorldVertexBufferUploader.draw(bufferbuilder);
         float cloudMovement = (partialTicks + Minecraft.getInstance().player.ticksExisted) * 0.001F;
         Minecraft.getInstance().textureManager.bindTexture(EARTH_CLOUD_TEXTURES);
         bufferbuilder.begin(7, DefaultVertexFormats.POSITION_TEX);
-        bufferbuilder.pos(matrix4f1, -f12, -99.0F, -f12).tex(0.0F + cloudMovement, 0.0F + cloudMovement).endVertex();
-        bufferbuilder.pos(matrix4f1, f12, -99.0F, -f12).tex(0.25F + cloudMovement, 0.0F + cloudMovement).endVertex();
-        bufferbuilder.pos(matrix4f1, f12, -99.0F, f12).tex(0.25F + cloudMovement, 0.25F + cloudMovement).endVertex();
-        bufferbuilder.pos(matrix4f1, -f12, -99.0F, f12).tex(0.0F + cloudMovement, 0.25F + cloudMovement).endVertex();
+        bufferbuilder.pos(matrix4f1, -f12, 99.0F, -f12).tex(0.0F + cloudMovement, 0.0F + cloudMovement).endVertex();
+        bufferbuilder.pos(matrix4f1, f12, 99.0F, -f12).tex(0.25F + cloudMovement, 0.0F + cloudMovement).endVertex();
+        bufferbuilder.pos(matrix4f1, f12, 99.0F, f12).tex(0.25F + cloudMovement, 0.25F + cloudMovement).endVertex();
+        bufferbuilder.pos(matrix4f1, -f12, 99.0F, f12).tex(0.0F + cloudMovement, 0.25F + cloudMovement).endVertex();
         bufferbuilder.finishDrawing();
         WorldVertexBufferUploader.draw(bufferbuilder);
+
+        Minecraft.getInstance().textureManager.bindTexture(STAR_TEXTURES);
+        float f10 = 1.0F;
+        int starVBOTick1 = (int) ((Minecraft.getInstance().player.ticksExisted + partialTicks) * 0.95F % STAR_TWINKLE_FRAMES);
+        int starVBOTick2 = MathHelper.clamp(starVBOTick1, 0, STAR_TWINKLE_FRAMES - 1);
+        this.starVBO[starVBOTick2].bindBuffer();
+        this.skyVertexFormat.setupBufferState(0L);
+        this.starVBO[starVBOTick2].draw(matrixStackIn.getLast().getMatrix(), 7);
+        RenderSystem.disableBlend();
+        VertexBuffer.unbindBuffer();
+        this.skyVertexFormat.clearBufferState();
+
 
         RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.disableBlend();

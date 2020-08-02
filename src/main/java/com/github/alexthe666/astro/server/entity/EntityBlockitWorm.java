@@ -69,6 +69,10 @@ public class EntityBlockitWorm extends MonsterEntity {
         this.dataManager.register(JUMP_OUT, false);
     }
 
+    public boolean isCustomNameVisible() {
+        return false;
+    }
+
     public void setPosition(double x, double y, double z) {
         super.setPosition(x, y, z);
         if (this.dataManager != null && this.ticksExisted != 0) {

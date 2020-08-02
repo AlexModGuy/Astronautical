@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "astro:block/squid_mucus_0"
+    "layer0": "astro:item/squid_mucus"
   }
 }

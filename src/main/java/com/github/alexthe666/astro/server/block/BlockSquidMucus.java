@@ -42,7 +42,7 @@ public class BlockSquidMucus extends DirectionalBlock {
     protected static final VoxelShape EAST_AABB = Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 1.0D, 16.0D, 16.0D);
 
     public BlockSquidMucus() {
-        super(Properties.create(Material.OCEAN_PLANT).sound(SoundType.SLIME).doesNotBlockMovement().variableOpacity().notSolid().hardnessAndResistance(0.2F, 0.0F).tickRandomly());
+        super(Properties.create(Material.OCEAN_PLANT).sound(SoundType.field_226947_m_).doesNotBlockMovement().variableOpacity().notSolid().hardnessAndResistance(0.2F, 0.0F).tickRandomly());
         this.setRegistryName(Astronautical.MODID, "squid_mucus");
         this.setDefaultState(this.stateContainer.getBaseState().with(FACING, Direction.UP).with(WATERLOGGED, Boolean.valueOf(false)));
     }

@@ -2,14 +2,15 @@
   "name": "astro:cosmic_sea",
   "has_skylight": true,
   "has_ceiling": false,
-  "ultrawarm": false,
+  "ultrawarm": true,
   "natural": true,
-  "shrunk": false,
-  "piglin_safe": false,
+  "shrunk": true,
+  "piglin_safe": true,
   "bed_works": true,
   "respawn_anchor_works": false,
   "has_raids": false,
   "logical_height": 256,
+  "fixed_time": 6000,
   "infiniburn": "minecraft:infiniburn_overworld",
-  "ambient_light": 0.01
+  "ambient_light": 0.0
 }

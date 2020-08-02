@@ -123,7 +123,7 @@ public abstract class AbstractSpaceFish extends AnimalEntity {
         return 0.4F;
     }
 
-    public float getPitchSensitivity(){ return 1F; }
+    public float getPitchSensitivity(){ return 3F; }
 
     public static boolean canSpaceFishSpawn(EntityType<? extends AnimalEntity> p_223316_0_, IWorld p_223316_1_, SpawnReason p_223316_2_, BlockPos p_223316_3_, Random p_223316_4_) {
         return true;

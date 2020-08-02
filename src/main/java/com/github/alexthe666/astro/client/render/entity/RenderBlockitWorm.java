@@ -20,6 +20,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.util.text.ITextComponent;
 
 public class RenderBlockitWorm extends LivingRenderer<EntityBlockitWorm, ModelBlockitWorm> {
     private static final ResourceLocation WORM_TEXTURE = new ResourceLocation("astro:textures/entity/blockit_worm.png");
@@ -32,12 +33,16 @@ public class RenderBlockitWorm extends LivingRenderer<EntityBlockitWorm, ModelBl
         return 0F;
     }
 
+    protected boolean canRenderName(EntityBlockitWorm entity) {
+        return entity.getAlwaysRenderNameTagForRender() && entity.hasCustomName();
+    }
+
     public void render(EntityBlockitWorm entity, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn) {
         float f = entity.ticksExisted + partialTicks;
         float yaw = entity.prevRotationYaw + (entity.rotationYaw - entity.prevRotationYaw) * partialTicks;
         matrixStackIn.push();
         BlockState state = entity.getMeteoriteState();
-        if(state != null){
+        if (state != null) {
             BlockRendererDispatcher blockrendererdispatcher = Minecraft.getInstance().getBlockRendererDispatcher();
             matrixStackIn.push();
             float f4 = 0.75F;
@@ -54,11 +59,11 @@ public class RenderBlockitWorm extends LivingRenderer<EntityBlockitWorm, ModelBl
         if (i > 0 && entityIn.isAttachedToBlock()) {
             BlockPos blockpos = entityIn.getAttachmentPos();
             BlockPos blockpos1 = entityIn.getOldAttachPos();
-            double d0 = (double)((float)i - partialTicks) / 6.0D;
+            double d0 = (double) ((float) i - partialTicks) / 6.0D;
             d0 = d0 * d0;
-            double d1 = (double)(blockpos.getX() - blockpos1.getX()) * d0;
-            double d2 = (double)(blockpos.getY() - blockpos1.getY()) * d0;
-            double d3 = (double)(blockpos.getZ() - blockpos1.getZ()) * d0;
+            double d1 = (double) (blockpos.getX() - blockpos1.getX()) * d0;
+            double d2 = (double) (blockpos.getY() - blockpos1.getY()) * d0;
+            double d3 = (double) (blockpos.getZ() - blockpos1.getZ()) * d0;
             return new Vector3d(-d1, -d2, -d3);
         } else {
             return super.getRenderOffset(entityIn, partialTicks);
@@ -72,9 +77,7 @@ public class RenderBlockitWorm extends LivingRenderer<EntityBlockitWorm, ModelBl
             if (livingEntityIn.getClientTeleportInterp() > 0 && livingEntityIn.isAttachedToBlock()) {
                 Vector3d Vector3d = new Vector3d(livingEntityIn.getAttachmentPos().getX(), livingEntityIn.getAttachmentPos().getY(), livingEntityIn.getAttachmentPos().getZ());
                 Vector3d Vector3d1 = new Vector3d(livingEntityIn.getOldAttachPos().getX(), livingEntityIn.getOldAttachPos().getY(), livingEntityIn.getOldAttachPos().getZ());
-                if (camera.isBoundingBoxInFrustum(new AxisAlignedBB(Vector3d1.x, Vector3d1.y, Vector3d1.z, Vector3d.x, Vector3d.y, Vector3d.z))) {
-                    return true;
-                }
+                return camera.isBoundingBoxInFrustum(new AxisAlignedBB(Vector3d1.x, Vector3d1.y, Vector3d1.z, Vector3d.x, Vector3d.y, Vector3d.z));
             }
 
             return false;
