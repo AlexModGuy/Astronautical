@@ -1,0 +1,88 @@
+{
+  "effects": {
+    "mood_sound": {
+      "sound": "minecraft:ambient.cave",
+      "tick_delay": 6000,
+      "block_search_extent": 8,
+      "offset": 2.0
+    },
+    "sky_color": 0,
+    "foliage_color": 7707568,
+    "grass_color": 6525343,
+    "fog_color": 0,
+    "water_color": 4445678,
+    "water_fog_color": 270131
+  },
+  "surface_builder": "astro:cosmic_surface_builder",
+  "carvers": {
+    "air": [
+      "minecraft:cave"
+    ]
+  },
+  "features": [
+    [],
+    [
+    ],
+    [
+    ],
+    [
+    ],
+    [
+      "astro:asteroid",
+      "astro:planetoid"
+    ],
+    [],
+    [],
+    [
+    ],
+    [
+    ],
+    [
+    ]
+  ],
+  "starts": [
+
+  ],
+  "spawners": {
+    "creature": [
+      {
+        "type": "astro:glopepod",
+        "weight": 70,
+        "minCount": 5,
+        "maxCount": 20
+      },
+      {
+        "type": "astro:starchovy",
+        "weight": 50,
+        "minCount": 10,
+        "maxCount": 15
+      },
+      {
+        "type": "astro:staron",
+        "weight": 10,
+        "minCount": 1,
+        "maxCount": 3
+      },
+      {
+        "type": "astro:space_squid",
+        "weight": 20,
+        "minCount": 1,
+        "maxCount": 3
+      }
+    ],
+    "ambient": [],
+    "water_creature": [],
+    "water_ambient": [],
+    "misc": []
+  },
+  "creature_spawn_probability": 0.04,
+  "spawn_costs": {
+  },
+  "player_spawn_friendly": true,
+  "precipitation": "none",
+  "temperature": 1.0,
+  "downfall": 0.0,
+  "category": "ocean",
+  "depth": -1,
+  "scale": 0.1
+}

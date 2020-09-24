@@ -158,11 +158,7 @@ public class ServerEvents {
         if(!event.getEntityLiving().world.isRemote && event.getEntityLiving() instanceof ServerPlayerEntity && event.getEntityLiving().getPosY() > 300 && overworld){
             MinecraftServer server = event.getEntityLiving().world.getServer();
             ServerPlayerEntity thePlayer = (ServerPlayerEntity) event.getEntityLiving();
-            if (thePlayer.timeUntilPortal > 0) {
-                thePlayer.timeUntilPortal = 10;
-            }
             if (!cosmicDimension) {
-                thePlayer.timeUntilPortal = 10;
                 ServerWorld dimWorld = server.getWorld(getCosmicDimension());
                 if(dimWorld != null){
 
@@ -173,15 +169,9 @@ public class ServerEvents {
         if(!event.getEntityLiving().world.isRemote && event.getEntityLiving() instanceof ServerPlayerEntity && cosmicDimension && event.getEntityLiving().getPosY() < -50){
             MinecraftServer server = event.getEntityLiving().world.getServer();
             ServerPlayerEntity thePlayer = (ServerPlayerEntity) event.getEntityLiving();
-            if (thePlayer.timeUntilPortal > 0) {
-                thePlayer.timeUntilPortal = 10;
-            }
-            else {
-                thePlayer.timeUntilPortal = 10;
-                ServerWorld dimWorld = server.getWorld(World.field_234918_g_);
-                if (dimWorld != null) {
-                    teleportEntity(thePlayer, dimWorld, new BlockPos(event.getEntityLiving().getPosX(), 295, event.getEntityLiving().getPosZ()));
-                }
+            ServerWorld dimWorld = server.getWorld(World.field_234918_g_);
+            if (dimWorld != null) {
+                teleportEntity(thePlayer, dimWorld, new BlockPos(event.getEntityLiving().getPosX(), 295, event.getEntityLiving().getPosZ()));
             }
         }
     }

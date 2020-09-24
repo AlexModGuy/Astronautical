@@ -97,13 +97,10 @@ public class BlockOfSquidGoop extends BreakableBlock {
             }
 
             if (p_226934_1_.isRemote && p_226934_1_.rand.nextInt(5) == 0) {
-                if (p_226934_1_.isRemote) {
-                    BlockState blockstate = AstroBlockRegistry.BLOCK_OF_SQUID_GOOP.getDefaultState();
+                BlockState blockstate = AstroBlockRegistry.BLOCK_OF_SQUID_GOOP.getDefaultState();
 
-                    for(int i = 0; i < 3; ++i) {
-                        p_226934_1_.addParticle(new BlockParticleData(ParticleTypes.BLOCK, blockstate), p_226934_2_.getPosX(), p_226934_2_.getPosY(), p_226934_2_.getPosZ(), 0.0D, 0.0D, 0.0D);
-                    }
-
+                for(int i = 0; i < 3; ++i) {
+                    p_226934_1_.addParticle(new BlockParticleData(ParticleTypes.BLOCK, blockstate), p_226934_2_.getPosX(), p_226934_2_.getPosY(), p_226934_2_.getPosZ(), 0.0D, 0.0D, 0.0D);
                 }
             }
         }

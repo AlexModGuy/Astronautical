@@ -14,6 +14,7 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ISeedReader;
+import net.minecraft.world.IServerWorld;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.ChunkGenerator;
@@ -34,7 +35,7 @@ public class FeatureAsteroid extends Feature<NoFeatureConfig> {
     }
 
     @Override
-    public boolean func_230362_a_(ISeedReader worldIn, StructureManager p_230362_2_, ChunkGenerator p_230362_3_, Random rand, BlockPos pos, NoFeatureConfig p_230362_6_) {
+    public boolean func_241855_a(ISeedReader worldIn, ChunkGenerator p_230362_3_, Random rand, BlockPos pos, NoFeatureConfig p_230362_6_) {
         if(rand.nextFloat() > getAsteroidChance()){
             return false;
         }
@@ -119,7 +120,7 @@ public class FeatureAsteroid extends Feature<NoFeatureConfig> {
         return 3 + random.nextInt(7);
     }
 
-    public void decorateAsteroid(IWorld worldIn, BlockPos pos, Direction facing){
+    public void decorateAsteroid(IServerWorld worldIn, BlockPos pos, Direction facing){
         if(worldIn.getRandom().nextInt(56) == 0){
             worldIn.setBlockState(pos, Blocks.AIR.getDefaultState(), 2);
             EntityBlockitWorm blockitWorm = AstroEntityRegistry.BLOCKIT_WORM.create(worldIn.getWorld());

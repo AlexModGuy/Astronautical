@@ -14,7 +14,7 @@ public class CosmicSurfaceBuilder extends SurfaceBuilder<SurfaceBuilderConfig> {
 
     public CosmicSurfaceBuilder(Codec<SurfaceBuilderConfig> p_i232127_1_) {
         super(p_i232127_1_);
-        this.setRegistryName("astro:cosmic_surface");
+        this.setRegistryName("astro:cosmic_surface_builder");
 
     }
 

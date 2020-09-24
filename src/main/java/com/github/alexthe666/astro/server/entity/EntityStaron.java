@@ -35,6 +35,7 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.Heightmap;
+import net.minecraft.world.server.ServerWorld;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -73,13 +74,19 @@ public class EntityStaron extends AbstractSpaceFish {
     }
 
     public static boolean isIronEntity(LivingEntity entity) {
-        ITag<Item> tag = ItemTags.getCollection().getOrCreate(AstroTagRegistry.STARON_AGGRO);
+        ITag<Item> tag = ItemTags.getCollection().func_241834_b(AstroTagRegistry.STARON_AGGRO);
         for (EquipmentSlotType slot : EquipmentSlotType.values()) {
             if (tag.func_230235_a_(entity.getItemStackFromSlot(slot).getItem())) {
                 return true;
             }
         }
         return entity instanceof IronGolemEntity;
+    }
+
+    @Nullable
+    @Override
+    public AgeableEntity func_241840_a(ServerWorld serverWorld, AgeableEntity ageableEntity) {
+        return null;
     }
 
     @Override
@@ -128,7 +135,7 @@ public class EntityStaron extends AbstractSpaceFish {
     }
 
     public boolean shouldEatItem(ItemStack item) {
-        ITag<Item> tag = ItemTags.getCollection().getOrCreate(AstroTagRegistry.STARON_FOOD);
+        ITag<Item> tag = ItemTags.getCollection().func_241834_b(AstroTagRegistry.STARON_FOOD);
         return tag.func_230235_a_(item.getItem());
     }
 

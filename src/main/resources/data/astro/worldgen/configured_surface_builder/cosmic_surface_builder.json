@@ -1,0 +1,14 @@
+{
+  "config": {
+    "top_material": {
+      "Name": "minecraft:void_air"
+    },
+    "under_material": {
+      "Name": "minecraft:void_air"
+    },
+    "underwater_material": {
+      "Name": "minecraft:void_air"
+    }
+  },
+  "type": "astro:cosmic_surface_builder"
+}

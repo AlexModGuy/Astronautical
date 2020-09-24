@@ -3,6 +3,6 @@
   "ingredient": {
     "item": "astro:meteorite"
   },
-  "item": "astro:polished_meteorite",
+  "result": "astro:polished_meteorite",
   "count": 1
 }

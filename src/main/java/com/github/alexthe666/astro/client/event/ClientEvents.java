@@ -127,7 +127,7 @@ public class ClientEvents {
             event.getEntity().inWater = true;
         }
         if (event.getEntity().getRidingEntity() != null && event.getEntity().getRidingEntity() instanceof EntitySpaceSquid) {
-            if (ClientProxy.currentSquidRiders.contains(event.getEntity().getUniqueID()) || event.getEntity() == Minecraft.getInstance().player && Minecraft.getInstance().gameSettings.thirdPersonView == 0) {
+            if (ClientProxy.currentSquidRiders.contains(event.getEntity().getUniqueID()) || event.getEntity() == Minecraft.getInstance().player && Minecraft.getInstance().gameSettings.func_243230_g().func_243192_a()) {
                 event.setCanceled(true);
                 net.minecraftforge.common.MinecraftForge.EVENT_BUS.post(new net.minecraftforge.client.event.RenderLivingEvent.Post(event.getEntity(), event.getRenderer(), event.getPartialRenderTick(), event.getMatrixStack(), event.getBuffers(), event.getLight()));
             }

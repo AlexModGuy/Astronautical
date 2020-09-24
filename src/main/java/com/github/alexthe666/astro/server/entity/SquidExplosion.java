@@ -214,7 +214,7 @@ public class SquidExplosion extends Explosion {
                     d9 = d9 / d13;
                     double d14 = getBlockDensity(Vector3d, entity);
                     double d10 = (1.0D - d12) * d14;
-                    entity.attackEntityFrom(this.getDamageSource(), (float) ((int) ((d10 * d10 + d10) / 2.0D * 14.0D * (double) f3 + 1.0D)));
+                    entity.attackEntityFrom(this.getDamageSource(), (float) ((int) ((d10 * d10 + d10) / 2.0D * 20.0D * (double) f3 + 1.0D)));
                     double d11 = d10;
                     if (entity instanceof LivingEntity) {
                         d11 = ProtectionEnchantment.getBlastDamageReduction((LivingEntity) entity, d10);
@@ -267,7 +267,7 @@ public class SquidExplosion extends Explosion {
                         this.world.getProfiler().startSection("explosion_blocks");
                         if (blockstate.canDropFromExplosion(this.world, blockpos, this) && this.world instanceof ServerWorld) {
                             TileEntity tileentity = blockstate.hasTileEntity() ? this.world.getTileEntity(blockpos) : null;
-                            LootContext.Builder lootcontext$builder = (new LootContext.Builder((ServerWorld) this.world)).withRandom(this.world.rand).withParameter(LootParameters.POSITION, blockpos).withParameter(LootParameters.TOOL, ItemStack.EMPTY).withNullableParameter(LootParameters.BLOCK_ENTITY, tileentity).withNullableParameter(LootParameters.THIS_ENTITY, this.exploder);
+                            LootContext.Builder lootcontext$builder = (new LootContext.Builder((ServerWorld)this.world)).withRandom(this.world.rand).withParameter(LootParameters.field_237457_g_, Vector3d.func_237489_a_(blockpos)).withParameter(LootParameters.TOOL, ItemStack.EMPTY).withNullableParameter(LootParameters.BLOCK_ENTITY, tileentity).withNullableParameter(LootParameters.THIS_ENTITY, this.exploder);
                             if (this.mode == Explosion.Mode.DESTROY) {
                                 lootcontext$builder.withParameter(LootParameters.EXPLOSION_RADIUS, this.size);
                             }

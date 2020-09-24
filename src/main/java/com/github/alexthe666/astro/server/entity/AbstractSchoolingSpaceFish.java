@@ -5,11 +5,13 @@ import net.minecraft.entity.AgeableEntity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ILivingEntityData;
 import net.minecraft.entity.SpawnReason;
+import net.minecraft.entity.passive.fish.AbstractGroupFishEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.IServerWorld;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.Heightmap;
@@ -78,7 +80,8 @@ public abstract class AbstractSchoolingSpaceFish extends AbstractSpaceFish {
                 if(circlingPosition == null || rand.nextFloat() < 0.25F){
                     BlockPos height = world.getHeight(Heightmap.Type.WORLD_SURFACE, new BlockPos( this.getPositionVec()));
                     int upDistance = 256 - height.getY();
-                    BlockPos targetPos =  new BlockPos( this.getPositionVec()).add(rand.nextInt(16) - 8, MathHelper.clamp(rand.nextInt(15) - 8, 0, 256), rand.nextInt(16) - 8);
+                    int yTarg = this.getPosY() < 5 ? rand.nextInt(5) : rand.nextInt(15) - 7;
+                    BlockPos targetPos =  new BlockPos( this.getPositionVec()).add(rand.nextInt(16) - 8, MathHelper.clamp(yTarg, 0, 256), rand.nextInt(16) - 8);
                     if (this.canBlockPosBeSeen(targetPos)) {
                         circlingPosition = targetPos;
                         flightTarget = new Vector3d(circlingPosition.getX() + 0.5D, circlingPosition.getY() + 0.5D, circlingPosition.getZ() + 0.5D);
@@ -145,7 +148,7 @@ public abstract class AbstractSchoolingSpaceFish extends AbstractSpaceFish {
     }
 
     @Nullable
-    public ILivingEntityData onInitialSpawn(IWorld p_213386_1_, DifficultyInstance p_213386_2_, SpawnReason p_213386_3_, @Nullable ILivingEntityData p_213386_4_, @Nullable CompoundNBT p_213386_5_) {
+    public ILivingEntityData onInitialSpawn(IServerWorld p_213386_1_, DifficultyInstance p_213386_2_, SpawnReason p_213386_3_, @Nullable ILivingEntityData p_213386_4_, @Nullable CompoundNBT p_213386_5_) {
         super.onInitialSpawn(p_213386_1_, p_213386_2_, p_213386_3_, (ILivingEntityData)p_213386_4_, p_213386_5_);
         if (p_213386_4_ == null) {
             p_213386_4_ = new AbstractSchoolingSpaceFish.GroupData(this);
@@ -156,11 +159,12 @@ public abstract class AbstractSchoolingSpaceFish extends AbstractSpaceFish {
         return (ILivingEntityData)p_213386_4_;
     }
 
-    public static class GroupData extends AgeableEntity.AgeableData {
+    public static class GroupData extends AgeableData {
         public final AbstractSchoolingSpaceFish groupLeader;
 
-        public GroupData(AbstractSchoolingSpaceFish p_i49858_1_) {
-            this.groupLeader = p_i49858_1_;
+        public GroupData(AbstractSchoolingSpaceFish groupLeaderIn) {
+            super(0.05F);
+            this.groupLeader = groupLeaderIn;
         }
     }
 }

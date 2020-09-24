@@ -28,7 +28,7 @@ public class FeaturePlanetoid extends Feature<NoFeatureConfig> {
 
 
     @Override
-    public boolean func_230362_a_(ISeedReader worldIn, StructureManager p_230362_2_, ChunkGenerator p_230362_3_, Random rand, BlockPos pos, NoFeatureConfig p_230362_6_) {
+    public boolean func_241855_a(ISeedReader worldIn, ChunkGenerator p_230362_3_, Random rand, BlockPos pos, NoFeatureConfig p_230362_6_) {
         if(rand.nextFloat() > 0.005D){
             return false;
         }

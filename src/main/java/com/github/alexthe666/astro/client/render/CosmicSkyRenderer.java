@@ -219,7 +219,7 @@ public class CosmicSkyRenderer implements IRenderHandler {
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
 
-        float[] afloat = world.func_239132_a_().func_230492_a_(world.getCelestialAngle(partialTicks), partialTicks);
+        float[] afloat = world.func_239132_a_().func_230492_a_(world.func_242415_f(partialTicks), partialTicks);
         if (afloat != null) {
             RenderSystem.disableTexture();
             RenderSystem.shadeModel(7425);
@@ -288,8 +288,8 @@ public class CosmicSkyRenderer implements IRenderHandler {
         WorldVertexBufferUploader.draw(bufferbuilder);
 
         Minecraft.getInstance().textureManager.bindTexture(STAR_TEXTURES);
-        float f10 = 1.0F;
-        int starVBOTick1 = (int) ((Minecraft.getInstance().player.ticksExisted + partialTicks) * 0.95F % STAR_TWINKLE_FRAMES);
+        float f10 = 0.5F;
+        int starVBOTick1 = (int) ((Minecraft.getInstance().player.ticksExisted + partialTicks) * f10 % STAR_TWINKLE_FRAMES);
         int starVBOTick2 = MathHelper.clamp(starVBOTick1, 0, STAR_TWINKLE_FRAMES - 1);
         this.starVBO[starVBOTick2].bindBuffer();
         this.skyVertexFormat.setupBufferState(0L);

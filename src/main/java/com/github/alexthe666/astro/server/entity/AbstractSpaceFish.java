@@ -14,6 +14,7 @@ import net.minecraft.util.math.*;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -28,6 +29,12 @@ public abstract class AbstractSpaceFish extends AnimalEntity {
     protected AbstractSpaceFish(EntityType type, World world) {
         super(type, world);
         initPathFinding();
+    }
+
+    @Nullable
+    @Override
+    public AgeableEntity func_241840_a(ServerWorld serverWorld, AgeableEntity ageableEntity) {
+        return null;
     }
 
     public boolean canBlockPosBeSeen(BlockPos pos) {
@@ -49,12 +56,6 @@ public abstract class AbstractSpaceFish extends AnimalEntity {
         this.moveController = new SpaceFishMoveHelper(this);
     }
 
-    @Nullable
-    @Override
-    public AgeableEntity createChild(AgeableEntity ageableEntity) {
-        return null;
-    }
-
     public void tick() {
         super.tick();
         this.fallDistance = 0.0F;
@@ -65,9 +66,6 @@ public abstract class AbstractSpaceFish extends AnimalEntity {
         }
         if (!this.onGround && this.getMotion().y < 0.0D) {
            // this.setMotion(this.getMotion().mul(1.0D, 0.6D, 1.0D));
-        }
-        if (!this.world.func_234923_W_().func_240901_a_().getPath().equals("cosmic_sea")) {
-            this.setMotion(this.getMotion().x, this.getMotion().y + 0.08D, this.getMotion().z);
         }
         if(!onGround){
             double ydist = (this.prevPosY - this.getPosY());//down 0.4 up -0.38
@@ -94,6 +92,11 @@ public abstract class AbstractSpaceFish extends AnimalEntity {
             this.setFishPitch(0);
         }
     }
+
+    public boolean hasNoGravity() {
+        return true;
+    }
+
 
     public boolean canBreatheUnderwater() {
         return true;

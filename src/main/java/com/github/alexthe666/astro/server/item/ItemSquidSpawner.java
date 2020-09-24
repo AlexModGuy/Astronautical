@@ -31,7 +31,10 @@ public class ItemSquidSpawner extends Item {
         EntitySpaceSquid spaceSquid = new EntitySpaceSquid(AstroEntityRegistry.SPACE_SQUID, context.getWorld());
         BlockPos upPos = new BlockPos(context.getPos().getX(), 300, context.getPos().getZ());
         spaceSquid.setLocationAndAngles(upPos.getX() + 0.5D, upPos.getY() + 0.5D, upPos.getZ() + 0.5D, random.nextFloat() * 360 - 180F, 0);
-        spaceSquid.onInitialSpawn(context.getWorld(), context.getWorld().getDifficultyForLocation(context.getPos()), SpawnReason.MOB_SUMMONED, null, null);
+        spaceSquid.setColorVariant(random.nextInt(4));
+        spaceSquid.setFallingFromSky(false);
+        spaceSquid.setFallen(false);
+        spaceSquid.setDirty(false);
         spaceSquid.setFallingFromSky(true);
         spaceSquid.fallingProgress = 20F;
         context.getWorld().addEntity(spaceSquid);

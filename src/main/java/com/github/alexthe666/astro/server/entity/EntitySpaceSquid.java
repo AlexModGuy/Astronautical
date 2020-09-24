@@ -34,10 +34,7 @@ import net.minecraft.util.math.*;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.Explosion;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
+import net.minecraft.world.*;
 import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
@@ -86,7 +83,8 @@ public class EntitySpaceSquid extends TameableEntity implements IAnimatedEntity 
         return MobEntity.func_233666_p_()
                 .func_233815_a_(Attributes.field_233818_a_, 300.0D)            //HEALTH
                 .func_233815_a_(Attributes.field_233821_d_, 0.25D)           //SPEED
-                .func_233815_a_(Attributes.field_233823_f_, 2.0D);            //ATTACK
+                .func_233815_a_(Attributes.field_233823_f_, 2.0D)            //ATTACK
+                .func_233815_a_(Attributes.field_233820_c_, 1.0D);          //KNOCKBACK RESISTANCE
     }
 
     @Override
@@ -101,6 +99,11 @@ public class EntitySpaceSquid extends TameableEntity implements IAnimatedEntity 
         this.dataManager.register(SPACE_BOUND, Boolean.valueOf(false));
         this.dataManager.register(SQUID_PITCH, 0F);
     }
+
+    public boolean hasNoGravity() {
+        return !this.isFallen() && !this.isFallingFromSky();
+    }
+
 
     public void tick(){
         super.tick();
@@ -163,7 +166,6 @@ public class EntitySpaceSquid extends TameableEntity implements IAnimatedEntity 
             if (!this.onGround && this.getMotion().y < 0.0D) {
                 this.setMotion(this.getMotion().mul(1.0D, 0.6D, 1.0D));
             }
-            this.setMotion(this.getMotion().x, this.getMotion().y + 0.08D, this.getMotion().z);
             if(this.getAttackTarget() == null || this.flightTarget == null  || this.getDistanceSq(flightTarget.x, flightTarget.y, flightTarget.z) < 9 || !this.world.isAirBlock(new BlockPos(flightTarget))){
                 if(circlingPosition == null){
                     if (this.world.func_234923_W_().func_240901_a_().getPath().equals("cosmic_sea")) {
@@ -174,7 +176,9 @@ public class EntitySpaceSquid extends TameableEntity implements IAnimatedEntity 
                             circlingPosition = targetPos;
                         }
                     }else{
-                        circlingPosition = world.getHeight(Heightmap.Type.WORLD_SURFACE, this.getPosition()).up(20 + rand.nextInt(10));
+                        int worldHeight = 256 - world.getHeight(Heightmap.Type.WORLD_SURFACE, this.getPosition()).getY();
+
+                        circlingPosition = world.getHeight(Heightmap.Type.WORLD_SURFACE, this.getPosition()).up(20 + rand.nextInt(worldHeight));
                             if(isSpaceBound() && this.world.func_234923_W_().func_240901_a_().getPath().equals("overworld")){
                             circlingPosition = new BlockPos(circlingPosition.getX(), 350, circlingPosition.getZ());
                         }
@@ -254,7 +258,7 @@ public class EntitySpaceSquid extends TameableEntity implements IAnimatedEntity 
         float radius = 12;
         float neg = this.getRNG().nextBoolean() ? 1 : -1;
         float renderYawOffset = this.renderYawOffset;
-        BlockPos circlingPos = this.getCirclingPosition();
+        BlockPos circlingPos = this.getCirclingPosition() == null ? this.func_233580_cy_() : this.getCirclingPosition();
         BlockPos ground = this.world.getHeight(Heightmap.Type.WORLD_SURFACE, circlingPos);
         int distFromGround = circlingPos.getY() - ground.getY();
         int fromHome = 30;
@@ -418,7 +422,14 @@ public class EntitySpaceSquid extends TameableEntity implements IAnimatedEntity 
     }
 
     @Nullable
-    public ILivingEntityData onInitialSpawn(IWorld worldIn, DifficultyInstance difficultyIn, SpawnReason reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
+    @Override
+    public AgeableEntity func_241840_a(ServerWorld serverWorld, AgeableEntity ageableEntity) {
+        return null;
+    }
+
+
+    @Nullable
+    public ILivingEntityData onInitialSpawn(IServerWorld worldIn, DifficultyInstance difficultyIn, SpawnReason reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
         spawnDataIn = super.onInitialSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
         setColorVariant(rand.nextInt(4));
         setFallingFromSky(false);
@@ -456,12 +467,6 @@ public class EntitySpaceSquid extends TameableEntity implements IAnimatedEntity 
             }
         }
         return ActionResultType.PASS;
-    }
-
-    @Nullable
-    @Override
-    public AgeableEntity createChild(AgeableEntity ageable) {
-        return null;
     }
 
     @Override

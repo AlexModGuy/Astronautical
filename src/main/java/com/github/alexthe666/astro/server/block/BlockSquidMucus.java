@@ -1,11 +1,13 @@
 package com.github.alexthe666.astro.server.block;
 
 import com.github.alexthe666.astro.Astronautical;
+import com.github.alexthe666.astro.server.entity.EntitySpaceSquid;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.DirectionalBlock;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.entity.Entity;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.BlockItemUseContext;
@@ -19,6 +21,7 @@ import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.Rotation;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
@@ -66,6 +69,15 @@ public class BlockSquidMucus extends DirectionalBlock {
         }
     }
 
+    public void onEntityCollision(BlockState state, World worldIn, BlockPos pos, Entity entityIn) {
+        if (!(entityIn instanceof EntitySpaceSquid) && entityIn.getMotion().length() > 0.1D) {
+            if (worldIn.rand.nextInt(5) == 0) {
+                entityIn.playSound(SoundEvents.BLOCK_HONEY_BLOCK_SLIDE, 1.0F, 1.0F);
+            }
+        }
+        super.onEntityCollision(state, worldIn, pos, entityIn);
+    }
+
 
     public int tickRate(IWorldReader worldIn) {
         return 1;
@@ -95,7 +107,7 @@ public class BlockSquidMucus extends DirectionalBlock {
         }
 
         BlockPos offset = currentPos.offset(stateIn.get(FACING).getOpposite());
-        if(!worldIn.getBlockState(offset).isSolidSide(worldIn, offset, stateIn.get(FACING))){
+        if(!worldIn.getBlockState(offset).isSolidSide(worldIn, offset, stateIn.get(FACING).getOpposite())){
             worldIn.destroyBlock(currentPos, true);
         }
         return stateIn;
@@ -113,8 +125,13 @@ public class BlockSquidMucus extends DirectionalBlock {
     public BlockState getStateForPlacement(BlockItemUseContext context) {
         Direction direction = context.getFace();
         FluidState ifluidstate = context.getWorld().getFluidState(context.getPos());
-        BlockState blockstate = context.getWorld().getBlockState(context.getPos().offset(direction.getOpposite()));
         return this.getDefaultState().with(FACING, direction).with(WATERLOGGED, Boolean.valueOf(ifluidstate.isTagged(FluidTags.WATER) && ifluidstate.getLevel() == 8));
+    }
+
+    public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos) {
+        Direction direction = state.get(FACING);
+        BlockState blockstate = worldIn.getBlockState(pos.offset(direction.getOpposite()));
+        return blockstate.isSolid();
     }
 
     protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
