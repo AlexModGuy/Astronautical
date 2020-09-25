@@ -25,12 +25,14 @@ public class AstroEntityRegistry {
     public static final EntityType<EntityStaron> STARON = registerEntity(EntityType.Builder.create(EntityStaron::new, EntityClassification.CREATURE).size(0.75F, 1.35F).setTrackingRange(256), "staron");
     public static final EntityType<EntityBlockitWorm> BLOCKIT_WORM = registerEntity(EntityType.Builder.create(EntityBlockitWorm::new, EntityClassification.CREATURE).size(1.0F, 1.0F), "blockit_worm");
     public static final EntityType<EntityScuttlefish> SCUTTLEFISH = registerEntity(EntityType.Builder.create(EntityScuttlefish::new, EntityClassification.CREATURE).size(0.8F, 0.5F), "scuttlefish");
+    public static final EntityType<EntityStarphin> STARPHIN = registerEntity(EntityType.Builder.create(EntityStarphin::new, EntityClassification.CREATURE).size(0.9F, 0.9F), "starphin");
 
     static {
         EntitySpawnPlacementRegistry.register(SPACE_SQUID, EntitySpawnPlacementRegistry.PlacementType.NO_RESTRICTIONS, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, EntitySpaceSquid::canSpaceFishSpawn);
         EntitySpawnPlacementRegistry.register(STARCHOVY, EntitySpawnPlacementRegistry.PlacementType.NO_RESTRICTIONS, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, AbstractSpaceFish::canSpaceFishSpawn);
         EntitySpawnPlacementRegistry.register(GLOPEPOD, EntitySpawnPlacementRegistry.PlacementType.NO_RESTRICTIONS, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, AbstractSpaceFish::canSpaceFishSpawn);
         EntitySpawnPlacementRegistry.register(STARON, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, EntityStaron::canStaronSpawn);
+        EntitySpawnPlacementRegistry.register(STARPHIN, EntitySpawnPlacementRegistry.PlacementType.NO_RESTRICTIONS, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, AbstractSpaceFish::canSpaceFishSpawn);
     }
 
     private static final EntityType registerEntity(EntityType.Builder builder, String entityName) {
@@ -45,6 +47,7 @@ public class AstroEntityRegistry {
         GlobalEntityTypeAttributes.put(STARON, EntityStaron.buildAttributes().func_233813_a_());
         GlobalEntityTypeAttributes.put(BLOCKIT_WORM, EntityBlockitWorm.buildAttributes().func_233813_a_());
         GlobalEntityTypeAttributes.put(SCUTTLEFISH, EntityScuttlefish.buildAttributes().func_233813_a_());
+        GlobalEntityTypeAttributes.put(STARPHIN, EntityScuttlefish.buildAttributes().func_233813_a_());
     }
 
     @SubscribeEvent
@@ -75,6 +78,7 @@ public class AstroEntityRegistry {
         event.getRegistry().register(new SpawnEggItem(STARON, 0X4C2941, 0X8D566C, new Item.Properties().group(Astronautical.TAB)).setRegistryName("astro:spawn_egg_staron"));
         event.getRegistry().register(new SpawnEggItem(BLOCKIT_WORM, 0X4C4227, 0X5F6837, new Item.Properties().group(Astronautical.TAB)).setRegistryName("astro:spawn_egg_blockit_worm"));
         event.getRegistry().register(new SpawnEggItem(SCUTTLEFISH, 0XA1BA9C, 0XFF6A00, new Item.Properties().group(Astronautical.TAB)).setRegistryName("astro:spawn_egg_scuttlefish"));
+        event.getRegistry().register(new SpawnEggItem(STARPHIN, 0X5A6CA6, 0XFFEE83, new Item.Properties().group(Astronautical.TAB)).setRegistryName("astro:spawn_egg_starphin"));
 
     }
 }

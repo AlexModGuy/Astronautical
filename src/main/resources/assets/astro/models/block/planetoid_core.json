@@ -1,6 +1,22 @@
 {
-    "parent": "block/cube_all",
+    "parent": "block/block",
     "textures": {
-        "all": "astro:block/planetoid_core"
-    }
+        "particle": "astro:block/planetoid_core",
+        "gas": "astro:block/planetoid_core"
+    },
+    "elements": [
+        {   "from": [ 0, 0, 0 ],
+            "to": [ 16, 16, 16 ],
+            "shade": false,
+            "faces": {
+                "down":  { "uv": [ 0, 0, 16, 16 ], "texture": "#gas", "cullface": "down", "tintindex": 0 },
+                "up":    { "uv": [ 0, 0, 16, 16 ], "texture": "#gas",    "cullface": "up", "tintindex": 0 },
+                "north": { "uv": [ 0, 0, 16, 16 ], "texture": "#gas",   "cullface": "north", "tintindex": 0 },
+                "south": { "uv": [ 0, 0, 16, 16 ], "texture": "#gas",   "cullface": "south", "tintindex": 0 },
+                "west":  { "uv": [ 0, 0, 16, 16 ], "texture": "#gas",   "cullface": "west", "tintindex": 0 },
+                "east":  { "uv": [ 0, 0, 16, 16 ], "texture": "#gas",   "cullface": "east", "tintindex": 0 }
+            }
+        }
+    ]
 }
+

@@ -1,6 +1,7 @@
 package com.github.alexthe666.astro.server.entity;
 
 import com.github.alexthe666.astro.server.block.AstroBlockRegistry;
+import com.github.alexthe666.astro.server.item.AstroItemRegistry;
 import com.github.alexthe666.astro.server.misc.AstroTagRegistry;
 import com.google.common.base.Predicate;
 import net.minecraft.block.BlockState;
@@ -44,6 +45,7 @@ public class EntityStaron extends AbstractSpaceFish {
 
     private static final DataParameter<Boolean> NON_HOSTILE = EntityDataManager.createKey(EntityStaron.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> ARMORED = EntityDataManager.createKey(EntityStaron.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Float> FULLNESS = EntityDataManager.createKey(EntityStaron.class, DataSerializers.FLOAT);
     private float speedModifier = 1F;
 
     protected EntityStaron(EntityType type, World world) {
@@ -83,17 +85,12 @@ public class EntityStaron extends AbstractSpaceFish {
         return entity instanceof IronGolemEntity;
     }
 
-    @Nullable
-    @Override
-    public AgeableEntity func_241840_a(ServerWorld serverWorld, AgeableEntity ageableEntity) {
-        return null;
-    }
-
     @Override
     protected void registerData() {
         super.registerData();
         this.dataManager.register(NON_HOSTILE, Boolean.valueOf(false));
         this.dataManager.register(ARMORED, Boolean.valueOf(false));
+        this.dataManager.register(FULLNESS, 0F);
     }
 
     public boolean isNonHostile() {
@@ -111,6 +108,15 @@ public class EntityStaron extends AbstractSpaceFish {
     public void setArmored(boolean armored) {
         this.dataManager.set(ARMORED, Boolean.valueOf(armored));
     }
+
+    public float getFullness() {
+        return this.dataManager.get(FULLNESS).floatValue();
+    }
+
+    public void setFullness(float fullness) {
+        this.dataManager.set(FULLNESS, fullness);
+    }
+
 
     public void tick() {
         super.tick();
@@ -140,7 +146,11 @@ public class EntityStaron extends AbstractSpaceFish {
     }
 
     public void onEatItem(ItemStack item){
-
+        this.setFullness(this.getFullness() + 0.1F + rand.nextFloat() * 0.2F);
+        if(this.getFullness() > 1.0F){
+            this.setFullness(0);
+            this.entityDropItem(new ItemStack(AstroItemRegistry.STARON_COPROLITE));
+        }
     }
 
     private class AITargetItems<T extends ItemEntity> extends TargetGoal {
