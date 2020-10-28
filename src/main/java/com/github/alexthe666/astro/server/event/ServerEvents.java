@@ -31,6 +31,7 @@ import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.registry.Registry;
+import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.server.ServerWorld;
@@ -66,8 +67,10 @@ public class ServerEvents {
     @SubscribeEvent
     public static void onLeftClickBlock(PlayerInteractEvent.LeftClickBlock event) {
         if (event.getWorld().getBlockState(event.getPos()).getBlock() == AstroBlockRegistry.PLANETOID_CORE) {
+            BlockState state = event.getWorld().getBlockState(event.getPos());
             event.getEntityLiving().setFire(5 + new Random().nextInt(10));
             event.getEntityLiving().attackEntityFrom(DamageSource.GENERIC, 8);
+            Explosion explosion = event.getWorld().createExplosion(null, event.getPos().getX() + 0.5D, event.getPos().getY() + 0.5D, event.getPos().getZ() + 0.5D, 2 + event.getWorld().rand.nextInt(2), Explosion.Mode.BREAK);
         }
     }
 

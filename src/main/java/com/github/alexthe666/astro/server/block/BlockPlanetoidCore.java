@@ -3,6 +3,7 @@ package com.github.alexthe666.astro.server.block;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
@@ -23,7 +24,7 @@ public class BlockPlanetoidCore extends Block {
 
 
     public BlockPlanetoidCore() {
-        super(Block.Properties.create(Material.ROCK).func_235838_a_((p_235470_0_) -> { return 3; }).hardnessAndResistance(25, 100).harvestTool(ToolType.PICKAXE).harvestLevel(2));
+        super(Block.Properties.create(Material.ROCK).sound(SoundType.field_235582_D_).func_235838_a_((p_235470_0_) -> { return 3; }).hardnessAndResistance(25, 100).harvestTool(ToolType.PICKAXE).harvestLevel(2));
         this.setRegistryName("astro:planetoid_core");
     }
 

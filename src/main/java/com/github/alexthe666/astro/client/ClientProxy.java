@@ -2,6 +2,7 @@ package com.github.alexthe666.astro.client;
 
 import com.github.alexthe666.astro.Astronautical;
 import com.github.alexthe666.astro.client.event.ClientEvents;
+import com.github.alexthe666.astro.client.model.ModelStarphin;
 import com.github.alexthe666.astro.client.model.TabulaModels;
 import com.github.alexthe666.astro.client.render.AstroISTER;
 import com.github.alexthe666.astro.client.render.CosmicSkyRenderer;
@@ -142,6 +143,7 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerEntityRenderingHandler(AstroEntityRegistry.STARON, manager -> new RenderStaron(manager, TabulaModels.STARON, 0.35F));
         RenderingRegistry.registerEntityRenderingHandler(AstroEntityRegistry.BLOCKIT_WORM, manager -> new RenderBlockitWorm(manager));
         RenderingRegistry.registerEntityRenderingHandler(AstroEntityRegistry.SCUTTLEFISH, manager -> new RenderScuttlefish(manager, TabulaModels.SCUTTLEFISH, 0.25F));
+        RenderingRegistry.registerEntityRenderingHandler(AstroEntityRegistry.STARPHIN, manager -> new RenderStarphin(manager, new ModelStarphin(), 0.25F));
     }
 
     public Item.Properties setupISTER(Item.Properties group) {
