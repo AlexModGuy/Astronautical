@@ -13,9 +13,9 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.util.ResourceLocation;
 
 public class LayerSpaceSquidGlow extends LayerRenderer<EntitySpaceSquid, SegmentedModel<EntitySpaceSquid>> {
-    private static final RenderType TEAL = RenderType.getEyes(new ResourceLocation("astro:textures/entity/space_squid/teal_glow.png"));
-    private static final RenderType PURPLE = RenderType.getEyes(new ResourceLocation("astro:textures/entity/space_squid/purple_glow.png"));
-    private static final RenderType BLUE = RenderType.getEyes(new ResourceLocation("astro:textures/entity/space_squid/blue_glow.png"));
+    public static final RenderType TEAL = RenderType.getEyes(new ResourceLocation("astro:textures/entity/space_squid/teal_glow.png"));
+    public static final RenderType PURPLE = RenderType.getEyes(new ResourceLocation("astro:textures/entity/space_squid/purple_glow.png"));
+    public static final RenderType BLUE = RenderType.getEyes(new ResourceLocation("astro:textures/entity/space_squid/blue_glow.png"));
     private final IEntityRenderer<EntitySpaceSquid, SegmentedModel<EntitySpaceSquid>> render;
 
     public LayerSpaceSquidGlow(IEntityRenderer<EntitySpaceSquid, SegmentedModel<EntitySpaceSquid>> render) {

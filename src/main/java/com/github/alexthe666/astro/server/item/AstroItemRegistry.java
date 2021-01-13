@@ -32,6 +32,7 @@ public class AstroItemRegistry {
     public static final Item STARON_COPROLITE = new Item(new Item.Properties().group(Astronautical.TAB)).setRegistryName("astro:staron_coprolite");
     public static final Item BLOCKIT_WORM_EGG = new ItemBlockitWormEgg();
     public static final Item STARCHOVY = new Item(new Item.Properties().group(Astronautical.TAB)).setRegistryName("astro:starchovy");
+    public static final Item SQUID_TANK_ITEM = new ItemSquidTank();
     @SubscribeEvent
     public static void registerItem(RegistryEvent.Register<Item> event) {
         try {

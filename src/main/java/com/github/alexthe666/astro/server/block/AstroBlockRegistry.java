@@ -43,6 +43,8 @@ public class AstroBlockRegistry {
     public static final Block PLANETOID_GAS_PURPLE = new BlockPlanetoidGas("purple", 0XC363FF);
     public static final Block PLANETOID_RING_PURPLE = new BlockPlanetoidRing("purple", 0XE5C1FF);
     public static final Block PLANETOID_CORE = new BlockPlanetoidCore();
+    public static final Block SQUID_TANK_GLASS = new BlockSquidTankGlass();
+    public static final Block SQUID_TANK = new BlockSquidTank();
 
     @SubscribeEvent
     public static void registerBlocks(RegistryEvent.Register<Block> event) {

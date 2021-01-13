@@ -14,12 +14,12 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class RenderSpaceSquid extends MobRenderer<EntitySpaceSquid, SegmentedModel<EntitySpaceSquid>> {
 
-    private static final ResourceLocation TEAL = new ResourceLocation("astro:textures/entity/space_squid/teal.png");
-    private static final ResourceLocation TEAL_INJURED = new ResourceLocation("astro:textures/entity/space_squid/teal_injured.png");
-    private static final ResourceLocation PURPLE = new ResourceLocation("astro:textures/entity/space_squid/purple.png");
-    private static final ResourceLocation PURPLE_INJURED = new ResourceLocation("astro:textures/entity/space_squid/purple_injured.png");
-    private static final ResourceLocation BLUE = new ResourceLocation("astro:textures/entity/space_squid/blue.png");
-    private static final ResourceLocation BLUE_INJURED = new ResourceLocation("astro:textures/entity/space_squid/blue_injured.png");
+    public static final ResourceLocation TEAL = new ResourceLocation("astro:textures/entity/space_squid/teal.png");
+    public static final ResourceLocation TEAL_INJURED = new ResourceLocation("astro:textures/entity/space_squid/teal_injured.png");
+    public static final ResourceLocation PURPLE = new ResourceLocation("astro:textures/entity/space_squid/purple.png");
+    public static final ResourceLocation PURPLE_INJURED = new ResourceLocation("astro:textures/entity/space_squid/purple_injured.png");
+    public static final ResourceLocation BLUE = new ResourceLocation("astro:textures/entity/space_squid/blue.png");
+    public static final ResourceLocation BLUE_INJURED = new ResourceLocation("astro:textures/entity/space_squid/blue_injured.png");
 
     public RenderSpaceSquid(EntityRendererManager renderManagerIn, SegmentedModel<EntitySpaceSquid> entityModelIn, float shadowSizeIn) {
         super(renderManagerIn, entityModelIn, shadowSizeIn);

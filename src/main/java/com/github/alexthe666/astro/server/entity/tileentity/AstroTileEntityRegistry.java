@@ -15,6 +15,7 @@ import java.lang.reflect.Field;
 public class AstroTileEntityRegistry {
 
     public static TileEntityType<TileEntityBlockitHole> BLOCKIT_HOLE = registerTileEntity(TileEntityType.Builder.create(TileEntityBlockitHole::new, AstroBlockRegistry.BLOCKIT_WORM_HOLE), "blockit_worm_hole");
+    public static TileEntityType<TileEntitySquidTank> SQUID_TANK = registerTileEntity(TileEntityType.Builder.create(TileEntitySquidTank::new, AstroBlockRegistry.SQUID_TANK), "squid_tank");
 
 
     public static TileEntityType registerTileEntity(TileEntityType.Builder builder, String entityName){

@@ -12,6 +12,7 @@ public class TabulaModels {
     public static TabulaModel SPACE_SQUID;
     public static TabulaModel SPACE_SQUID_INJURED;
     public static TabulaModel SPACE_SQUID_FALLING;
+    public static TabulaModel SPACE_SQUID_TANK;
     public static TabulaModel STARCHOVY;
     public static TabulaModel GLOPEPOD;
     public static TabulaModel STARON;
@@ -21,6 +22,7 @@ public class TabulaModels {
         SPACE_SQUID = loadModel("space_squid", new SpaceSquidAnimator());
         SPACE_SQUID_INJURED = loadModel("space_squid_injured", null);
         SPACE_SQUID_FALLING = loadModel("space_squid_falling", null);
+        SPACE_SQUID_TANK = loadModel("space_squid_tank", null);
         STARCHOVY = loadModel("starchovy", new StarchovyAnimator());
         GLOPEPOD = loadModel("glopepod", new GlopepodAnimator());
         STARON = loadModel("staron", new StaronAnimator());

@@ -4,17 +4,21 @@ import com.github.alexthe666.astro.Astronautical;
 import com.github.alexthe666.astro.client.event.ClientEvents;
 import com.github.alexthe666.astro.client.model.ModelStarphin;
 import com.github.alexthe666.astro.client.model.TabulaModels;
+import com.github.alexthe666.astro.client.particle.ParticleSquidBubble;
 import com.github.alexthe666.astro.client.render.AstroISTER;
 import com.github.alexthe666.astro.client.render.CosmicSkyRenderer;
 import com.github.alexthe666.astro.client.render.entity.*;
 import com.github.alexthe666.astro.client.render.tile.RenderBlockitHole;
+import com.github.alexthe666.astro.client.render.tile.RenderSquidTank;
 import com.github.alexthe666.astro.server.CommonProxy;
 import com.github.alexthe666.astro.server.block.AstroBlockRegistry;
 import com.github.alexthe666.astro.server.block.BlockPlanetoidGas;
 import com.github.alexthe666.astro.server.block.BlockPlanetoidRing;
 import com.github.alexthe666.astro.server.entity.AstroEntityRegistry;
 import com.github.alexthe666.astro.server.entity.tileentity.AstroTileEntityRegistry;
+import com.github.alexthe666.astro.server.misc.AstroParticleRegistry;
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.client.renderer.tileentity.ItemStackTileEntityRenderer;
@@ -26,6 +30,7 @@ import net.minecraft.world.biome.BiomeColors;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.ColorHandlerEvent;
+import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
@@ -82,7 +87,13 @@ public class ClientProxy extends CommonProxy {
         }, AstroBlockRegistry.PLANETOID_RING_BLUE, AstroBlockRegistry.PLANETOID_RING_GREEN, AstroBlockRegistry.PLANETOID_RING_ORANGE, AstroBlockRegistry.PLANETOID_RING_PURPLE, AstroBlockRegistry.PLANETOID_RING_TEAL, AstroBlockRegistry.PLANETOID_RING_YELLOW);
     }
 
-    @SubscribeEvent
+    @OnlyIn(Dist.CLIENT)
+    public void setupParticles() {
+        Astronautical.LOGGER.debug("Registered particle factories");
+        Minecraft.getInstance().particles.registerFactory(AstroParticleRegistry.SQUID_BUBBLE, new ParticleSquidBubble.Factory());
+    }
+
+        @SubscribeEvent
     @OnlyIn(Dist.CLIENT)
     public static void onItemColors(ColorHandlerEvent.Item event) {
         event.getItemColors().register((p_getColor_1_, p_getColor_2_) -> {
@@ -133,8 +144,10 @@ public class ClientProxy extends CommonProxy {
         RenderTypeLookup.setRenderLayer(AstroBlockRegistry.WALL_STARDUST_TORCH, RenderType.getCutout());
         RenderTypeLookup.setRenderLayer(AstroBlockRegistry.STARNACLE, RenderType.getCutout());
         RenderTypeLookup.setRenderLayer(AstroBlockRegistry.BLOCKIT_WORM_HOLE, RenderType.getCutout());
+        RenderTypeLookup.setRenderLayer(AstroBlockRegistry.SQUID_TANK, RenderType.getCutout());
+        RenderTypeLookup.setRenderLayer(AstroBlockRegistry.SQUID_TANK_GLASS, RenderType.getCutout());
         ClientRegistry.bindTileEntityRenderer(AstroTileEntityRegistry.BLOCKIT_HOLE, manager -> new RenderBlockitHole(manager));
-
+        ClientRegistry.bindTileEntityRenderer(AstroTileEntityRegistry.SQUID_TANK, manager -> new RenderSquidTank(manager));
         MinecraftForge.EVENT_BUS.register(new ClientEvents());
         RenderingRegistry.registerEntityRenderingHandler(AstroEntityRegistry.SPACE_SQUID, manager -> new RenderSpaceSquid(manager, TabulaModels.SPACE_SQUID, 1));
         RenderingRegistry.registerEntityRenderingHandler(AstroEntityRegistry.FALLING_STAR, manager -> new RenderFallingStar(manager));

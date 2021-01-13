@@ -47,7 +47,7 @@ public class AstroEntityRegistry {
         GlobalEntityTypeAttributes.put(STARON, EntityStaron.buildAttributes().func_233813_a_());
         GlobalEntityTypeAttributes.put(BLOCKIT_WORM, EntityBlockitWorm.buildAttributes().func_233813_a_());
         GlobalEntityTypeAttributes.put(SCUTTLEFISH, EntityScuttlefish.buildAttributes().func_233813_a_());
-        GlobalEntityTypeAttributes.put(STARPHIN, EntityScuttlefish.buildAttributes().func_233813_a_());
+        GlobalEntityTypeAttributes.put(STARPHIN, EntityStarphin.buildAttributes().func_233813_a_());
     }
 
     @SubscribeEvent

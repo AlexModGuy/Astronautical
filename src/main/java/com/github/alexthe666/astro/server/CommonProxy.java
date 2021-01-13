@@ -17,6 +17,9 @@ public class CommonProxy {
     public void setupClient() {
     }
 
+    public void setupParticles() {
+    }
+
     public Item.Properties setupISTER(Item.Properties group) {
         return group;
     }

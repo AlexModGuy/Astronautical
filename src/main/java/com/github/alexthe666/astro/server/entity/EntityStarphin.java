@@ -1,6 +1,7 @@
 package com.github.alexthe666.astro.server.entity;
 
 import com.github.alexthe666.astro.server.item.AstroItemRegistry;
+import com.github.alexthe666.astro.server.misc.AstroTagRegistry;
 import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
@@ -12,6 +13,8 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.tags.ITag;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -30,6 +33,7 @@ public class EntityStarphin extends AbstractSpaceFish implements IAnimatedEntity
     public static final Animation ANIMATION_ECHO = Animation.create(20);
     private int animationTick;
     private Animation currentAnimation;
+    private int eatingTicks = 0;
 
     protected EntityStarphin(EntityType type, World world) {
         super(type, world);
@@ -44,7 +48,7 @@ public class EntityStarphin extends AbstractSpaceFish implements IAnimatedEntity
                 .func_233815_a_(Attributes.field_233818_a_, 40.0D)            //HEALTH
                 .func_233815_a_(Attributes.field_233821_d_, 0.4D)           //SPEED
                 .func_233815_a_(Attributes.field_233823_f_, 5.0D)            //ATTACK
-                .func_233815_a_(Attributes.field_233823_f_, 64.0D);            //FOLLOW RANGE
+                .func_233815_a_(Attributes.field_233819_b_, 64.0D);            //FOLLOW RANGE
     }
 
     protected void registerGoals() {
@@ -54,6 +58,10 @@ public class EntityStarphin extends AbstractSpaceFish implements IAnimatedEntity
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<EntityStarchovy>(this, EntityStarchovy.class, false, false));
     }
 
+    public boolean shouldEatItem(ItemStack item) {
+        ITag<Item> tag = ItemTags.getCollection().func_241834_b(AstroTagRegistry.STARPHIN_FOOD);
+        return tag.func_230235_a_(item.getItem());
+    }
 
     public float getSwimSpeedModifier(){
         return this.getAnimation() == ANIMATION_SPIN ? 1.5F : 0.4F;
@@ -61,12 +69,22 @@ public class EntityStarphin extends AbstractSpaceFish implements IAnimatedEntity
 
     public void tick() {
         super.tick();
-        if(this.rand.nextInt(250 ) == 0 && this.getAnimation() == NO_ANIMATION){
+        boolean flag = true;
+        if(!this.getHeldItemMainhand().isEmpty() && this.shouldEatItem(this.getHeldItemMainhand())){
+            flag = false;
+            this.speedModifier = 0.6F;
+            this.eatingTicks++;
+        }
+        if(eatingTicks >= 100 && shouldEatItem(this.getHeldItemMainhand())){
+            this.getHeldItemMainhand().shrink(1);
+        }
+        if(flag && this.rand.nextInt(250 ) == 0 && this.getAnimation() == NO_ANIMATION){
             this.setAnimation(ANIMATION_SPIN);
         }
         if(this.getAnimation() == ANIMATION_ECHO){
             this.speedModifier = 0.03F;
         }
+
         if(this.getAnimation() == ANIMATION_SPIN){
             speedModifier = 1F;
             if(!this.world.isRemote){
@@ -136,7 +154,6 @@ public class EntityStarphin extends AbstractSpaceFish implements IAnimatedEntity
     @Nullable
     public ILivingEntityData onInitialSpawn(IServerWorld worldIn, DifficultyInstance difficultyIn, SpawnReason reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
         spawnDataIn = super.onInitialSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
-        setHeldItem(Hand.MAIN_HAND, new ItemStack(AstroItemRegistry.STARCHOVY));
         return spawnDataIn;
     }
 
